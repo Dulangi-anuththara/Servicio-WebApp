@@ -20,12 +20,17 @@ export default {
     },
     {
       name: 'Colors',
-      url: '/theme/colors',
+      url: '/theme/color',
       icon: 'icon-drop',
     },
     {
       name: 'Typography',
       url: '/theme/typography',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Profile',
+      url: '/profile',
       icon: 'icon-pencil',
     },
     {
