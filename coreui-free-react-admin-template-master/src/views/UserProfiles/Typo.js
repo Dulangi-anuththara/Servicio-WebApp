@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table , Button } from 'reactstrap';
 
 class Typo extends Component {
+
+
+  handleChange(){
+    console.log("Im here now");
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
@@ -33,11 +39,20 @@ class Typo extends Component {
           <Col xs="0" lg="9">
             <Card>
               <CardHeader>
-                About Me
 
-                <Button color="success">
+                <Row>
+                <Col col="12" xl className="mb-3 mb-xl-0">
+                About Me
+              </Col>
+              <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+              <Button color="success" className="align-items-center" onClick={this.handleChange}>
                   <i className="fa fa-pencil fa-lg"></i>&nbsp;Edit Profile
                 </Button>
+              </Col>
+                </Row>
+               
+
+                
               </CardHeader>
               <CardBody>
                 <Table responsive borderless>
