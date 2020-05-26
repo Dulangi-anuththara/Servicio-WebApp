@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table , Button } from 'reactstrap';
-
+import axios from 'axios' ;
 class User extends Component {
 
 
-  handleChange(){
+  handleChange = (e)=>{
     console.log("Im here now");
+    const url = "http://localhost:5000/user/";
+    axios
+                        .get(url)
+                        .then( response =>
+                                {console.log("good "+response)}
+                        )
+                        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))
   }
 
   render() {

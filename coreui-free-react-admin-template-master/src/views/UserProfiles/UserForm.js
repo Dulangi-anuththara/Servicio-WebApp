@@ -25,7 +25,7 @@ import {
   Row,
 } from 'reactstrap';
 
-class Forms extends Component {
+class UserForm extends Component {
   constructor(props) {
     super(props);
 
@@ -1158,4 +1158,4 @@ class Forms extends Component {
   }
 }
 
-export default Forms;
+export default UserForm;
