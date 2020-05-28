@@ -19,20 +19,52 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Colors',
-      url: '/theme/color',
-      icon: 'icon-drop',
-    },
-    {
-      name: 'Typography',
-      url: '/theme/typography',
-      icon: 'icon-pencil',
-    },
-    {
-      name: 'Profile',
+      name: 'My Profile',
       url: '/profile',
-      icon: 'icon-pencil',
+      icon: 'icon-user',
+      children: [
+        {
+          name: 'View Profile',
+          url: '/profile',
+          icon: 'icon-user-following',
+        },
+        {
+          name: 'Edit Profile',
+          url: '/Edit',
+          icon: 'icon-user-follow',
+        },
+        
+      ]
     },
+    {
+      name: 'Today',
+      url: '/today',
+      icon: 'icon-notebook',
+      children: [
+        {
+          name: 'Pending',
+          url: '/profile',
+          icon: 'icon-hourglass',
+        },
+        {
+          name: 'In Progress',
+          url: '/Edit',
+          icon: 'icon-wrench',
+        },
+        {
+          name: 'Done',
+          url: '/Edit',
+          icon: 'icon-check',
+        },
+      ]
+    },
+    {
+      name: 'Calendar',
+      url: '/calendar',
+      icon: 'icon-calendar',
+    },
+
+    
     {
       title: true,
       name: 'Components',
@@ -40,6 +72,16 @@ export default {
         element: '',
         attributes: {},
       },
+    },
+    {
+      name: 'Colors',
+      url: '/theme/colors',
+      icon: 'icon-drop',
+    },
+    {
+      name: 'Typography',
+      url: '/theme/typography',
+      icon: 'icon-pencil',
     },
     {
       name: 'Base',

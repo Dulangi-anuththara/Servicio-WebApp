@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table , Button } from 'reactstrap';
 import axios from 'axios' ;
+import { Link } from 'react-router-dom'
+
 class User extends Component {
 
 
-  handleChange = (e)=>{
+ /* handleChange = (e)=>{
     console.log("Im here now");
-    const url = "http://localhost:5000/user/";
+    const url = "http://localhost:3000/user/";
     axios
                         .get(url)
                         .then( response =>
                                 {console.log("good "+response)}
                         )
                         .catch((err) => console.log(err))
-  }
+  }*/
 
   render() {
     return (
@@ -28,11 +30,7 @@ class User extends Component {
                 <tbody>
                 
                 <tr>
-                  <td><span className="display-2">Company Name</span></td>
-                  <td align="justify">
-                  
-                    
-                  </td>
+                  <td align="justify"><img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" /></td>
                 </tr>
                
                 </tbody>
@@ -52,9 +50,13 @@ class User extends Component {
                 About Me
               </Col>
               <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-              <Button color="success" className="align-items-center" onClick={this.handleChange}>
+                <Link to='/Edit'>
+                <Button color="success" className="align-items-center" onClick={this.handleChange}>
                   <i className="fa fa-pencil fa-lg"></i>&nbsp;Edit Profile
                 </Button>
+                
+                </Link>
+              
               </Col>
                 </Row>
                

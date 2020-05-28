@@ -1,4 +1,5 @@
 import React from 'react';
+import UserForm from './views/UserProfile/UserForm';
 
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
@@ -32,21 +33,20 @@ const Badges = React.lazy(() => import('./views/Notifications/Badges'));
 const Modals = React.lazy(() => import('./views/Notifications/Modals'));
 const Colors = React.lazy(() => import('./views/Theme/Colors'));
 const Typography = React.lazy(() => import('./views/Theme/Typography'));
-const Profile = React.lazy(() => import('./views/UserProfiles/User'));
-const UserForm = React.lazy(() => import('./views/UserProfiles/UserForm'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
+const UserProfile =React.lazy(() => import('./views/UserProfile/User'));
+const UserProfileEdit =React.lazy(() => import('./views/UserProfile/UserForm'));
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
-  { path: '/theme/color', name: 'Colors', component: Colors },
+  { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
-  { path: '/profile', name: 'User', component: Profile },
-  { path: '/Edit', name: 'UserEdit', component: UserForm },
   { path: '/base', exact: true, name: 'Base', component: Cards },
   { path: '/base/cards', name: 'Cards', component: Cards },
   { path: '/base/forms', name: 'Forms', component: Forms },
@@ -83,6 +83,10 @@ const routes = [
   { path: '/charts', name: 'Charts', component: Charts },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/profile', name: 'User Profile', component: UserProfile },
+  { path: '/Edit', name: 'User Profile Edit', component: UserProfileEdit },
+  
+
 ];
 
 export default routes;

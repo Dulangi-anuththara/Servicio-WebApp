@@ -50,77 +50,8 @@ class UserForm extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xs="12" sm="6">
-            <Card>
-              <CardHeader>
-                <strong>Credit Card</strong>
-                <small> Form</small>
-              </CardHeader>
-              <CardBody>
-                <Row>
-                  <Col xs="12">
-                    <FormGroup>
-                      <Label htmlFor="name">Name</Label>
-                      <Input type="text" id="name" placeholder="Enter your name" required />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs="12">
-                    <FormGroup>
-                      <Label htmlFor="ccnumber">Credit Card Number</Label>
-                      <Input type="text" id="ccnumber" placeholder="0000 0000 0000 0000" required />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="ccmonth">Month</Label>
-                      <Input type="select" name="ccmonth" id="ccmonth">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="ccyear">Year</Label>
-                      <Input type="select" name="ccyear" id="ccyear">
-                        <option>2017</option>
-                        <option>2018</option>
-                        <option>2019</option>
-                        <option>2020</option>
-                        <option>2021</option>
-                        <option>2022</option>
-                        <option>2023</option>
-                        <option>2024</option>
-                        <option>2025</option>
-                        <option>2026</option>
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="cvv">CVV/CVC</Label>
-                      <Input type="text" id="cvv" placeholder="123" required />
-                    </FormGroup>
-                  </Col>
-                </Row>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" sm="6">
+         
+          <Col xs="12">
             <Card>
               <CardHeader>
                 <strong>Company</strong>
@@ -132,7 +63,7 @@ class UserForm extends Component {
                   <Input type="text" id="company" placeholder="Enter your company name" />
                 </FormGroup>
                 <FormGroup>
-                  <Label htmlFor="vat">VAT</Label>
+                  <Label htmlFor="vat">Registration No.</Label>
                   <Input type="text" id="vat" placeholder="DE1234567890" />
                 </FormGroup>
                 <FormGroup>
@@ -155,7 +86,12 @@ class UserForm extends Component {
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="country">Country</Label>
-                  <Input type="text" id="country" placeholder="Country name" />
+                  <Input type="select" name="select" id="select">
+                        <option value="0">Please select</option>
+                        <option value="1">Option #1</option>
+                        <option value="2">Option #2</option>
+                        <option value="3">Option #3</option>
+                      </Input>
                 </FormGroup>
               </CardBody>
             </Card>
@@ -169,65 +105,35 @@ class UserForm extends Component {
               </CardHeader>
               <CardBody>
                 <Form action="" method="post" encType="multipart/form-data" className="form-horizontal">
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>Static</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <p className="form-control-static">Username</p>
-                    </Col>
+                
+                  <FormGroup>
+                  <Label htmlFor="postal-code">Email</Label>
+                    <InputGroup>
+                      <Input type="email" id="email2" name="email2" placeholder="Email" autoComplete="username"/>
+                      <InputGroupAddon addonType="append">
+                        <InputGroupText><i className="fa fa-envelope"></i></InputGroupText>
+                      </InputGroupAddon>
+                    </InputGroup>
                   </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="text-input">Text Input</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="text" id="text-input" name="text-input" placeholder="Text" />
-                      <FormText color="muted">This is a help text</FormText>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="email-input">Email Input</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="email" id="email-input" name="email-input" placeholder="Enter Email" autoComplete="email"/>
-                      <FormText className="help-block">Please enter your email</FormText>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="password-input">Password</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="password" id="password-input" name="password-input" placeholder="Password" autoComplete="new-password" />
-                      <FormText className="help-block">Please enter a complex password</FormText>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="date-input">Date Input <Badge>NEW</Badge></Label>
-                    </Col>
-                    <Col xs="12" md="9">
+               
+              
+                  <FormGroup>
+                  <Label htmlFor="date-input">Date Input </Label> 
+                  <InputGroup>                                      
                       <Input type="date" id="date-input" name="date-input" placeholder="date" />
-                    </Col>
+                      
+                      <InputGroupText><i className="fa fa-calendar"></i></InputGroupText>
+                     
+                      </InputGroup>  
                   </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="disabled-input">Disabled Input</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="text" id="disabled-input" name="disabled-input" placeholder="Disabled" disabled />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="textarea-input">Textarea</Label>
-                    </Col>
-                    <Col xs="12" md="9">
+                  <FormGroup>
+                    
+                      <Label htmlFor="textarea-input">Description</Label>
+                    
+                    
                       <Input type="textarea" name="textarea-input" id="textarea-input" rows="9"
                              placeholder="Content..." />
-                    </Col>
+                    
                   </FormGroup>
                   <FormGroup row>
                     <Col md="3">

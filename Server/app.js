@@ -5,16 +5,16 @@ var cors = require('cors');
 const app = express();
 
 const port = 5000;
-const __dirnameView = "C:/Users/ranjith.gamage/Documents/Dulangi/Servicio-WebApp/coreui-free-react-admin-template-master/src";
+//const __dirnameView = "C:/Users/ranjith.gamage/Documents/Dulangi/Servicio-WebApp/coreui-free-react-admin-template-master/src";
 
 const user = require('./routes/user');
 
 
 app.use(cors());
 
-app.set('views', path.join(__dirnameView, 'views'));
-app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
+app.set('views', path.join(__dirname, 'UI/src/views'));
+app.set('view engine', 'ejs');
+//app.engine('jsx', require('express-react-views').createEngine());
 
 
 
@@ -29,5 +29,6 @@ app.get('/',(req,res) =>{
 
 app.listen(port,()=>{
     console.log(`server running at htttp//localhost:${port}`);
+    //console.log(__dirname);
     
 });
