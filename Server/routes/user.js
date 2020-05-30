@@ -1,9 +1,9 @@
 const express = require('express');
 const user = express.Router();
 
-user.get('/',(req,res) =>{
+user.get('/profile',(req,res) =>{
     
-    console.log("Hi I'm inside the server");
+    console.log("Hi");
     res.render('UserProfiles/UserForm');
 });
     
