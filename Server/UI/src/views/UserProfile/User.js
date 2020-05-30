@@ -5,17 +5,44 @@ import { Link } from 'react-router-dom'
 
 class User extends Component {
 
+  constructor(){
 
- /* handleChange = (e)=>{
-    console.log("Im here now");
-    const url = "http://localhost:3000/user/";
+      super()
+
+      this.state = {
+          Name:"",
+          Registration_No:"",
+          Address:"",
+          Email:"",
+          Telephone:"",
+
+        
+      }
+        
+      }
+
+  
+
+
+    componentDidMount(){
+    const url = "http://localhost:5000/user/profile";
     axios
                         .get(url)
-                        .then( response =>
-                                {console.log("good "+response)}
+                        .then( response => {
+                                //console.log(response.data);
+                                this.setState({
+                                  Name:response.data.Name,
+                                  Registration_No:response.data.Registration_No,
+                                  Address:response.data.Address,
+                                  Email:response.data.Email,
+                                  Telephone:response.data.Telephone
+
+                                })                           
+                              
+                              }
                         )
                         .catch((err) => console.log(err))
-  }*/
+  }
 
   render() {
     return (
@@ -30,7 +57,7 @@ class User extends Component {
                 <tbody>
                 
                 <tr>
-                  <td align="justify"><img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" /></td>
+                    <td align="justify"><span className="display-1">{this.state.Name}</span></td>
                 </tr>
                
                 </tbody>
@@ -50,7 +77,10 @@ class User extends Component {
                 About Me
               </Col>
               <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                <Link to='/Edit'>
+                <Link to={{
+                  pathname:'/Edit',
+                  data:this.state,
+                }}>
                 <Button color="success" className="align-items-center" onClick={this.handleChange}>
                   <i className="fa fa-pencil fa-lg"></i>&nbsp;Edit Profile
                 </Button>
@@ -68,23 +98,23 @@ class User extends Component {
                   
                   <tbody>
                   <tr>
-                    <td>Registration No.</td>
-                    <td>2012/01/01</td>
+                    <td className="h4">Registration No.</td>
+                    <td className="h5">{this.state.Registration_No}</td>
                     
                   </tr>
                   <tr>
-                    <td>Address</td>
-                    <td>2012/02/01</td>
+                    <td className="h4">Address</td>
+                    <td className="h5">{this.state.Address}</td>
                     
                   </tr>
                   <tr>
-                    <td>Email</td>
-                    <td>2012/02/01</td>
+                    <td className="h4">Email</td>
+                    <td className="h5">{this.state.Email}</td>
                     
                   </tr>
                   <tr>
-                    <td>Telephone No.</td>
-                    <td>2012/03/01</td>
+                    <td className="h4">Telephone No.</td>
+                    <td className="h5">{this.state.Telephone}</td>
                     
                   </tr>
                  
