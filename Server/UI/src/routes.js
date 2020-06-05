@@ -38,6 +38,8 @@ const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 const UserProfile =React.lazy(() => import('./views/UserProfile/User'));
 const UserProfileEdit =React.lazy(() => import('./views/UserProfile/UserForm'));
+const CalendarOne = React.lazy(() => import('./views/Calendar/CalendarOne'));
+const CalendarTwo = React.lazy(() => import('./views/Calendar/CalendarTwo'));
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -85,6 +87,10 @@ const routes = [
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/profile', name: 'User Profile', component: UserProfile },
   { path: '/Edit', name: 'User Profile Edit', component: UserProfileEdit },
+  { path: '/CalendarOne', name: 'Calendar One', component: CalendarOne },
+  { path: '/CalendarTwo', name: 'Calendar Two', component: CalendarTwo },
+
+
   
 
 ];

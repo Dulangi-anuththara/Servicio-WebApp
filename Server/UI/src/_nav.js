@@ -60,9 +60,27 @@ export default {
     },
     {
       name: 'Calendar',
-      url: '/calendar',
-      icon: 'icon-calendar',
+      url: '/today',
+      icon: 'icon-notebook',
+      children: [
+        {
+          name: 'Calendar One',
+          url: '/CalendarOne',
+          icon: 'icon-calendar',
+        },
+        {
+          name: 'Calendar Two',
+          url: '/CalendarTwo',
+          icon: 'icon-calendar',
+        },
+        {
+          name: 'Done',
+          url: '/CalendarTwo',
+          icon: 'icon-check',
+        },
+      ]
     },
+    
 
     
     {
