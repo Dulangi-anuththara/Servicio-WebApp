@@ -1,36 +1,69 @@
 import React, { Component } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
-// import { renderRoutes } from 'react-router-config';
-import './App.scss';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+// import UserProvider from "./providers/UserProvider"
 
-const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
-// Containers
-const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import ServiceDash from './pages/service/ServiceDash'
 
-// Pages
-const Login = React.lazy(() => import('./views/Pages/Login'));
-const Register = React.lazy(() => import('./views/Pages/Register'));
-const Page404 = React.lazy(() => import('./views/Pages/Page404'));
-const Page500 = React.lazy(() => import('./views/Pages/Page500'));
+
 
 class App extends Component {
+ 
 
+  componentDidMount(){
+    this.props.checkLocal();
+
+  }
+  
   render() {
+    let routes = <Switch>
+      <Route path="/" exact component={LoginPage}/>
+      <Route path="/register" component={RegisterPage}/>
+      <Route path="/dashboard" render={() => <h1>Not Found</h1>} />
+    </Switch>
+
+    if(this.props.uid && this.props.userType === 'service') {
+      routes = <Switch>
+        <Route path="/" exact component={LoginPage}/>
+        <Route path="/register" component={RegisterPage}/>
+        <Route path="/dashboard" component={ServiceDash}/>
+      </Switch>
+    }
+
+    if(this.props.uid && this.props.userType === 'garage') {
+      routes = <Switch>
+        <Route path="/" exact component={LoginPage}/>
+        <Route path="/register" component={RegisterPage}/>
+        <Route path="/dashboard" render={() => <h1>Garage Dashboard</h1>}/>
+      </Switch>
+    }
+
     return (
+
       <HashRouter>
-          <React.Suspense fallback={loading()}>
-            <Switch>
-              <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
-              <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
-              <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
-              <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
-              <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>} />
-            </Switch>
-          </React.Suspense>
+        {routes}
       </HashRouter>
+     
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+      uid: state.uid,
+      userType: state.userType
+  }
+}
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+      checkLocal: () => dispatch({type: 'CHECKLOCAL'})
+  };
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
