@@ -15,14 +15,10 @@ class User extends Component {
           Address:"",
           Email:"",
           Telephone:"",
-
+          Image:"",        
+        }
         
-      }
-        
-      }
-
-  
-
+      } 
 
     componentDidMount(){
     const url = "http://localhost:5000/user/profile";
@@ -35,7 +31,8 @@ class User extends Component {
                                   Registration_No:response.data.Registration_No,
                                   Address:response.data.Address,
                                   Email:response.data.Email,
-                                  Telephone:response.data.Telephone
+                                  Telephone:response.data.Telephone,
+                                  Image:response.data.Image
 
                                 })                           
                               
@@ -55,7 +52,9 @@ class User extends Component {
             <div className="bd-example bd-example-type">
               <table className="table">
                 <tbody>
-                
+                <tr>
+                    <td align="justify"><span className="display-1">{this.state.Image}</span></td>
+                </tr>
                 <tr>
                     <td align="justify"><span className="display-1">{this.state.Name}</span></td>
                 </tr>
@@ -130,5 +129,7 @@ class User extends Component {
     );
   }
 }
+
+
 
 export default User;

@@ -23,7 +23,8 @@ user.post('/profile/edit',(req,res) => {
             Registration_No:req.body.Registration_No,
             Address:req.body.Address,
             Email:req.body.Email,
-            Telephone:req.body.Telephone
+            Telephone:req.body.Telephone,
+            Image:req.body.Image,
         };
 
         let setDoc = db.collection('Profile').doc('1').set(data);
