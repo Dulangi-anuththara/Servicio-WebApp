@@ -76,6 +76,7 @@ class UserForm extends Component {
     axios.post(path,data)
           .then((response)=>{
               console.log('Good. '+response.data);
+              this.props.history.push('/profile');
           })
           .catch((err)=>{
 

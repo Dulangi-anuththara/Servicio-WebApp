@@ -74,9 +74,14 @@ export default {
           icon: 'icon-calendar',
         },
         {
-          name: 'Done',
-          url: '/CalendarTwo',
-          icon: 'icon-check',
+          name: 'Calendar Three',
+          url: '/CalendarThree',
+          icon: 'icon-calendar',
+        },
+        {
+          name: 'Calendar Four',
+          url: '/CalendarFour',
+          icon: 'icon-calendar',
         },
       ]
     },

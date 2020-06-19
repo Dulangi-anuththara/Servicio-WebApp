@@ -16,7 +16,7 @@ render() {
       title: 'Work',
       foregroundColor: '#ff00ff',
       backgroundColor: '#f0f0f0',
-      selected: true,
+      selected: false,
     },
     {
       id: 'private',
@@ -26,24 +26,28 @@ render() {
     },
   ]}
   onChange={(selections) => {
-    var booking = prompt("Create a new event:", "Event 1");
-    console.log(selections.values(booking));
+    //var booking = prompt("Create a new event:", "Event 1");
+   // console.log(selections.values(booking));
+    //if(booking != null){
     selections.forEach(({ start, end ,values}) => {
       console.log('Start:', start, 'End:', end );
-      console.log(booking);
+      //console.log(booking);
 
-    })
+    }
+    )//}
   }}
   onEventsRequested={({ calendarId, start, end, callback }) => {
     //loadMoreEvents(calendarId, start, end).then(callback);
   }}
+ 
  // initialSelections={[
   //  { start: aDateObject, end: anotherDateObject }
  // ]}
-  height={400}
+ 
+  height={800}
   recurring={false}
   availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday','saturday']}
-  availableHourRange={{ start: 9, end: 19 }}
+  availableHourRange={{ start: 7, end: 19 }}
 />
     )}
 }

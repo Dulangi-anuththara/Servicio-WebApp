@@ -27,8 +27,8 @@ user.post('/profile/edit',(req,res) => {
         };
 
         let setDoc = db.collection('Profile').doc('1').set(data);
-
-        res.send('Details Updated successfully');
+        //res.redirect('http://localhost:3000/#/profile');
+       res.send('Details Updated successfully');
 });
     
 
