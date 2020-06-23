@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
+import Axios from 'axios';
+//import { response } from 'express';
+import socketIOClient from "socket.io-client";
 
 const propTypes = {
   children: PropTypes.node,
@@ -13,12 +16,52 @@ const propTypes = {
 
 const defaultProps = {};
 
+const ENDPOINT = "http://127.0.0.1:5000";
+
 class DefaultHeader extends Component {
+  constructor(){
+    super()
+
+    this.state={
+      data:['dd'],
+      notifications:''
+    }
+    this.handleNotifications = this.handleNotifications.bind(this)
+  }
+
+  componentDidMount(){
+    
+    const socket = socketIOClient(ENDPOINT);
+    socket.on("FromAPI", response => {
+      this.setState(
+        {        
+           notifications:response
+        });
+      
+    });
+
+    /*
+    */
+  }
+
+  handleNotifications(){
+    //console.log("Clicked Notifications");
+    const url= 'http://localhost:5000/bookings';
+    Axios.get(url).then(res => {
+        console.log(res.data);
+        this.setState({
+        data:res.data
+      })
+     
+    })
+    
+  }
   render() {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
-
+    
+  
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -29,6 +72,7 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="d-md-down-none" navbar>
+        
           <NavItem className="px-3">
             <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
           </NavItem>
@@ -40,6 +84,19 @@ class DefaultHeader extends Component {
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
+        <UncontrolledDropdown nav direction="down">
+            <DropdownToggle nav onClick={this.handleNotifications}>
+            <i className="icon-bell"></i><Badge pill color="danger">{this.state.notifications}</Badge>
+            </DropdownToggle>
+            <DropdownMenu right>
+              <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
+              {this.state.data.map( (item,index) =>
+                <DropdownItem key={item.key}><i className="fa fa-tasks"></i><a href="">{item.CustName}</a> request for {item.ServiceType}</DropdownItem>
+              )}
+              <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
+              <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
           <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
           </NavItem>

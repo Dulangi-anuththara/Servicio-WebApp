@@ -25,7 +25,6 @@ class User extends Component {
     axios
                         .get(url)
                         .then( response => {
-                                //console.log(response.data);
                                 this.setState({
                                   Name:response.data.Name,
                                   Registration_No:response.data.Registration_No,
