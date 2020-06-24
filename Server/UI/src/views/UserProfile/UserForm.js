@@ -42,8 +42,7 @@ class UserForm extends Component {
       Registration_No:"",
       Address:"",
       Email:"",
-      Telephone:"",
-      Image:"",      
+      Telephone:"",    
   
     };
   }
@@ -64,6 +63,14 @@ class UserForm extends Component {
     )
   }
 
+  onChangeHandler = (e) =>{
+    
+    this.setState({
+      Image:e.target.files[0],
+      loaded:0,
+    })
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -72,8 +79,9 @@ class UserForm extends Component {
       Address:this.state.Address,
       Email:this.state.Email,
       Telephone:this.state.Telephone,
-      Image:this.state.Image,
     }
+    console.log(data);
+    
     const path = "http://localhost:5000/user/profile/edit";
     axios.post(path,data)
           .then((response)=>{
@@ -97,7 +105,6 @@ class UserForm extends Component {
                                   Address:response.data.Address,
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
-                                  Image:response.data.Image,
 
                                 })                           
                               
@@ -179,14 +186,6 @@ class UserForm extends Component {
                         <option value="3">Option #3</option>
                       </Input>
                 </FormGroup>
-                <FormGroup>
-                    
-                      <Label htmlFor="file-input">Cover Image</Label>
-                  
-                    
-                      <Input type="file" id="Image" name="Image" />
-                    
-                  </FormGroup>
 
                 <Button type="submit" size="sm" color="primary" ><i className="fa fa-dot-circle-o"></i> Submit</Button>
               </CardBody>

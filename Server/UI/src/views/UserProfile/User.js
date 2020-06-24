@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table , Button } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Row, Table , Button, FormGroup, Input, Label } from 'reactstrap';
 import axios from 'axios' ;
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import FittedImage from 'react-fitted-image';
+import { Dialog, DialogActions, DialogContent, DialogContentText,DialogTitle, TextField } from "@material-ui/core";
+import { storage } from "../../storage"
 
 class User extends Component {
 
@@ -10,12 +13,14 @@ class User extends Component {
       super()
 
       this.state = {
+          Test:"",
           Name:"",
           Registration_No:"",
           Address:"",
           Email:"",
           Telephone:"",
-          Image:"",        
+          Image:'',
+          open:false,       
         }
         
       } 
@@ -31,8 +36,7 @@ class User extends Component {
                                   Address:response.data.Address,
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
-                                  Image:response.data.Image
-
+                                  Image:response.data.Image,
                                 })                           
                               
                               }
@@ -40,6 +44,63 @@ class User extends Component {
                         .catch((err) => console.log(err))
   }
 
+  handleClickOpen = () => {
+    this.setState({
+      open:true
+    })
+  };
+
+ handleClose = () => {
+  this.setState({
+    open:false
+  })
+  };
+
+  handleChange = (e) =>{
+      if(e.target.files[0]){
+        this.setState({Test:e.target.files[0]});
+        
+      }
+      ;
+  }
+
+
+  handleUpload = () => {
+    
+    console.log(this.state.Test.name)
+    const uploadTask = storage.ref(`images/${this.state.Test.name}`).put(this.state.Test);
+    uploadTask.on("state_changed", snapshot => {}, error => {
+      console.log(error);
+      
+    },
+    ()=>{
+      storage.ref("images")
+      .child(this.state.Test.name)
+      .getDownloadURL()
+      .then(url =>{
+        console.log(url);
+        const data ={
+          Image:url,
+        }
+        const path= "http://localhost:5000/user/imgUpload";
+        axios.post(path,data)
+              .then((response)=>{
+                console.log('Good. '+response.data);
+                this.props.history.push('/profile');
+            })
+            .catch((err)=>{
+
+              console.log(err);
+            });
+
+       this.setState({
+         Image:url,
+       })
+        
+      })
+    })
+  }
+  
   render() {
     return (
       <div className="animated fadeIn">
@@ -52,10 +113,40 @@ class User extends Component {
               <table className="table">
                 <tbody>
                 <tr>
-                    <td align="justify"><span className="display-1">{this.state.Image}</span></td>
-                </tr>
+                  <div style={{height:300,backgroundImage:`url(${this.state.Image})`,borderRadius:'6px'}}>          
+                          
+                <Button color="light" className="align-items-center" onClick={this.handleClickOpen} size='lg' style={{marginTop:30,marginLeft:980}}>
+                  <i className="fa fa-camera fa-lg"></i>&nbsp;Edit Cover Photo
+                </Button>
+
+                  <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                     <DialogTitle id="form-dialog-title">Upload Your Image</DialogTitle>
+                        <DialogContent>     
+                        
+                      <FormGroup row>
+                          <Col md="3">
+                            <Label htmlFor="file-input">File input</Label>
+                          </Col>
+                          <Col xs="12" md="9">
+                            <Input type="file" id="test" name="test" onChange={this.handleChange} />
+                          </Col>
+                      </FormGroup>
+                      </DialogContent>
+                          <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                              Cancel
+                            </Button>
+                            <Button onClick={this.handleUpload} color="primary">
+                              Upload
+                            </Button>
+                          </DialogActions>
+                  </Dialog>
+                
+                
+                
+                </div></tr>
                 <tr>
-                    <td align="justify"><span className="display-1">{this.state.Name}</span></td>
+                    <td align="center"><span className="h1">{this.state.Name}</span></td>
                 </tr>
                
                 </tbody>
@@ -66,7 +157,7 @@ class User extends Component {
 
 
         <Row>
-          <Col xs="0" lg="9">
+          <Col xs="0" lg="12">
             <Card>
               <CardHeader>
 
@@ -74,12 +165,12 @@ class User extends Component {
                 <Col col="12" xl className="mb-3 mb-xl-0">
                 About Me
               </Col>
-              <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+              <Col xs lg="2">
                 <Link to={{
                   pathname:'/Edit',
                   data:this.state,
                 }}>
-                <Button color="success" className="align-items-center" onClick={this.handleChange}>
+                <Button color="success" className="align-items-center">
                   <i className="fa fa-pencil fa-lg"></i>&nbsp;Edit Profile
                 </Button>
                 
