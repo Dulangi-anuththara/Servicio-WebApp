@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {DayPilot, DayPilotCalendar} from "daypilot-pro-react";
+import {DayPilot, DayPilotCalendar, DayPilotScheduler} from "daypilot-pro-react";
 
 class CalendarTwo extends Component {
 
@@ -7,7 +7,7 @@ class CalendarTwo extends Component {
     super(props);
     this.state = {
       startDate: "2020-02-02",
-      viewType: "Week",
+      viewType: "Day",
       cellHeight: 30,
       timeRangeSelectedHandling: "Enabled",
       onTimeRangeSelected: function (args) {
@@ -26,17 +26,17 @@ class CalendarTwo extends Component {
       onBeforeEventRender: args => {
         args.data.backColor = "#93c47d";
         args.data.barHidden = true;
-        args.data.fontColor = "white";
+        args.data.fontColor = "black";
         args.data.borderColor = "darker";
 
         args.data.areas = [
-          {right: 6, top: 6, width: 17, height: 17, image: "info-17-inverted-rounded-semi.svg", onClick: args=> this.showDetails(args.source)},
+          {right: 6, top: 6, width: 17, height: 10, image: "info-17-inverted-rounded-semi.svg", onClick: args=> this.showDetails(args.source)},
           ];
       },
       onBeforeEventDomAdd: args => {
         args.element = <div>
           {args.e.data.text}
-          <div style={{position: "absolute", right: "25px", top: "5px", height: "17px", width: "17px"}}
+          <div style={{position: "absolute", right: "25px", top: "5px", height: "10px", width: "17px"}}
                onClick={()=>this.showDetails(args.e)}>
             <img src={"info-17-semi.svg"} alt={"Info icon"}/>
           </div>
@@ -83,6 +83,7 @@ class CalendarTwo extends Component {
           ref={component => {
             this.calendar = component && component.control;
           }}
+          cellHeight={20}
         />
       </div>
     );

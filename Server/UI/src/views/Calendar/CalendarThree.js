@@ -1,90 +1,102 @@
-import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
+import React, {Component} from 'react';
+import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
+import "./CalendarStyles.css";
 
-class Tables extends Component {
+const styles = {
+  left: {
+    float: "left",
+    width: "220px"
+  },
+  main: {
+    marginLeft: "220px"
+  }
+};
+
+class Calendar extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      viewType: "Week",
+      durationBarVisible: false,
+      cellWidth:80,
+      timeRangeSelectedHandling: "Enabled",
+      onTimeRangeSelected: args => {
+        let dp = this.calendar;
+        DayPilot.Modal.prompt("Create a new event:", "Event 1").then(function(modal) {
+          dp.clearSelection();
+          if (!modal.result) { return; }
+          dp.events.add(new DayPilot.Event({
+            start: args.start,
+            end: args.end,
+            id: DayPilot.guid(),
+            text: modal.result
+          }));
+        });
+      },
+      eventDeleteHandling: "Update",
+      onEventClick: args => {
+        let dp = this.calendar;
+        DayPilot.Modal.prompt("Update event text:", args.e.text()).then(function(modal) {
+          if (!modal.result) { return; }
+          args.e.data.text = modal.result;
+          dp.events.update(args.e);
+        });
+      },
+    };
+  }
+
+  componentDidMount() {
+
+    // load event data
+    this.setState({
+      startDate: "2019-09-15",
+      events: [
+        {
+          id: 1,
+          text: "Event 1",
+          start: "2019-09-16T10:30:00",
+          end: "2019-09-16T13:00:00"
+        },
+        {
+          id: 2,
+          text: "Event 2",
+          start: "2019-09-17T12:00:00",
+          end: "2019-09-17T14:00:00",
+          backColor: "#38761d"
+        }
+      ]
+    });
+  }
+
   render() {
+    
+    var {...config} = this.state;
     return (
-      <div className="animated fadeIn">
-     <Row>
-
-        <Col>
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i> Bordered Table
-              </CardHeader>
-              <CardBody>
-                <Table responsive bordered>
-                  <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Date registered</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>Pompeius René</td>
-                    <td>2012/01/01</td>
-                    <td>Member</td>
-                    <td>
-                      <Badge color="success">Active</Badge>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Paĉjo Jadon</td>
-                    <td>2012/02/01</td>
-                    <td>Staff</td>
-                    <td>
-                      <Badge color="danger">Banned</Badge>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Micheal Mercurius</td>
-                    <td>2012/02/01</td>
-                    <td>Admin</td>
-                    <td>
-                      <Badge color="secondary">Inactive</Badge>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Ganesha Dubhghall</td>
-                    <td>2012/03/01</td>
-                    <td>Member</td>
-                    <td>
-                      <Badge color="warning">Pending</Badge>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Hiroto Šimun</td>
-                    <td>2012/01/21</td>
-                    <td>Staff</td>
-                    <td>
-                      <Badge color="success">Active</Badge>
-                    </td>
-                  </tr>
-                  </tbody>
-                </Table>
-                <Pagination>
-                  <PaginationItem><PaginationLink previous tag="button">Prev</PaginationLink></PaginationItem>
-                  <PaginationItem active>
-                    <PaginationLink tag="button">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem className="page-item"><PaginationLink tag="button">2</PaginationLink></PaginationItem>
-                  <PaginationItem><PaginationLink tag="button">3</PaginationLink></PaginationItem>
-                  <PaginationItem><PaginationLink tag="button">4</PaginationLink></PaginationItem>
-                  <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
-                </Pagination>
-              </CardBody>
-            </Card>
-            </Col>
-
-        </Row>
-
+      <div>
+        <div style={styles.left}>
+          <DayPilotNavigator
+            selectMode={"week"}
+            showMonths={3}
+            skipMonths={3}
+            onTimeRangeSelected={ args => {
+              this.setState({
+                startDate: args.day
+              });
+            }}
+          />
+        </div>
+        <div style={styles.main}>
+        <DayPilotCalendar
+          {...config}
+          ref={component => {
+            this.calendar = component && component.control;
+          }}
+        />
+        </div>
       </div>
-
     );
   }
 }
 
-export default Tables;
+export default Calendar;

@@ -16,6 +16,10 @@ class CalendarFour extends Component {
         <Calendar
           onChange={this.onChange}
           value={this.state.date}
+          height={500}
+          ref={component => {
+            this.calendar = component && component.control;
+          }}
         />
       </div>
     );

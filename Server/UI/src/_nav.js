@@ -83,6 +83,16 @@ export default {
           url: '/CalendarFour',
           icon: 'icon-calendar',
         },
+        {
+          name: 'Calendar Five',
+          url: '/CalendarFive',
+          icon: 'icon-calendar',
+        },
+        {
+          name: 'Calendar Six',
+          url: '/CalendarSix',
+          icon: 'icon-calendar',
+        },
       ]
     },
     
