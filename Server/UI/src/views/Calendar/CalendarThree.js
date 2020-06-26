@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
+import { Modal } from '@daypilot/modal';
 import "./CalendarStyles.css";
 
 const styles = {
@@ -22,15 +23,19 @@ class Calendar extends Component {
       cellWidth:80,
       timeRangeSelectedHandling: "Enabled",
       onTimeRangeSelected: args => {
+        var form = [
+          {name: "Name", id: "name"}
+        ];
         let dp = this.calendar;
-        DayPilot.Modal.prompt("Create a new event:", "Event 1").then(function(modal) {
+       Modal.form(form).then(function(modal) {
+          console.log(modal);
           dp.clearSelection();
-          if (!modal.result) { return; }
+          if (!modal.result.name) { return; }
           dp.events.add(new DayPilot.Event({
             start: args.start,
             end: args.end,
             id: DayPilot.guid(),
-            text: modal.result
+            text: modal.result.name
           }));
         });
       },
