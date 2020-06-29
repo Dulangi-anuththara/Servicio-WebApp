@@ -41,10 +41,12 @@
     "react-dom": "^16.8.6",
     "react-fitted-image": "^1.0.1",
     "react-google-calendar-api": "^1.0.11",
+    "react-redux": "^7.2.0",
     "react-router-config": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-test-renderer": "^16.8.6",
     "reactstrap": "^8.0.0",
+    "redux": "^4.0.5",
     "simple-line-icons": "^2.4.1",
     "socket.io-client": "^2.3.0"
   },

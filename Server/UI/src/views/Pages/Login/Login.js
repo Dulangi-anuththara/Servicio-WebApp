@@ -1,66 +1,157 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import React , { Component } from 'react';
+//import background from '../../../assets/images/';
+import fire from '../../../storage/index';
+import { connect } from 'react-redux';
+import { Redirect, Link } from 'react-router-dom';
+import "./LoginPage.css";
+import lgo from '../../../assets/images/lgo.jpg'
+import routes from '../../../routes';
+
+
+
+
 
 class Login extends Component {
-  render() {
-    return (
-      <div className="app flex-row align-items-center">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="8">
-              <CardGroup>
-                <Card className="p-4">
-                  <CardBody>
-                    <Form>
-                      <h1>Login</h1>
-                      <p className="text-muted">Sign In to your account</p>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-user"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
-                      </InputGroup>
-                      <InputGroup className="mb-4">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-lock"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" />
-                      </InputGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Button color="primary" className="px-4">Login</Button>
-                        </Col>
-                        <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
-                        </Col>
-                      </Row>
-                    </Form>
-                  </CardBody>
-                </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
-                  <CardBody className="text-center">
-                    <div>
-                      <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                      <Link to="/register">
-                        <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>
-                      </Link>
+    state = {
+        email: '',
+        password: '',
+        userType: '',
+        redirect: null
+
+    }
+
+    componentDidMount(){
+      console.log(this.props);
+        this.props.checkLocal();
+        if(this.props.uid != null) {
+          console.log("HEREEEEEE")
+          this.setState({
+            redirect : <Redirect to="/"/>
+          })
+        }
+      }
+
+    setEmail = (event) => {
+        this.setState({email: event.target.value});
+    }
+
+    setPassword = (event) => {
+        this.setState({password: event.target.value});
+    }
+
+    //loginHandler = () => {}
+
+   loginHandler = () => {
+        fire.auth().signInWithEmailAndPassword(this.state.email,this.state.password)
+        .then(res => {
+            console.log(res);
+            var user = fire.auth().currentUser;
+            var id = user.uid
+
+            fire.firestore().doc(`users/${id}`).get().then( res =>{
+              this.setState({
+                userType: res.data().user_type
+              });
+              this.props.onAuth(id, this.state.userType);
+              this.setState({redirect: <Redirect to="/dashboard"/>})
+            })
+
+            // const userRef = fire.database().ref('/users/' + id).once('value').then((snapshot) => {
+            //     this.setState({
+            //         userType: snapshot.val().user_type
+            //     });
+            //     this.props.onAuth(id, this.state.userType);
+            //     this.setState({redirect: <Redirect to="/dashboard"/>})
+            // })
+        })
+        .catch(err => {
+            console.log(err);
+            alert(err.message);
+        })
+    }
+
+    render() {
+        let redirect = null;
+        if(this.props.isLoggedin) {
+            redirect = <Redirect to="/"/>
+        }
+
+        return(
+            <div  style={{
+                width: '100%',
+                height: '100vh',
+                textAlign: 'center', }}
+            >          
+                {this.state.redirect}
+                {redirect}
+
+            <div id="login" className="banner h-100 ">
+              <div className="d-flex justify-content-center h-100">
+                <div className="user_card">
+                  <div className="d-flex justify-content-center">
+                    <div className="brand_logo_container">
+                      <img src={lgo} className="brand_logo" alt="Logo" />
                     </div>
-                  </CardBody>
-                </Card>
-              </CardGroup>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    );
-  }
+                  </div>
+                  <div className="d-flex justify-content-center form_container">
+                    <form>
+                      <div className="input-group mb-3">
+                        <div className="input-group-append">
+                          <span className="input-group-text"><i className="fas fa-at" /></span>
+                        </div>
+                        <input type="email"
+                                id="email"
+                                label="Email"
+                                onChange={this.setEmail} className="form-control input_user" placeholder="center@gmail.com" />
+                      </div>
+                      <div className="input-group mb-2">
+                        <div className="input-group-append">
+                          <span className="input-group-text"><i className="fas fa-key" /></span>
+                        </div>
+                        <input type="password" id="password"
+                                label="Password"
+                                type="password"
+                                onChange={this.setPassword} className="form-control input_pass" placeholder="password" />
+                      </div>
+                      <div className="form-group">
+                        <div className="custom-control custom-checkbox">
+                          <input type="checkbox" className="custom-control-input" id="customControlInline" />
+                          <label className="custom-control-label text-white" htmlFor="customControlInline">Remember me</label>
+                        </div>
+                      </div>
+                      <div className="d-flex justify-content-center mt-3 login_container">
+                        <button type="button" onClick={this.loginHandler} className="btn login_btn">Login</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="mt-4">
+                    <div className="d-flex justify-content-center links text-white">
+                      Don't have an account? <Link to="/register">Create an account</Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>                
+            </div>
+        );
+    }
 }
 
-export default Login;
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (token, userType) => dispatch({type: 'LOGIN', value: {token: token, userType: userType}}),
+        checkLocal: () => dispatch({type: 'CHECKLOCAL'})
+    };
+}
+
+const mapStateToProps = state => {
+    return {
+        isLoggedin: state.uid != null,
+    }
+  }
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login);
+
+
+

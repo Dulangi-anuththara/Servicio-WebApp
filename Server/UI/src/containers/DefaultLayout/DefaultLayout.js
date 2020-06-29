@@ -2,6 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
+import CalendarThree from '../../views/Calendar/CalendarThree';
 
 import {
   AppAside,
@@ -25,6 +26,10 @@ const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
+
+  componentDidMount(){
+    console.log("In the dashboard");
+  }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -56,19 +61,18 @@ class DefaultLayout extends Component {
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
-                  {routes.map((route, idx) => {
+                 {routes.map((route, idx) => {
+                    console.log(route.path);
                     return route.component ? (
                       <Route
                         key={idx}
                         path={route.path}
                         exact={route.exact}
                         name={route.name}
-                        render={props => (
-                          <route.component {...props} />
-                        )} />
+                        component={route.component}/>
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/dashboard" />
+                <Redirect from="/" to="/dashboard" /> 
                 </Switch>
               </Suspense>
             </Container>

@@ -1,5 +1,4 @@
 import React from 'react';
-import UserForm from './views/UserProfile/UserForm';
 
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
