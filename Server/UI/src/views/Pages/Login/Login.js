@@ -11,6 +11,7 @@ import routes from '../../../routes';
 
 
 
+
 class Login extends Component {
     state = {
         email: '',
@@ -50,6 +51,8 @@ class Login extends Component {
 
             if(!res.user.emailVerified){
               console.log(`not verified`)
+              alert("Please verify your email before login");
+              
             }else{
               fire.firestore().doc(`users/${id}`).get().then( res =>{
                 this.setState({

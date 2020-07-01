@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import '../Login/LoginPage.css';
 import lgo from "../../../assets/images/lgo.jpg"
+import Popup from 'react-popup';
 
 
 
@@ -45,7 +46,8 @@ class Register extends Component {
             var user = fire.auth().currentUser;
             user.sendEmailVerification().then(function() {
                 // Email sent.
-                console.log(`email send`)
+                console.log(`email sendt`)
+                alert("Verification Link sent to your email");
               }).catch(function(error) {
                 // An error happened.
               });
