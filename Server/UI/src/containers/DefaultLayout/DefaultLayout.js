@@ -28,7 +28,6 @@ const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 class DefaultLayout extends Component {
 
   componentDidMount(){
-    console.log("In the dashboard");
   }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>

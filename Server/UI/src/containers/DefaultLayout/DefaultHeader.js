@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
+import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, form, Form } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
@@ -52,12 +52,17 @@ class DefaultHeader extends Component {
   }
 
   handleAppointment(e){
-     console.log(this.state.data[e]);
+     //console.log(this.state.data[e]);
      this.setState({
        open:true,
        booking:this.state.data[e]
      },() => console.log(this.state.booking));
      
+  }
+
+  handleAvailability(e){
+      console.log(e.target.name);
+      console.log("Checking availabilty");
   }
 
   handleNotifications(){
@@ -103,10 +108,12 @@ class DefaultHeader extends Component {
 
                                     <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                                     <DialogTitle id="form-dialog-title">New Reservation</DialogTitle>
+                                    <Form onSubmit={this.handleAvailability}>
                                     <DialogContent>
-                                      <Grid  spacing={3}>
-                                      <TextField  style={{marginRight:30}} id="outlined-basic" label="Outlined" variant="outlined" label="Customer" value={this.state.booking.CustName} />
+                                      <Grid  spacing={3}>                                      
+                                      <TextField  style={{marginRight:30}} id="outlined-basic" label="Outlined" variant="outlined" label="Customer" value={this.state.booking.CustName} name="cust" />
                                       <TextField
+                                          name="date"
                                           id="date"
                                           label="Date and Time"
                                           variant="outlined"
@@ -117,7 +124,8 @@ class DefaultHeader extends Component {
                                         />
                                         <TextField
                                           style={{marginTop:30, marginRight:30}}
-                                          id="time"
+                                          id="Stime"
+                                          name="Stime"
                                           label="Start Time"
                                           type="time"
                                           defaultValue="07:30"
@@ -128,7 +136,8 @@ class DefaultHeader extends Component {
                                         />
                                         <TextField
                                           style={{marginTop:30, marginRight:30}}
-                                          id="time"
+                                          id="Etime"
+                                          name="Etime"
                                           label="End Time"
                                           type="time"
                                           defaultValue="07:30"
@@ -142,22 +151,25 @@ class DefaultHeader extends Component {
                                         style={{marginTop:30}}
                                         margin="dense"
                                         variant="outlined"
-                                        id="name"
+                                        id="service"
+                                        name="service"
                                         label="Email Address"
                                         type="text"
                                         value={this.state.booking.ServiceType}
                                         fullWidth
                                       />
+                                      
                                       </Grid>
                                     </DialogContent>
                                     <DialogActions>
                                     <Button variant="contained" color="secondary" onClick={this.handleClose}>
                                         Decline
                                       </Button> 
-                                      <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.handleClose}>
+                                      <Button type="submit" variant="contained" color="primary">
                                           Check Availability
                                        </Button>
                                     </DialogActions>
+                                    </Form>
                                   </Dialog>
         <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav onClick={this.handleNotifications}>
