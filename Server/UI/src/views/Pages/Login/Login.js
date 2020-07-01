@@ -48,13 +48,19 @@ class Login extends Component {
             var user = fire.auth().currentUser;
             var id = user.uid
 
-            fire.firestore().doc(`users/${id}`).get().then( res =>{
-              this.setState({
-                userType: res.data().user_type
-              });
-              this.props.onAuth(id, this.state.userType);
-              this.setState({redirect: <Redirect to="/dashboard"/>})
-            })
+            if(!res.user.emailVerified){
+              console.log(`not verified`)
+            }else{
+              fire.firestore().doc(`users/${id}`).get().then( res =>{
+                this.setState({
+                  userType: res.data().user_type
+                });
+                this.props.onAuth(id, this.state.userType);
+                this.setState({redirect: <Redirect to="/dashboard"/>})
+              })
+            }
+
+           
 
             // const userRef = fire.database().ref('/users/' + id).once('value').then((snapshot) => {
             //     this.setState({

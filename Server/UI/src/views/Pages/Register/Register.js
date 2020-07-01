@@ -45,6 +45,7 @@ class Register extends Component {
             var user = fire.auth().currentUser;
             user.sendEmailVerification().then(function() {
                 // Email sent.
+                console.log(`email send`)
               }).catch(function(error) {
                 // An error happened.
               });
@@ -66,7 +67,7 @@ class Register extends Component {
                 // grade: this.state.grade
             }).then(res => {
                 console.log(res);
-                this.setState({redirect: <Redirect to="/dashboard"/>})
+                // this.setState({redirect: <Redirect to="/dashboard"/>})
             })
         })
         .catch((err) => {
