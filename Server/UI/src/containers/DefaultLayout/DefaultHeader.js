@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
 import PropTypes from 'prop-types';
-
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
 import Axios from 'axios';
 //import { response } from 'express';
 import socketIOClient from "socket.io-client";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid} from '@material-ui/core'
 
 const propTypes = {
   children: PropTypes.node,
@@ -24,9 +24,13 @@ class DefaultHeader extends Component {
 
     this.state={
       data:['dd'],
-      notifications:''
+      notifications:'',
+      open : false,
+      booking :{} 
     }
-    this.handleNotifications = this.handleNotifications.bind(this)
+    this.handleNotifications = this.handleNotifications.bind(this);
+    this.handleAppointment = this.handleAppointment.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount(){
@@ -39,16 +43,28 @@ class DefaultHeader extends Component {
         });
       
     });
+  }
 
-    /*
-    */
+  handleClose(){
+    this.setState({
+      open:false
+    })
+  }
+
+  handleAppointment(e){
+     console.log(this.state.data[e]);
+     this.setState({
+       open:true,
+       booking:this.state.data[e]
+     },() => console.log(this.state.booking));
+     
   }
 
   handleNotifications(){
     //console.log("Clicked Notifications");
     const url= 'http://localhost:5000/bookings';
     Axios.get(url).then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         this.setState({
         data:res.data
       })
@@ -84,17 +100,75 @@ class DefaultHeader extends Component {
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
+
+                                    <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                                    <DialogTitle id="form-dialog-title">New Reservation</DialogTitle>
+                                    <DialogContent>
+                                      <Grid  spacing={3}>
+                                      <TextField  style={{marginRight:30}} id="outlined-basic" label="Outlined" variant="outlined" label="Customer" value={this.state.booking.CustName} />
+                                      <TextField
+                                          id="date"
+                                          label="Date and Time"
+                                          variant="outlined"
+                                          type="date"                                        
+                                          InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                        />
+                                        <TextField
+                                          style={{marginTop:30, marginRight:30}}
+                                          id="time"
+                                          label="Start Time"
+                                          type="time"
+                                          defaultValue="07:30"
+                                          variant="outlined"
+                                          InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                        />
+                                        <TextField
+                                          style={{marginTop:30, marginRight:30}}
+                                          id="time"
+                                          label="End Time"
+                                          type="time"
+                                          defaultValue="07:30"
+                                          variant="outlined"
+                                          InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                        />
+                                  
+                                      <TextField
+                                        style={{marginTop:30}}
+                                        margin="dense"
+                                        variant="outlined"
+                                        id="name"
+                                        label="Email Address"
+                                        type="text"
+                                        value={this.state.booking.ServiceType}
+                                        fullWidth
+                                      />
+                                      </Grid>
+                                    </DialogContent>
+                                    <DialogActions>
+                                    <Button variant="contained" color="secondary" onClick={this.handleClose}>
+                                        Decline
+                                      </Button> 
+                                      <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.handleClose}>
+                                          Check Availability
+                                       </Button>
+                                    </DialogActions>
+                                  </Dialog>
         <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav onClick={this.handleNotifications}>
             <i className="icon-bell"></i><Badge pill color="danger">{this.state.notifications}</Badge>
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
+              <DropdownItem header tag="div" className="text-center"><strong>Appointments</strong></DropdownItem>
               {this.state.data.map( (item,index) =>
-                <DropdownItem key={item.key}><i className="fa fa-tasks"></i><a href="">{item.CustName}</a> request for {item.ServiceType}</DropdownItem>
+                <DropdownItem key={item.key} onClick={() =>this.handleAppointment(index)}><i className="fa fa-tasks"></i><a href="">{item.CustName}</a> request for {item.ServiceType}</DropdownItem>
               )}
-              <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
-              <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
+              
             </DropdownMenu>
           </UncontrolledDropdown>
           <NavItem className="d-md-down-none">
