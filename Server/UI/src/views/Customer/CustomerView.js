@@ -5,6 +5,10 @@ export default class CustomerView extends Component {
         return (
             <div>
                 Hello Customer
+
+
+                jhk
+
             </div>
         )
     }
