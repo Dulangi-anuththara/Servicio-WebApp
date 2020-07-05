@@ -41,7 +41,23 @@ class Register extends Component {
     }
 
     registrationHandler = () => {
-        fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      if(this.state.full_name.length === 0){
+        alert("Please Enter your business name")
+      }
+      else if(this.state.email.length=== 0){
+        alert("Please Enter an valid Email")
+      }
+      else if(this.state.password.length === 0 )
+      {
+        alert("Please Enter a password")
+      }
+      else if(this.state.user_type.length === 0)
+      {
+      alert("Enter your User Type")
+      } 
+else {
+
+  fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(async (res) => {
             var user = fire.auth().currentUser;
             user.sendEmailVerification().then(function() {
@@ -76,6 +92,8 @@ class Register extends Component {
             console.log(err.message);
             alert(err.message);
         })
+}
+   
         
     }
 
@@ -118,7 +136,7 @@ class Register extends Component {
             <input type="text"
                      id="full_name"
                      label="Full Name"
-                     onChange={this.setName} className="form-control input_user" placeholder="Full Name" />
+                     onChange={this.setName} className="form-control input_user" placeholder="Full Name" required />
           </div>
 
           <div className="input-group mb-3">

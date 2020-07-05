@@ -6,9 +6,12 @@ export default class CustomerView extends Component {
         return (
             <div>
 
+<div className="container-fluid" style={{ height: '15rem' }}>
+                        <div className="row">
+
 
                   {/* client profile picture container */}
-                  <div className="col-lg-3">                                
+                  <div className="col-lg-3" >                                
                                 <div className="card card-primary card-outline">
                                     <div className="card-body box-profile">
                                         <div className="text-center">
@@ -30,6 +33,21 @@ export default class CustomerView extends Component {
                                 </div>
 
                             </div>
+
+
+
+                            {/* client user information container */}
+                            <div className="col-lg-6">
+                                {/*Proffile Info */}
+                                <div className="card">
+                                    <div className="card-header p-2">
+                                        <ul className="nav nav-pills">
+                                            <li className="nav-item"><a className="nav-link active" href="#profile" data-toggle="tab">Profile Details</a></li>
+                                            {/* <li className="nav-item"><a className="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li> */}
+                                            {/* <li className="nav-item"><a className="nav-link" href="#settings" data-toggle="tab">Update Profile</a></li> */}
+                                        </ul>
+                                    </div>{/* /.card-header */}
+
 
                                    {/* Profile Details Container */}
                                    <div className="card-body">
@@ -59,7 +77,7 @@ export default class CustomerView extends Component {
                                                     </div>
                                                     <div>
                                                         <div className="timeline-item">
-                                                            <h3 className="timeline-header border-0"> <strong>Telephone:  </strong>0777234567</h3>
+                                                            <h3 className="timeline-header border-0"> <strong>Telephone:  </strong>  0777234567</h3>
                                                         </div>
                                                     </div>
                                                     {/* END timeline item */}
@@ -69,9 +87,11 @@ export default class CustomerView extends Component {
                                         </div>
                                         {/* /.tab-content */}
                                     </div>{/* /.card-body */}
+                                    </div></div>
 
 
-                                    <div className="col-lg-3">
+
+                            <div className="col-lg-3">
 
                                 {/*First Card in Right Side*/}
                                 <div className="card card-primary">
@@ -119,6 +139,17 @@ export default class CustomerView extends Component {
 
                                 {/* /.card */}
                             </div>
+
+                            </div>
+
+
+
+
+
+                             </div>
+
+
+                            
                         </div>
                      
             
