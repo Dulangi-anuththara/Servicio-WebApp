@@ -34,7 +34,12 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault()
-    this.props.history.push('/login')
+    this.props.history.push('/profile')
+  }
+  checkRequest(e){
+    //e.preventDefault()
+    //console.log(e.target.value);
+    this.props.history.push('/Requests')
   }
 
   render() {
@@ -42,7 +47,7 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)}/>
+            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} />
           </Suspense>
         </AppHeader>
         <div className="app-body">

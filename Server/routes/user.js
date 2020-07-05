@@ -37,9 +37,11 @@ user.post('/profile/edit',(req,res) => {
             Name:req.body.Name,
             Registration_No:req.body.Registration_No,
             Address:req.body.Address,
+            AddressTwo:req.body.AddressTwo,
+            City:req.body.City,
             Email:req.body.Email,
             Telephone:req.body.Telephone,
-            //Image:req.body.Image,
+            Image:req.body.Image,
         };
 
         //let Image = req.body.Image;

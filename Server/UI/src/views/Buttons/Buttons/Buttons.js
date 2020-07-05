@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import { BrowswerRouter as Router,Route,Link } from 'react-router-dom'
+//import { browserHistory } from 'react-router';
 import { Button, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
 class Buttons extends Component {
+
+  handleButton(){
+    this.props.history.push('/profile');
+  }
   render() {
     return (
       <div className="animated fadeIn">
@@ -15,10 +21,11 @@ class Buttons extends Component {
                 Normal
               </Col>
               <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                <Button block color="primary">Primary</Button>
+                <Link to="/profile">
+                <Button block color="primary">Primary</Button></Link>
               </Col>
               <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                <Button block color="secondary">Secondary</Button>
+                <Button block color="secondary" onClick={this.handleButton.bind(this)}>Secondary</Button>
               </Col>
               <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
                 <Button block color="success">Success</Button>

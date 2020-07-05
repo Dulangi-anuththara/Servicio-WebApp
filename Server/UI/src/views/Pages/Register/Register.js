@@ -43,6 +43,14 @@ class Register extends Component {
         fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(async (res) => {
             var user = fire.auth().currentUser;
+            user.sendEmailVerification().then(function() {
+                // Email sent.
+                console.log(`email sendt`)
+                alert("Verification Link sent to your email");
+              }).catch(function(error) {
+                // An error happened.
+              });
+              
             var id = user.uid
             this.props.onAuth(id, this.state.user_type);
 

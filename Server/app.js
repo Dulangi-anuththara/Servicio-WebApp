@@ -16,6 +16,7 @@ const io = socketIO(server);
 
 const user = require('./routes/user');
 const booking = require('./routes/bookings');
+const event = require('./routes/calendar');
 
 
 app.use(cors());
@@ -30,6 +31,7 @@ app.set('view engine', 'ejs');
 
 app.use('/user',user);
 app.use('/bookings',booking);
+app.use('/event',event);
 
 
 app.get('/',(req,res) =>{
