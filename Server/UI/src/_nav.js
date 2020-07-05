@@ -36,6 +36,14 @@ export default {
         
       ]
     },
+
+    {
+      name: 'Customer View',
+      url: '/CustomerView',
+      icon: 'icon-user',
+      
+    },
+
     {
       name: 'Today',
       url: '/today',
@@ -96,7 +104,7 @@ export default {
       ]
     },
     
-
+    
     
     {
       title: true,
