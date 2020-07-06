@@ -14,7 +14,7 @@ Events.get('/',(req,res) =>{
         //events.end = doc.data().end.toDate();
         //events.id = 1;
         data.push(events);
-        console.log(doc.id, '=>', doc.data());
+        //console.log(doc.id, '=>', doc.data());
     });
     
     res.send(data);

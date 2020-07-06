@@ -31,7 +31,7 @@ class Requests extends Component {
       test:'',
       open:false,
       collapse: false,
-      accordion: [true, false, false],
+      accordion: [true, false, false,false,false,false,false],
       custom: [true, false],
       status: 'Closed',
       fadeIn: true,
@@ -161,6 +161,10 @@ class Requests extends Component {
     //console.log("going to check the availability");
   }
 
+  componentWillUnmount(){
+    
+  }
+
   addEvent(){
     this.setState({
       show:false
@@ -170,12 +174,17 @@ class Requests extends Component {
       id:DayPilot.guid(),
       start:this.state.bookings.Date,
       end:this.state.bookings.EndDate+":00",
-      text:this.state.bookings.ServiceType
+      text:this.state.bookings.ServiceType + ' - ' + this.state.bookings.CustName
     }
 
     const url ="http://localhost:5000/event/add"
           Axios.post(url,data).then((response)=>{
-            console.log(response.data);
+            
+            const path = "http://localhost:5000/bookings/delete"
+            Axios.post(path,this.state.bookings).then((response) =>{
+              console.log(response.data);
+              this.props.history.push('CalendarThree');
+            })
 
           })
 
@@ -205,7 +214,7 @@ class Requests extends Component {
       content=<div> <DialogTitle id="form-dialog-title">Availability !</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Please note that requested time is already reserved. Would you like to suggest new time?
+          Sorry! requested time is already reserved. Would you like to suggest new time?
         </DialogContentText>
       </DialogContent>
       <DialogActions>

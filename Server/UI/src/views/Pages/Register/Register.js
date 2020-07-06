@@ -69,7 +69,7 @@ class Register extends Component {
                 // grade: this.state.grade
             }).then(res => {
                 console.log(res);
-                this.setState({redirect: <Redirect to="/dashboard"/>})
+                //this.setState({redirect: <Redirect to="/dashboard"/>})
             })
         })
         .catch((err) => {

@@ -100,8 +100,13 @@ export default {
       url: '/Requests',
       icon: 'icon-plus',
     },
-    
     {
+      name: 'Pay Subscription',
+      url: '/Payment',
+      icon: 'icon-handbag',
+    },
+    
+ /*   {
       title: true,
       name: 'Components',
       wrapper: {
@@ -358,6 +363,6 @@ export default {
       icon: 'icon-layers',
       variant: 'danger',
       attributes: { target: '_blank', rel: "noopener" },
-    },
+    },*/
   ],
 };

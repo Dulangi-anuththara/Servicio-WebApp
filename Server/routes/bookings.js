@@ -46,5 +46,18 @@ booking.post('/checkAvailability',(req,res) =>{
     })
 })
 
+booking.post('/delete',(req,res) =>{
+
+    var id = req.body.id;
+    console.log(id);
+    res.send("Received Id")
+
+  db.collection("Bookings").doc(id).delete().then(function() {
+    console.log("Document successfully deleted!");
+}).catch(function(error) {
+    console.error("Error removing document: ", error);
+});
+})
+
 
 module.exports = booking;

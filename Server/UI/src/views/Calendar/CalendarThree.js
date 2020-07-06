@@ -18,6 +18,8 @@ class Calendar extends Component {
 
   constructor(props) {
     super(props);
+    //let dp = this.calendar;
+    //dp.dayBeginsHour = 9,
     this.state = {
       data:[],
       checking: false,

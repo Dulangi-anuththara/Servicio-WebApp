@@ -13,7 +13,7 @@ user.get('/profile',(req,res) =>{
                     if(!doc.exists){
                         console.log('No such Document');
                     } else {
-                        //console.log('Document Data :',doc.data());
+                        console.log('Document Data :',doc.data());
                         res.send(doc.data());
                     }
                 })

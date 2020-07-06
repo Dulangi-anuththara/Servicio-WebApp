@@ -42,6 +42,9 @@ class UserForm extends Component {
       fadeIn: true,
       timeout: 300,
       isValidated:true,
+      isCorrect:true,
+      lock:false,
+      lock_R:false,
 
       Name:"",
       Registration_No:"",
@@ -64,7 +67,6 @@ class UserForm extends Component {
   }
 
   onChange = (e) => {
-    console.log(e.target.value);
     this.setState(
       {
         [e.target.name]:e.target.value
@@ -88,39 +90,74 @@ class UserForm extends Component {
       return false;
     }
   }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    var lock =this.validatePhone();
-    if(lock){
-    const data = {
-      Name:this.state.Name,
-      Registration_No:this.state.Registration_No,
-      Address:this.state.Address,
-      AddressTwo:this.state.AddressTwo,
-      City:this.state.City,
-      Email:this.state.Email,
-      Telephone:this.state.Telephone,
-      Image:this.state.Image,
+
+  validateRegister(e){
+
+    var Regex =/^[0-9]{4}[-]{1}[A-Z]{2}[-]{1}[0-9]{2}$/;
+    var result = Regex.test(this.state.Registration_No);
+    if(result){
+      return true
     }
-    console.log(data);
     
-    const path = "http://localhost:5000/user/profile/edit";
-    axios.post(path,data)
-          .then((response)=>{
-              console.log('Good. '+response.data);
-              this.props.history.push('/profile');
-          })
-          .catch((err)=>{
+  }
 
-            console.log(err);
-          });
+  handleSubmit(e){
+    e.preventDefault();
+
+    this.setState({
+      lock:this.validatePhone(),
+      lock_R:this.validateRegister(),
+      isValidated:true,
+      isCorrect:true
+    },() => {
+
+      if(this.state.lock && this.state.lock_R){
+        const data = {
+          Name:this.state.Name,
+          Registration_No:this.state.Registration_No,
+          Address:this.state.Address,
+          AddressTwo:this.state.AddressTwo,
+          City:this.state.City,
+          Email:this.state.Email,
+          Telephone:this.state.Telephone,
+          Image:this.state.Image,
         }
+        console.log(data);
+        
+        const path = "http://localhost:5000/user/profile/edit";
+        axios.post(path,data)
+              .then((response)=>{
+                  console.log('Good. '+response.data);
+                  this.props.history.push('/profile');
+              })
+              .catch((err)=>{
+    
+                console.log(err);
+              });
+          
+           
+            }  
+    
+    
+          else{
+            if(!this.state.lock){
+              this.setState({
+                isValidated:false
+              })
+            }
+            else{
+              this.setState({
+                isCorrect:false
+              })
+            }      
+          }
 
-      else{
-        this.setState({
-          isValidated:false
-        })
-      }
+
+
+
+    })
+   
+   
   }
 
   componentDidMount(){
@@ -148,9 +185,14 @@ class UserForm extends Component {
 
   render() {
     let Alerts = <p></p>
+    let AlertTwo =<p></p>
     if(!this.state.isValidated){
        Alerts = <Alert severity="error">number must contain 10 digits</Alert>
     }
+    if(!this.state.isCorrect){
+      AlertTwo=<Alert severity="error">Registration No. should be in this format : 9287-UY-09</Alert>
+    }
+
     return (
       <div className="animated fadeIn">
 
@@ -187,6 +229,7 @@ class UserForm extends Component {
                           
                   />
                 </FormGroup>
+                {AlertTwo}
                 <FormGroup>
                   <Label htmlFor="vat">Email</Label>
                   <Input 
