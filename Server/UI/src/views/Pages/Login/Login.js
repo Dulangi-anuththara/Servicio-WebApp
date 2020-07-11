@@ -7,11 +7,6 @@ import "./LoginPage.css";
 import lgo from '../../../assets/images/lgo.jpg'
 import routes from '../../../routes';
 
-
-
-
-
-
 class Login extends Component {
     state = {
         email: '',
@@ -53,7 +48,8 @@ class Login extends Component {
               console.log(`not verified`)
               alert("Please verify your email before login");
               
-            }else{
+            }
+            else{
               fire.firestore().doc(`users/${id}`).get().then( res =>{
                 this.setState({
                   userType: res.data().user_type
@@ -61,9 +57,9 @@ class Login extends Component {
                 this.props.onAuth(id, this.state.userType);
                 this.setState({redirect: <Redirect to="/dashboard"/>})
               })
-            }
 
-           
+
+            } 
 
             // const userRef = fire.database().ref('/users/' + id).once('value').then((snapshot) => {
             //     this.setState({

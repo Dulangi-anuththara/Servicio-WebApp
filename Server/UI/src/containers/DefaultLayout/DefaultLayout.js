@@ -28,14 +28,18 @@ const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 class DefaultLayout extends Component {
 
   componentDidMount(){
-    console.log("In the dashboard");
   }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   signOut(e) {
     e.preventDefault()
-    this.props.history.push('/login')
+    this.props.history.push('/profile')
+  }
+  checkRequest(e){
+    //e.preventDefault()
+    //console.log(e.target.value);
+    this.props.history.push('/Requests')
   }
 
   render() {
@@ -43,7 +47,7 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)}/>
+            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} />
           </Suspense>
         </AppHeader>
         <div className="app-body">
@@ -62,7 +66,6 @@ class DefaultLayout extends Component {
               <Suspense fallback={this.loading()}>
                 <Switch>
                  {routes.map((route, idx) => {
-                    console.log(route.path);
                     return route.component ? (
                       <Route
                         key={idx}

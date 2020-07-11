@@ -60,9 +60,9 @@ export default {
     },
     {
       name: 'Calendar',
-      url: '/today',
-      icon: 'icon-notebook',
-      children: [
+      url: '/CalendarThree',
+      icon: 'icon-calendar',
+    /*  children: [
         {
           name: 'Calendar One',
           url: '/CalendarOne',
@@ -93,12 +93,20 @@ export default {
           url: '/CalendarSix',
           icon: 'icon-calendar',
         },
-      ]
+      ]*/
+    },
+    {
+      name: 'New Requests',
+      url: '/Requests',
+      icon: 'icon-plus',
+    },
+    {
+      name: 'Pay Subscription',
+      url: '/Payment',
+      icon: 'icon-handbag',
     },
     
-
-    
-    {
+ /*   {
       title: true,
       name: 'Components',
       wrapper: {
@@ -355,6 +363,6 @@ export default {
       icon: 'icon-layers',
       variant: 'danger',
       attributes: { target: '_blank', rel: "noopener" },
-    },
+    },*/
   ],
 };

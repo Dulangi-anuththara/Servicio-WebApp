@@ -51,6 +51,7 @@ class Register extends Component {
               }).catch(function(error) {
                 // An error happened.
               });
+              
             var id = user.uid
             this.props.onAuth(id, this.state.user_type);
 
@@ -69,7 +70,7 @@ class Register extends Component {
                 // grade: this.state.grade
             }).then(res => {
                 console.log(res);
-                // this.setState({redirect: <Redirect to="/dashboard"/>})
+                //this.setState({redirect: <Redirect to="/dashboard"/>})
             })
         })
         .catch((err) => {

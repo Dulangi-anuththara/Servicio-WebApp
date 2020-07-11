@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
 import { Modal } from '@daypilot/modal';
 import "./CalendarStyles.css";
+import Axios from 'axios';
 
 const styles = {
   left: {
@@ -17,7 +18,11 @@ class Calendar extends Component {
 
   constructor(props) {
     super(props);
+    //let dp = this.calendar;
+    //dp.dayBeginsHour = 9,
     this.state = {
+      data:[],
+      checking: false,
       viewType: "Week",
       durationBarVisible: false,
       cellWidth:80,
@@ -26,17 +31,24 @@ class Calendar extends Component {
         var form = [
           {name: "Name", id: "name"}
         ];
+        
         let dp = this.calendar;
        Modal.form(form).then(function(modal) {
-          console.log(modal);
+          var data ={
+            start:args.start,
+            end:args.end,
+            id:DayPilot.guid(),
+            text:modal.result.name
+          }
           dp.clearSelection();
           if (!modal.result.name) { return; }
-          dp.events.add(new DayPilot.Event({
-            start: args.start,
-            end: args.end,
-            id: DayPilot.guid(),
-            text: modal.result.name
-          }));
+          dp.events.add(new DayPilot.Event(data));
+
+          const url ="http://localhost:5000/event/add"
+          Axios.post(url,data).then((response)=>{
+            console.log(response.data);
+
+          })
         });
       },
       eventDeleteHandling: "Update",
@@ -48,29 +60,46 @@ class Calendar extends Component {
           dp.events.update(args.e);
         });
       },
+      checkAvailabilty:() => console.log(this.props.location)
+
     };
+
+    
+    
+    
   }
 
   componentDidMount() {
+    console.log("Here");
+    const url ='http://localhost:5000/event'
+    Axios.get(url).then(res =>{
 
-    // load event data
+     /* res.data.forEach(element => {
+        element.start = element.start.slice(0,19);
+        element.end = element.end.slice(0,19);
+      });*/
+      
+     this.setState({
+        data:res.data
+      },() => {
+        console.log(this.state.data);
+        this.setState({
+          events:this.state.data
+        },()=> console.log(this.state.events))
+      })
+    })
+
+    
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    //console.log(today);
     this.setState({
-      startDate: "2019-09-15",
-      events: [
-        {
-          id: 1,
-          text: "Event 1",
-          start: "2019-09-16T10:30:00",
-          end: "2019-09-16T13:00:00"
-        },
-        {
-          id: 2,
-          text: "Event 2",
-          start: "2019-09-17T12:00:00",
-          end: "2019-09-17T14:00:00",
-          backColor: "#38761d"
-        }
-      ]
+      startDate: today,
     });
   }
 

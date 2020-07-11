@@ -43,6 +43,9 @@ const CalendarThree = React.lazy(() => import('./views/Calendar/CalendarThree'))
 const CalendarFour = React.lazy(() => import('./views/Calendar/CalendarFour'));
 const CalendarFive = React.lazy(() => import('./views/Calendar/CalendarFive'));
 const CalendarSix = React.lazy(() => import('./views/Calendar/CalendarSix'));
+const Requests = React.lazy(() => import('./views/Requests/Requests'));
+const Subscription =  React.lazy(() => import('./views/Payment/subscription'));
+
 
 
 
@@ -93,10 +96,12 @@ const routes = [
   { path: '/Edit', name: 'User Profile Edit', component: UserProfileEdit },
   { path: '/CalendarOne', name: 'Calendar One', component: CalendarOne },
   { path: '/CalendarTwo', name: 'Calendar Two', component: CalendarTwo },
-  { path: '/CalendarThree', name: 'Calendar Two', component: CalendarThree },
+  { path: '/CalendarThree', name: 'Calendar', component: CalendarThree },
   { path: '/CalendarFour', name: 'Calendar Two', component: CalendarFour },
   { path: '/CalendarFive', name: 'Calendar Five', component: CalendarFive },
   { path: '/CalendarSix', name: 'Calendar Six', component: CalendarSix },
+  { path: '/Requests', name:'New Requests', component:Requests},
+  { path: '/Payment', name:'New Requests', component:Subscription},
 
 
 

@@ -13,7 +13,7 @@ user.get('/profile',(req,res) =>{
                     if(!doc.exists){
                         console.log('No such Document');
                     } else {
-                        //console.log('Document Data :',doc.data());
+                        console.log('Document Data :',doc.data());
                         res.send(doc.data());
                     }
                 })
@@ -37,9 +37,11 @@ user.post('/profile/edit',(req,res) => {
             Name:req.body.Name,
             Registration_No:req.body.Registration_No,
             Address:req.body.Address,
+            AddressTwo:req.body.AddressTwo,
+            City:req.body.City,
             Email:req.body.Email,
             Telephone:req.body.Telephone,
-            //Image:req.body.Image,
+            Image:req.body.Image,
         };
 
         //let Image = req.body.Image;
