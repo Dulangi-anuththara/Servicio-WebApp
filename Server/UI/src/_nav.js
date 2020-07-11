@@ -43,6 +43,11 @@ export default {
       icon: 'icon-user',
       
     },
+    {
+      name: 'Pay Subscription',
+      url: '/Payment',
+      icon: 'icon-handbag',
+    },
 
     {
       name: 'Today',
