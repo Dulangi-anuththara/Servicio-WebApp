@@ -20,7 +20,7 @@ const defaultProps = {};
 const ENDPOINT = "http://127.0.0.1:5000";
 
 class DefaultHeader extends Component {
-  constructor(){
+  constructor(props){
     super()
 
     this.state={
@@ -35,7 +35,7 @@ class DefaultHeader extends Component {
     //handle notifications
     const url= 'http://localhost:5000/bookings';
     Axios.get(url).then(res => {
-        
+
        /* res.data.forEach(element => {
           element.Date = element.Date.slice(0,16);
           element.EndDate = element.EndDate.slice(0,16);
@@ -45,7 +45,7 @@ class DefaultHeader extends Component {
       });
      
     })
-
+  
 
   }
 

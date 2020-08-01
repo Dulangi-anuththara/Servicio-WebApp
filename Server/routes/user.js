@@ -5,10 +5,10 @@ const db = require('../database/database');
 
 
 
-user.get('/profile',(req,res) =>{
-    
-   const profile = db.collection('Profile');
-   let getDoc = profile.doc('1').get()
+user.get('/profile/:id',(req,res) =>{
+    console.log(req.params.id);
+   const User = db.collection('users');
+   let getDoc = User.doc(req.params.id).get()
                 .then( doc => {
                     if(!doc.exists){
                         console.log('No such Document');
@@ -31,7 +31,7 @@ user.post('/imgUpload',(req,res)=>{
 })
 
 
-user.post('/profile/edit',(req,res) => {
+user.post('/profile/edit/:id',(req,res) => {
         //console.log(req.body);
         let data ={
             Name:req.body.Name,
@@ -46,7 +46,7 @@ user.post('/profile/edit',(req,res) => {
 
         //let Image = req.body.Image;
         console.log(req.body);
-        let setDoc = db.collection('Profile').doc('1').set(data);
+        let setDoc = db.collection('users').doc(req.params.id).update(data);
         //res.redirect('http://localhost:3000/#/profile');
        res.send('Details Updated successfully');
 });

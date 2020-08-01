@@ -35,7 +35,7 @@ class User extends Component {
       } 
 
     componentDidMount(){
-    const url = "http://localhost:5000/user/profile";
+    const url = `http://localhost:5000/user/profile/${this.props.uid}`;
     axios
                         .get(url)
                         .then( response => {
@@ -181,7 +181,7 @@ class User extends Component {
 
                 <Row>
                 <Col col="12" xl className="mb-3 mb-xl-0">
-                My Profile
+                My Profile{this.props.uid}
               </Col>
               <Col xs lg="2">
                 <Link to={{

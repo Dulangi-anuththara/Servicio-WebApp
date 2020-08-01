@@ -113,7 +113,7 @@ export default {
       icon: 'icon-handbag',
     },
     
- /*   {
+  {
       title: true,
       name: 'Components',
       wrapper: {
@@ -370,6 +370,6 @@ export default {
       icon: 'icon-layers',
       variant: 'danger',
       attributes: { target: '_blank', rel: "noopener" },
-    },*/
+    },
   ],
 };

@@ -56,7 +56,7 @@ class Calendar extends Component {
       eventDeleteHandling: "Update",
       onEventClick: args => {
         let dp = this.calendar;
-        DayPilot.Modal.prompt("Update event text:", args.e.text()).then(function(modal) {
+        DayPilot.Modal.prompt("Would You Like To Start the Process?", args.e.text()).then(function(modal) {
           if (!modal.result) { return; }
           args.e.data.text = modal.result;
           dp.events.update(args.e);

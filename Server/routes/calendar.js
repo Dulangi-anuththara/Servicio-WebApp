@@ -3,6 +3,7 @@ const Events = express.Router();
 const db = require('../database/database');
 
 Events.get('/',(req,res) =>{
+    console.log("Requested for data")
     let data = [];
     let eventsref = db.collection('Events');
     let allbookings = eventsref.get()
