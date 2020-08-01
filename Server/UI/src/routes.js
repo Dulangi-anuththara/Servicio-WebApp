@@ -45,6 +45,7 @@ const CalendarFive = React.lazy(() => import('./views/Calendar/CalendarFive'));
 const CalendarSix = React.lazy(() => import('./views/Calendar/CalendarSix'));
 const Requests = React.lazy(() => import('./views/Requests/Requests'));
 const Subscription =  React.lazy(() => import('./views/Payment/subscription'));
+const Today = React.lazy(() => import('./views/Today/Today'))
 
 
 
@@ -102,6 +103,7 @@ const routes = [
   { path: '/CalendarSix', name: 'Calendar Six', component: CalendarSix },
   { path: '/Requests', name:'New Requests', component:Requests},
   { path: '/Payment', name:'New Requests', component:Subscription},
+  { path: '/Today', name:'Today', component:Today},
 
 
 

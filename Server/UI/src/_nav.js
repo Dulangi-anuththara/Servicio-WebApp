@@ -4,10 +4,6 @@ export default {
       name: 'Dashboard',
       url: '/dashboard',
       icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
     },
     {
       title: true,
@@ -51,7 +47,7 @@ export default {
       children: [
         {
           name: 'Pending',
-          url: '/profile',
+          url: '/Today',
           icon: 'icon-hourglass',
         },
         {
@@ -103,12 +99,9 @@ export default {
         },
       ]*/
     },
-<<<<<<< HEAD
-=======
     
     
     
->>>>>>> 703b1b6cb8ecb85e32158ab6af5c32030f25f18c
     {
       name: 'New Requests',
       url: '/Requests',
