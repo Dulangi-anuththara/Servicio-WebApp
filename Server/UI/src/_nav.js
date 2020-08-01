@@ -36,6 +36,14 @@ export default {
         
       ]
     },
+
+    {
+      name: 'Customer View',
+      url: '/CustomerView',
+      icon: 'icon-user',
+      
+    },
+
     {
       name: 'Today',
       url: '/today',
@@ -95,6 +103,12 @@ export default {
         },
       ]*/
     },
+<<<<<<< HEAD
+=======
+    
+    
+    
+>>>>>>> 703b1b6cb8ecb85e32158ab6af5c32030f25f18c
     {
       name: 'New Requests',
       url: '/Requests',
