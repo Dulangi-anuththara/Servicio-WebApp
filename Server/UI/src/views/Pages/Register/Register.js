@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import '../Login/LoginPage.css';
 import lgo from "../../../assets/images/lgo.jpg"
-import Popup from 'react-popup';
+
 
 
 
