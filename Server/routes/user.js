@@ -6,7 +6,7 @@ const db = require('../database/database');
 
 
 user.get('/profile/:id',(req,res) =>{
-    console.log(req.params.id);
+   // console.log(req.params.id);
    const User = db.collection('users');
    let getDoc = User.doc(req.params.id).get()
                 .then( doc => {

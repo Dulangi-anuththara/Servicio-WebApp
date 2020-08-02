@@ -17,7 +17,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-const ENDPOINT = "http://127.0.0.1:5000";
+
 
 class DefaultHeader extends Component {
   constructor(props){
@@ -33,7 +33,7 @@ class DefaultHeader extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     //handle notifications
-    const url= 'http://localhost:5000/bookings';
+    const url= `http://localhost:5000/bookings/${props.uid}`;
     Axios.get(url).then(res => {
 
        /* res.data.forEach(element => {
@@ -50,7 +50,9 @@ class DefaultHeader extends Component {
   }
 
   componentDidMount(){
-    
+
+    const ENDPOINT = `http://127.0.0.1:5000?key=${this.props.uid}`;
+    console.log(this.props.uid)
     const socket = socketIOClient(ENDPOINT);
     socket.on("FromAPI", response => {
       this.setState(

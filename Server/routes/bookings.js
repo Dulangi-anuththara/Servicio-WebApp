@@ -4,9 +4,10 @@ const db = require('../database/database');
 const TimestampDate = require("timestamp-date");
 
 
-booking.get('/',(req,res)=>{
+booking.get('/:id',(req,res)=>{
+   const id = req.params.id
     let data = [];
-    let bookingref = db.collection('Bookings');
+    let bookingref = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','==','Pending');
     let allbookings = bookingref.get()
   .then(snapshot => {
     snapshot.forEach(doc => {
@@ -24,12 +25,13 @@ booking.get('/',(req,res)=>{
   });
 })
 
-booking.post('/checkAvailability',(req,res) =>{
+booking.post('/checkAvailability/:id',(req,res) =>{
 
+  const id= req.params.id
   var events =[];
   var start =req.body.start;
   var end = req.body.end;
- db.collection("Events").get()
+ db.collection('Services').doc(id).collection("Events").get()
     .then((querySnapshot)=>{
             let count = 0;
             querySnapshot.forEach((doc) =>{
@@ -46,15 +48,26 @@ booking.post('/checkAvailability',(req,res) =>{
     })
 })
 
-booking.post('/delete',(req,res) =>{
+booking.post('/edit/:key',(req,res) =>{
 
-    var id = req.body.id;
+    var key = req.params.key
+    var id = req.body.bookingId;
+    var CustId = req.body.CustId;
     console.log(id);
     res.send("Received Id")
 
-  db.collection("Bookings").doc(id).delete().then(function() {
+  db.collection('Services').doc(key).collection("Bookings").doc(id).update({
+    BookingStatus:'Accepted'
+  }).then(function() {
     console.log("Document successfully deleted!");
-}).catch(function(error) {
+
+    db.collection('users').doc(CustId).collection('Bookings').doc(id).update({
+      BookingStatus:'Accepted'
+    })
+}).then(()=>{
+  console.log('Process Successfully Completed')
+})
+.catch(function(error) {
     console.error("Error removing document: ", error);
 });
 })

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Col, Collapse, Fade, Row, Table } from 'reactstrap';
 import Axios from 'axios';
 import TextField from '@material-ui/core/TextField';
@@ -42,7 +42,7 @@ class Requests extends Component {
       show:false,
     };
 
-    const url= 'http://localhost:5000/bookings';
+    const url= `http://localhost:5000/bookings/${props.uid}`;
     Axios.get(url).then(res => {
         
         /*res.data.forEach(element => {
@@ -133,6 +133,8 @@ class Requests extends Component {
       open:false
     });
 
+    console.log(this.state.bookings);
+
     const data ={
       start:this.state.bookings.Date,
       end:this.state.bookings.EndDate
@@ -140,11 +142,11 @@ class Requests extends Component {
       //end:"2020-07-11T16:00"
     }
 
-    const url = 'http://localhost:5000/bookings/checkAvailability'
+    const url = `http://localhost:5000/bookings/checkAvailability/${this.props.uid}`
     Axios.post(url,data)
          .then( res => {
            console.log(res.data);
-           if(res.data.events >0){
+           if(res.data.events >5){
 
               this.setState({
                 result:false,
@@ -170,18 +172,27 @@ class Requests extends Component {
       show:false
     })
 
-    var data ={
+   /* var data ={
       id:DayPilot.guid(),
       start:this.state.bookings.Date,
       end:this.state.bookings.EndDate+":00",
-      text:this.state.bookings.ServiceType + ' - ' + this.state.bookings.CustName
+      text:this.state.bookings.ServiceType + ' - ' + this.state.bookings.CustName + '/' + this.state.bookings.Vehicle
+    }*/
+    console.log("Add Request");
+    var data = {
+      id:DayPilot.guid(),
+      bookings:this.state.bookings
     }
 
-    const url ="http://localhost:5000/event/add"
+    const url =`http://localhost:5000/event/add/${this.props.uid}`
           Axios.post(url,data).then((response)=>{
-            
-            const path = "http://localhost:5000/bookings/delete"
-            Axios.post(path,this.state.bookings).then((response) =>{
+            console.log(this.state.bookings.CustId)
+            const info={
+              bookingId:this.state.bookings.id,
+              CustId:this.state.bookings.CustId
+            }
+            const path = `http://localhost:5000/bookings/edit/${this.props.uid}`
+            Axios.post(path,info).then((response) =>{
               console.log(response.data);
               this.props.history.push('CalendarThree');
             })
@@ -327,4 +338,4 @@ class Requests extends Component {
   }
 }
 
-export default Requests;
+export default withRouter(Requests);

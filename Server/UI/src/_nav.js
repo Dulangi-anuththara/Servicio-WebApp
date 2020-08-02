@@ -52,7 +52,7 @@ export default {
         },
         {
           name: 'In Progress',
-          url: '/Edit',
+          url: '/InProgress',
           icon: 'icon-wrench',
         },
         {

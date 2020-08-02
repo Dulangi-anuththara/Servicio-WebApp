@@ -63,13 +63,15 @@ class Register extends Component {
                 console.log(err);
             }));
 
-            await fire.firestore().doc(`users/${id}`).set({
+            await fire.firestore().doc(`Services/${id}`).set({
                 user_type: this.state.user_type,
                 full_name: this.state.full_name,
+                email:this.state.email
                 // grade: this.state.grade
             }).then(res => {
                 console.log(res);
                 //this.setState({redirect: <Redirect to="/dashboard"/>})
+
             })
         })
         .catch((err) => {

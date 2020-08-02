@@ -53,10 +53,20 @@ class Calendar extends Component {
           })
         });
       },
+      eventDoubleClickHandling:"Enabled",
+      onEventDoubleClick: args =>{
+        console.log(args.e.data.text);
+        let dp = this.calendar;
+        DayPilot.Modal.confirm('Would You Like to see the progress?',{okText:'Yes'}).then(function(modal){
+            console.log(args);
+            console.log(modal);
+        })
+
+      },
       eventDeleteHandling: "Update",
       onEventClick: args => {
         let dp = this.calendar;
-        DayPilot.Modal.prompt("Would You Like To Start the Process?", args.e.text()).then(function(modal) {
+        DayPilot.Modal.prompt("Would You Like To go to Process?", args.e.text()).then(function(modal) {
           if (!modal.result) { return; }
           args.e.data.text = modal.result;
           dp.events.update(args.e);
@@ -73,7 +83,7 @@ class Calendar extends Component {
 
   componentDidMount() {
     console.log("Here");
-    const url ='http://localhost:5000/event'
+    const url =`http://localhost:5000/event/${this.props.uid}`
     Axios.get(url).then(res =>{
 
      /* res.data.forEach(element => {

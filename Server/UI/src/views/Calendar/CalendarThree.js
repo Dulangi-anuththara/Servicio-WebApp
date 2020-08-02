@@ -27,6 +27,9 @@ class Calendar extends Component {
       durationBarVisible: false,
       cellWidth:80,
       timeRangeSelectedHandling: "Enabled",
+      dayBeginsHour : 9,
+      dayEndsHour:18,
+      eventMoveHandling:'Disabled',
       onTimeRangeSelected: args => {
         var form = [
           {name: "Name", id: "name"}
@@ -44,7 +47,7 @@ class Calendar extends Component {
           if (!modal.result.name) { return; }
           dp.events.add(new DayPilot.Event(data));
 
-          const url ="http://localhost:5000/event/add"
+          const url =`http://localhost:5000/event/addMan/${props.uid}`
           Axios.post(url,data).then((response)=>{
             console.log(response.data);
 
@@ -71,7 +74,7 @@ class Calendar extends Component {
 
   componentDidMount() {
     console.log("Here");
-    const url ='http://localhost:5000/event'
+    const url =`http://localhost:5000/event/${this.props.uid}`
     Axios.get(url).then(res =>{
 
      /* res.data.forEach(element => {

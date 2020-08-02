@@ -50,7 +50,7 @@ class Login extends Component {
               
             }
             else{
-              fire.firestore().doc(`users/${id}`).get().then( res =>{
+              fire.firestore().doc(`Services/${id}`).get().then( res =>{
                 this.setState({
                   userType: res.data().user_type
                 });

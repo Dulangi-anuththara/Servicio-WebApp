@@ -52,7 +52,7 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} />
+            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} uid={this.props.uid} />
           </Suspense>
         </AppHeader>
         <div className="app-body">
