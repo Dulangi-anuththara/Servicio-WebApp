@@ -167,14 +167,14 @@ class UserForm extends Component {
                         .get(url)
                         .then( response => {
                                 this.setState({
-                                  Name:response.data.Name,
+                                  Name:response.data.Service_Name,
                                   Registration_No:response.data.Registration_No,
                                   Address:response.data.Address,
                                   AddressTwo:response.data.AddressTwo,
                                   City:response.data.City,
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
-                                  Image:response.data.Image,
+                                  Image:response.data.Photo,
 
                                 })                           
                               

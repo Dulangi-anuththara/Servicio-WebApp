@@ -32,14 +32,6 @@ export default {
         
       ]
     },
-
-    {
-      name: 'Customer View',
-      url: '/CustomerView',
-      icon: 'icon-user',
-      
-    },
-
     {
       name: 'Today',
       url: '/today',
@@ -60,10 +52,15 @@ export default {
           url: '/Edit',
           icon: 'icon-check',
         },
+        {
+          name: 'On Going',
+          url: '/ongoing',
+          icon: 'icon-check',
+        },
       ]
     },
     {
-      name: 'Calendar',
+      name: 'My Calendar',
       url: '/CalendarThree',
       icon: 'icon-calendar',
     /*  children: [

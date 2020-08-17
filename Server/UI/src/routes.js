@@ -46,7 +46,8 @@ const CalendarSix = React.lazy(() => import('./views/Calendar/CalendarSix'));
 const Requests = React.lazy(() => import('./views/Requests/Requests'));
 const Subscription =  React.lazy(() => import('./views/Payment/subscription'));
 const Today = React.lazy(() => import('./views/Today/Today'))
-const InProgress = React.lazy(() => import('./views/InProgress/InProgress'))
+const InProgress = React.lazy(() => import('./views/InProgress/InProgress'));
+const ongoing = React.lazy(() => import('./views/ongoing/ongoing'));
 
 
 
@@ -106,6 +107,7 @@ const routes = [
   { path: '/Payment', name:'New Requests', component:Subscription},
   { path: '/Today', name:'Today', component:Today},
   { path: '/InProgress', name:'In Progress', component:InProgress},
+  { path: '/ongoing', name:'On Going', component:ongoing},
 
 
 

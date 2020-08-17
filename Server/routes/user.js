@@ -7,7 +7,7 @@ const db = require('../database/database');
 
 user.get('/profile/:id',(req,res) =>{
    // console.log(req.params.id);
-   const User = db.collection('users');
+   const User = db.collection('Services');
    let getDoc = User.doc(req.params.id).get()
                 .then( doc => {
                     if(!doc.exists){
@@ -19,12 +19,13 @@ user.get('/profile/:id',(req,res) =>{
                 })
 });
 
-user.post('/imgUpload',(req,res)=>{
-
+user.post('/imgUpload/:id',(req,res)=>{
+    const id= req.params.id
+    console.log("hERE");
     let data ={
-        Image:req.body.Image
+        Photo:req.body.Image
     }
-    let docRef = db.collection('Profile').doc('1');
+    let docRef = db.collection('Services').doc(id);
     let setDoc = docRef.update(data);
      res.send("Done");
      
@@ -32,7 +33,7 @@ user.post('/imgUpload',(req,res)=>{
 
 
 user.post('/profile/edit/:id',(req,res) => {
-        //console.log(req.body);
+        console.log(req.body);
         let data ={
             Name:req.body.Name,
             Registration_No:req.body.Registration_No,
@@ -46,7 +47,7 @@ user.post('/profile/edit/:id',(req,res) => {
 
         //let Image = req.body.Image;
         console.log(req.body);
-        let setDoc = db.collection('users').doc(req.params.id).update(data);
+        let setDoc = db.collection('Services').doc(req.params.id).update(data);
         //res.redirect('http://localhost:3000/#/profile');
        res.send('Details Updated successfully');
 });

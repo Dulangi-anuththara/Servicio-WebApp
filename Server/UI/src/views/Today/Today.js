@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
+import { Label } from 'reactstrap'
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
 import { Modal } from '@daypilot/modal';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import "./CalendarStyles.css";
 import Axios from 'axios';
 
@@ -55,12 +58,35 @@ class Calendar extends Component {
       },
       eventDoubleClickHandling:"Enabled",
       onEventDoubleClick: args =>{
-        console.log(args.e.data.text);
-        let dp = this.calendar;
-        DayPilot.Modal.confirm('Would You Like to see the progress?',{okText:'Yes'}).then(function(modal){
+        console.log(args.e.data.id);
+        confirmAlert({
+          message: 'Would you like to start the process?',
+          buttons: [
+            {
+              label: 'Yes',
+              onClick: () =>{alert('Click No')
+              
+               /* var url= `http://localhost:5000/ongoing/add/${this.props.uid}/${args.e.data.id}`
+                Axios.post(url)
+                .then((response)=>{
+                  console.log(response);
+                })*/
+            
+            
+            },             
+
+            },
+            {
+              label: 'No',
+              onClick: () => alert('Click No')
+            }
+          ]
+        });
+       /* DayPilot.Modal.confirm('Would You Like to start the process?',{okText:'Yes'})
+        .then(function(modal){
             console.log(args);
-            console.log(modal);
-        })
+            console.log(modal.result);
+        })*/
 
       },
       eventDeleteHandling: "Update",
@@ -120,6 +146,7 @@ class Calendar extends Component {
     var {...config} = this.state;
     return (
       <div>
+        <Label>{this.props.uid}</Label>
         <div style={styles.main}>
         <DayPilotCalendar
           {...config}

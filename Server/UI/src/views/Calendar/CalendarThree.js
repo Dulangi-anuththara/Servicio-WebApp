@@ -21,15 +21,43 @@ class Calendar extends Component {
     //let dp = this.calendar;
     //dp.dayBeginsHour = 9,
     this.state = {
+      
       data:[],
       checking: false,
       viewType: "Week",
+
       durationBarVisible: false,
       cellWidth:80,
       timeRangeSelectedHandling: "Enabled",
       dayBeginsHour : 9,
       dayEndsHour:18,
       eventMoveHandling:'Disabled',
+      contextMenu: new DayPilot.Menu({
+        items:[
+          {
+            text: "Delete",
+            icon:"icon-close icons",
+            onClick: args => {
+              var e = args.source;
+              this.calendar.events.remove(e);
+            }
+          },
+          {
+            text: "Update",
+            icon:"icon-pencil icons",
+            onClick: args =>{
+              console.log(args.source.data)
+              let dp = this.calendar;
+              DayPilot.Modal.prompt("Update event text:", args.source.data.text).then(function(modal) {
+                if (!modal.result) { return; }
+                args.e.data.text = modal.result;
+                dp.events.update(args.e);
+              });
+
+            }
+          }
+              ]
+    }),
       onTimeRangeSelected: args => {
         var form = [
           {name: "Name", id: "name"}
@@ -55,15 +83,16 @@ class Calendar extends Component {
         });
       },
       eventDeleteHandling: "Update",
-      onEventClick: args => {
+
+    /*  onEventClick: args => {
         let dp = this.calendar;
         DayPilot.Modal.prompt("Update event text:", args.e.text()).then(function(modal) {
           if (!modal.result) { return; }
           args.e.data.text = modal.result;
           dp.events.update(args.e);
         });
-      },
-      checkAvailabilty:() => console.log(this.props.location)
+      },*/
+      checkAvailabilty:() => console.log(this.props.location),
 
     };
 
@@ -88,7 +117,7 @@ class Calendar extends Component {
         console.log(this.state.data);
         this.setState({
           events:this.state.data
-        },()=> console.log(this.state.events))
+        })
       })
     })
 

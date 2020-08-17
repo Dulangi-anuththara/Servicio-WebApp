@@ -39,16 +39,6 @@ Events.post('/add/:key',(req,res) => {
     let setDoc = db.collection('Services').doc(key).collection('Events').doc(req.body.id).set(data)
                     .then(function() {
                         console.log("Document successfully written!");
-                        let setDetails = db.collection('Events').doc(req.body.id).collection('Details').set({
-                          CustName:req.body.bookings.CustName,
-                          CustId:req.body.bookings.CustId,
-                          ServiceType:req.body.bookings.ServiceType,
-                          Vehicle:req.body.bookings.Vehicle,
-
-                        })
-                        .then(()=>{
-                          console.log('Details added successfully');
-                        })
                     })
                     .catch(function(error) {
                         console.error("Error writing document: ", error);

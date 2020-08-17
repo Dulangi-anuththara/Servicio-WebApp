@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table , Button, FormGroup, Input, Label } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Row, Button, FormGroup, Input, Label} from 'reactstrap';
+import Image from 'react-bootstrap/Image'
 import axios from 'axios' ;
 import { Link } from 'react-router-dom';
 import FittedImage from 'react-fitted-image';
@@ -41,14 +42,14 @@ class User extends Component {
                         .then( response => {
                                 console.log(response.data);
                                 this.setState({
-                                  Name:response.data.Name,
+                                  Name:response.data.Service_Name,
                                   Registration_No:response.data.Registration_No,
                                   Address:response.data.Address,
                                   AddressTwo:response.data.AddressTwo,
                                   City:response.data.City,
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
-                                  Image:response.data.Image,
+                                  Image:response.data.Photo,
                                 });
                                 console.log(this.state.Image);                           
                               
@@ -99,7 +100,7 @@ class User extends Component {
         const data ={
           Image:url,
         }
-        const path= "http://localhost:5000/user/imgUpload";
+        const path= `http://localhost:5000/user/imgUpload/${this.props.uid}`;
         axios.post(path,data)
               .then((response)=>{
                 console.log('Good. '+response.data);
@@ -131,8 +132,9 @@ class User extends Component {
               <table className="table">
                 <tbody>
                 <tr>
-                  <div style={{height:300,backgroundImage:`url(${this.state.Image})`,borderRadius:'6px'}}>          
-                          
+                  
+                  <div style={{height:300,borderRadius:'6px'}}>          
+                  <Image src={this.state.Image} fluid></Image>        
                 <Button color="light" className="align-items-center" onClick={this.handleClickOpen} size='lg' style={{marginTop:30,marginLeft:980}}>
                   <i className="fa fa-camera fa-lg"></i>&nbsp;Edit Cover Photo
                 </Button>

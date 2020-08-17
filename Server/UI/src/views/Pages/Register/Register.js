@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import '../Login/LoginPage.css';
 import lgo from "../../../assets/images/lgo.jpg"
+import { Photo } from '@material-ui/icons';
 
 
 
@@ -66,7 +67,8 @@ class Register extends Component {
             await fire.firestore().doc(`Services/${id}`).set({
                 user_type: this.state.user_type,
                 full_name: this.state.full_name,
-                email:this.state.email
+                email:this.state.email,
+                Photo:'https://firebasestorage.googleapis.com/v0/b/servicio-11f11.appspot.com/o/images%2F2020-06-14%2020%3A06%3A01.121556.png?alt=media&token=cf626a4d-17b7-4c19-8351-1bc165364a94',
                 // grade: this.state.grade
             }).then(res => {
                 console.log(res);

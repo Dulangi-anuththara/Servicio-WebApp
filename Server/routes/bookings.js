@@ -61,7 +61,7 @@ booking.post('/edit/:key',(req,res) =>{
   }).then(function() {
     console.log("Document successfully deleted!");
 
-    db.collection('users').doc(CustId).collection('Bookings').doc(id).update({
+    db.collection('Customers').doc(CustId).collection('Bookings').doc(id).update({
       BookingStatus:'Accepted'
     })
 }).then(()=>{

@@ -44,11 +44,6 @@ class Requests extends Component {
 
     const url= `http://localhost:5000/bookings/${props.uid}`;
     Axios.get(url).then(res => {
-        
-        /*res.data.forEach(element => {
-          element.Date = element.Date.slice(0,16);
-          element.EndDate = element.EndDate.slice(0,16);
-        });*/
         console.log(res.data)
         this.setState({
         data:res.data,
@@ -178,9 +173,9 @@ class Requests extends Component {
       end:this.state.bookings.EndDate+":00",
       text:this.state.bookings.ServiceType + ' - ' + this.state.bookings.CustName + '/' + this.state.bookings.Vehicle
     }*/
-    console.log("Add Request");
+    console.log(this.state.bookings);
     var data = {
-      id:DayPilot.guid(),
+      id:this.state.bookings.id,
       bookings:this.state.bookings
     }
 
