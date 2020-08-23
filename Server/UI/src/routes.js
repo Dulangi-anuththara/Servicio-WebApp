@@ -107,7 +107,7 @@ const routes = [
   { path: '/Payment', name:'New Requests', component:Subscription},
   { path: '/Today', name:'Today', component:Today},
   { path: '/InProgress', name:'In Progress', component:InProgress},
-  { path: '/ongoing', name:'On Going', component:ongoing},
+  { path: '/ongoing/:id', name:'On Going', component:ongoing},
 
 
 

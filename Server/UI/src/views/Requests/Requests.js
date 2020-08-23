@@ -158,10 +158,6 @@ class Requests extends Component {
     //console.log("going to check the availability");
   }
 
-  componentWillUnmount(){
-    
-  }
-
   addEvent(){
     this.setState({
       show:false

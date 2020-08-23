@@ -1,15 +1,35 @@
 import React, { Component } from 'react';
 import { Badge, Card, CardBody, CardHeader, Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Row, TabContent, TabPane } from 'reactstrap';
+import Axios from 'axios';
+import {
+  BrowserRouter as Router,
+  withRouter,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useParams
+} from "react-router-dom";
 
 class InProgress extends Component {
 
   constructor(props) {
     super(props);
 
+    
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: 1
+      activeTab: 0,
+      data:[]
     };
+    const url=`http://localhost:5000/ongoing/list/${this.props.uid}`
+    Axios.get(url)
+    .then((response)=>{
+      console.log(response.data);
+      this.setState({
+        data:response.data
+      })
+    })
   }
 
   toggle(tab) {
@@ -23,78 +43,45 @@ class InProgress extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col sm="12" xl="6">
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>List Group</strong>
-                <small> anchors</small>
-              </CardHeader>
-              <CardBody>
-                <p>Be sure to <strong>not use the standard <code>.btn</code> classes here</strong>.</p>
-                <ListGroup>
-                  <ListGroupItem active tag="a" href="#" action>Cras justo odio</ListGroupItem>
-                  <ListGroupItem tag="a" href="#" action>Dapibus ac facilisis in</ListGroupItem>
-                  <ListGroupItem tag="a" href="#" action>Morbi leo risus</ListGroupItem>
-                  <ListGroupItem tag="a" href="#" action>Porta ac consectetur ac</ListGroupItem>
-                  <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-                </ListGroup>
-                <p />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+
        
         <Row>
           <Col>
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i><strong>List Group</strong> <small>with TabPanes</small>
-                <div className="card-header-actions">
-                  <Badge>NEW</Badge>
-                </div>
               </CardHeader>
-              <CardBody>
-                <Row>
-                  <Col xs="4">
-                    <ListGroup id="list-tab" role="tablist">
-                      <ListGroupItem onClick={() => this.toggle(0)} action active={this.state.activeTab === 0} >Home</ListGroupItem>
-                      <ListGroupItem onClick={() => this.toggle(1)} action active={this.state.activeTab === 1} >Profile</ListGroupItem>
-                      <ListGroupItem onClick={() => this.toggle(2)} action active={this.state.activeTab === 2} >Messages</ListGroupItem>
-                      <ListGroupItem onClick={() => this.toggle(3)} action active={this.state.activeTab === 3} >Settings</ListGroupItem>
-                    </ListGroup>
-                  </Col>
-                  <Col xs="8">
-                    <TabContent activeTab={this.state.activeTab}>
-                      <TabPane tabId={0} >
-                        <p>Velit aute mollit ipsum ad dolor consectetur nulla officia culpa adipisicing exercitation fugiat tempor. Voluptate deserunt sit sunt
-                          nisi aliqua fugiat proident ea ut. Mollit voluptate reprehenderit occaecat nisi ad non minim
-                          tempor sunt voluptate consectetur exercitation id ut nulla. Ea et fugiat aliquip nostrud sunt incididunt consectetur culpa aliquip
-                          eiusmod dolor. Anim ad Lorem aliqua in cupidatat nisi enim eu nostrud do aliquip veniam minim.</p>
-                      </TabPane>
-                      <TabPane tabId={1}>
-                        <p>Cupidatat quis ad sint excepteur laborum in esse qui. Et excepteur consectetur ex nisi eu do cillum ad laborum. Mollit et eu officia
-                          dolore sunt Lorem culpa qui commodo velit ex amet id ex. Officia anim incididunt laboris deserunt
-                          anim aute dolor incididunt veniam aute dolore do exercitation. Dolor nisi culpa ex ad irure in elit eu dolore. Ad laboris ipsum
-                          reprehenderit irure non commodo enim culpa commodo veniam incididunt veniam ad.</p>
-                      </TabPane>
-                      <TabPane tabId={2}>
-                        <p>Ut ut do pariatur aliquip aliqua aliquip exercitation do nostrud commodo reprehenderit aute ipsum voluptate. Irure Lorem et laboris
-                          nostrud amet cupidatat cupidatat anim do ut velit mollit consequat enim tempor. Consectetur
-                          est minim nostrud nostrud consectetur irure labore voluptate irure. Ipsum id Lorem sit sint voluptate est pariatur eu ad cupidatat et
-                          deserunt culpa sit eiusmod deserunt. Consectetur et fugiat anim do eiusmod aliquip nulla
-                          laborum elit adipisicing pariatur cillum.</p>
-                      </TabPane>
-                      <TabPane tabId={3}>
-                        <p>Irure enim occaecat labore sit qui aliquip reprehenderit amet velit. Deserunt ullamco ex elit nostrud ut dolore nisi officia magna
-                          sit occaecat laboris sunt dolor. Nisi eu minim cillum occaecat aute est cupidatat aliqua labore
-                          aute occaecat ea aliquip sunt amet. Aute mollit dolor ut exercitation irure commodo non amet consectetur quis amet culpa. Quis ullamco
-                          nisi amet qui aute irure eu. Magna labore dolor quis ex labore id nostrud deserunt dolor
-                          eiusmod eu pariatur culpa mollit in irure.</p>
-                      </TabPane>
-                    </TabContent>
-                  </Col>
+              <CardBody>               
+              <Row>
+              <Col xs="4">
+              {this.state.data.map((item,index)=>               
+                
+                <ListGroup id="list-tab" role="tablist">
+                <ListGroupItem onClick={() => this.toggle(index)} action active={this.state.activeTab === index} onDoubleClick={()=> this.props.history.push(`ongoing/${item.id}`)} >{item.VehicleDetails.brand} - {item.ServiceType}</ListGroupItem>
+                </ListGroup>                          
+              
+            )}
+            </Col>
+            <Col xs="8">
+            <TabContent activeTab={this.state.activeTab}>
+             {this.state.data.map((item,index)=>     
+              
+                
+                  <TabPane tabId={index} >
+                  <p>Customer Name - {item.CustName}<br></br>
+                 Email - {item.custDetails.email}<br></br>
+                 Tel. No - {item.custDetails.tel_num}<br></br>
+                  Veh. Model - {item.VehicleDetails.model}<br></br>
+                  </p>
+                  </TabPane>               
+              
+              
+            )}
+            </TabContent>
+                </Col>
                 </Row>
+
+                
               </CardBody>
             </Card>
           </Col>
@@ -104,4 +91,4 @@ class InProgress extends Component {
   }
 }
 
-export default InProgress;
+export default withRouter(InProgress);

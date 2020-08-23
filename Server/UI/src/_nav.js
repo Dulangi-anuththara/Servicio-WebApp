@@ -54,7 +54,7 @@ export default {
         },
         {
           name: 'On Going',
-          url: '/ongoing',
+          url: '/ongoing/:id',
           icon: 'icon-check',
         },
       ]

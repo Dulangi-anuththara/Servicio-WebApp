@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Label } from 'reactstrap'
+import { withRouter } from 'react-router-dom';
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
 import { Modal } from '@daypilot/modal';
 import { confirmAlert } from 'react-confirm-alert';
@@ -64,13 +65,16 @@ class Calendar extends Component {
           buttons: [
             {
               label: 'Yes',
-              onClick: () =>{alert('Click No')
-              
-               /* var url= `http://localhost:5000/ongoing/add/${this.props.uid}/${args.e.data.id}`
+              onClick: () =>{
+              console.log("Accepted")
+               var url= `http://localhost:5000/ongoing/add/${this.props.uid}/${args.e.data.id}`
                 Axios.post(url)
                 .then((response)=>{
-                  console.log(response);
-                })*/
+                  console.log(response);                  
+                })
+                .then(()=>{
+                  this.props.history.push('InProgess');
+                })
             
             
             },             
@@ -160,4 +164,4 @@ class Calendar extends Component {
   }
 }
 
-export default Calendar;
+export default withRouter(Calendar);
