@@ -20,8 +20,12 @@ class ongoing extends Component {
         super(props)
 
         this.handleProgress = this.handleProgress.bind(this);
+        this.handleNotes = this.handleNotes.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCompletion = this.handleCompletion.bind(this);
 
         this.state={
+            id:"",
             progress:0,
             CustId:"Test",
             CustName:"Test",
@@ -36,7 +40,8 @@ class ongoing extends Component {
             miledge:"Test",
             pathColor:"#92140C",
             State:"",
-            notes:[]
+            note:"",
+            notes:["Test"]
 
         }
         console.log(this.props.match.params.id);
@@ -47,6 +52,7 @@ class ongoing extends Component {
 
           console.log(response.data);
           this.setState({
+            id:response.data.id,
             CustId:response.data.CustId,
             CustName:response.data.CustName,
             PhoneNo:response.data.custDetails.tel_num,
@@ -56,7 +62,10 @@ class ongoing extends Component {
             VehicleNo:response.data.Vehicle,
             VehicleType:response.data.VehicleDetails.brand + response.data.VehicleDetails.model,
             RegNo:response.data.VehicleDetails.regNo,
-            year:response.data.VehicleDetails.year,            
+            year:response.data.VehicleDetails.year,   
+            progress:response.data.progress,
+            State:response.data.status,
+            notes:response.data.notes         
           })
         })
     }
@@ -64,14 +73,6 @@ class ongoing extends Component {
    handleProgress(e){
 
       var temp="";
-        //  this.setState({
-        //    progress:val.target.value
-        //  },()=>{
-        //    if(val.target.value==5){
-
-        //    }
-        //  })
-        // console.log(val.target.value);
     if(e.target.value==5){
       temp="Vehicle Accepted"       
     }
@@ -81,8 +82,11 @@ class ongoing extends Component {
     else if(e.target.value == 80){
       temp="Service Finished"
     }
+    else if(e.target.value == 95){
+      temp="Service Finished"
+    }
     else{
-      temp="Vehicle is ready to pick up"
+      temp="Completed"
     }
 
     this.setState({
@@ -91,7 +95,9 @@ class ongoing extends Component {
     },()=>{
       console.log(this.state.State);
       var data ={
-        status:this.state.State
+        status:this.state.State,
+        progress:this.state.progress,
+        id:this.state.id
       }
       const url=`http://localhost:5000/ongoing/stateUpdate/${this.props.uid}/${this.state.id}`
      
@@ -105,7 +111,47 @@ class ongoing extends Component {
   }
 
   handleCompletion(e){
-    console.log("Completed");
+    this.handleProgress(e);
+    const url=`http://localhost:5000/ongoing/completion/${this.props.uid}/${this.state.id}`
+     
+      axios.get(url)
+      .then(response =>{
+        console.log(response.data);
+        this.props.history.push('/InProgress')
+      })
+    
+    
+  }
+
+  handleNotes(e){
+
+    this.setState({
+      [e.target.name]:e.target.value
+    },()=>{
+
+    })
+    console.log(this.state.note)
+  }
+
+  handleSubmit(e){
+    var arr = this.state.notes;
+    arr.push(this.state.State +" : " + this.state.note);
+    this.setState({
+      notes:arr,
+      note:""
+    },()=>{
+      const url=`http://localhost:5000/ongoing/addNotes/${this.props.uid}/${this.state.id}`
+      var data ={
+        notes:this.state.notes
+      }
+      axios.post(url,data)
+      .then(response =>{
+        console.log(response.data);
+      })
+      
+    })
+
+    
   }
     render() {
         return (
@@ -161,7 +207,14 @@ class ongoing extends Component {
         <Col md={{ size: 4, offset: 1 }}>
 
         <Card body>
-                <CardTitle tag="h3">Notes</CardTitle>
+                <CardHeader tag="h4">Notes</CardHeader>
+                
+                {this.state.notes.map(item =>(
+                  <div>
+                     <p>{item}</p>
+                  </div>
+                 
+                ))}
                 </Card>
         
         </Col>
@@ -182,11 +235,11 @@ class ongoing extends Component {
                     <i className="fa fa-check"></i>&nbsp;Finished</Button>
                   </ButtonGroup>
                   <ButtonGroup className="mr-2">
-                    <Button style={{backgroundColor:"#F45D01",borderWidth:0}} value={90} size="lg" onClick={this.handleProgress}>
+                    <Button style={{backgroundColor:"#F45D01",borderWidth:0}} value={95} size="lg" onClick={this.handleProgress}>
                     <i className="fa fa-bell"></i>&nbsp;Ready to pickup</Button>
                   </ButtonGroup>
                   <ButtonGroup className="mr-2">
-                    <Button style={{backgroundColor:"#97CC04",borderWidth:0}} value={100} size="lg" onClick={this.handleProgress}>
+                    <Button style={{backgroundColor:"#97CC04",borderWidth:0}} value={100} size="lg" onClick={this.handleCompletion}>
                     <i className="fa fa-thumbs-up"></i>&nbsp;Completed</Button>
                   </ButtonGroup>
 
@@ -200,10 +253,10 @@ class ongoing extends Component {
     <Label for="exampleText" sm={2}>Notes</Label>
 
       <Col sm={7}>
-          <Input type="textarea" name="text" id="exampleText" />
+          <Input type="textarea" name="note" id="exampleText" value={this.state.note} onChange={this.handleNotes} />
         </Col>
         <Col sm={{ size: 2, offset: 1 }}>
-          <Button>Submit</Button>
+          <Button onClick={this.handleSubmit}>Submit</Button>
         </Col>
       </Row>
  

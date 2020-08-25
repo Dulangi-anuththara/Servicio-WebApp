@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Label } from 'reactstrap'
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
 import { Modal } from '@daypilot/modal';
 import { confirmAlert } from 'react-confirm-alert';
@@ -73,7 +73,8 @@ class Calendar extends Component {
                   console.log(response);                  
                 })
                 .then(()=>{
-                  this.props.history.push('InProgess');
+                this.props.history.push('/InProgress');
+                  //return <Redirect to="/InProgress" />
                 })
             
             

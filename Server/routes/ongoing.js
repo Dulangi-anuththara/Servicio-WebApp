@@ -3,6 +3,7 @@ const ongoing = express.Router();
 const db = require('../database/database');
 const { QuerySnapshot } = require('@google-cloud/firestore');
 
+
 ongoing.get('/list/:ServiceId',(req,res)=>{
     console.log("here");
     var serviceId = req.params.ServiceId
@@ -20,6 +21,7 @@ ongoing.get('/list/:ServiceId',(req,res)=>{
 
 })
 
+
 ongoing.get('/doc/:id/:processId',(req,res)=>{
     var Id = req.params.id
     var process = req.params.processId
@@ -33,6 +35,7 @@ ongoing.get('/doc/:id/:processId',(req,res)=>{
     })
 
 })
+
 
 
 ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
@@ -56,13 +59,19 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
         db.collection('Customers').doc(data.CustId).collection('Vehicles').doc(data.Vehicle).get()
         .then(documentSnapshot=>{
             data.VehicleDetails=documentSnapshot.data()
+            data.progress=0
+            data.status=""
+            data.notes=[]
         })
         .then(()=>{
             db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).set(data)
-            .then(response=>{
-                res.send(response);
-            })
-            
+            .then(()=>{
+                db.collection('Customers').doc(data.CustId).collection('ongoing').doc(bookingId).set(data)
+                .then(response=>{
+                    res.send(response);
+                })
+                
+            })            
         })
     })    
      
@@ -72,10 +81,68 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
   })
 })
 
+
+
 ongoing.post('/stateUpdate/:ServiceId/:bookingId',(req,res)=>{
     var ServiceId = req.params.ServiceId;
     var bookingId = req.params.bookingId;
-   console.log(req.body.status)
+    console.log(bookingId);
+
+    var data ={
+        status:req.body.status,
+        progress:req.body.progress
+    }
+    db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).update(data)
+    .then(()=>{
+        db.collection('Customers').doc(req.body.id).collection('ongoing').doc(bookingId).update(data)
+        .then((response)=>{
+            res.send(response);
+        })
+    })
+    
 })
+
+ongoing.post('/addNotes/:ServiceId/:bookingId',(req,res)=>{
+    var ServiceId = req.params.ServiceId;
+    var bookingId = req.params.bookingId;
+    
+
+    var data ={
+       notes:req.body.notes
+    }
+    db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).update(data)
+    .then((response)=>{
+        res.send(response);
+    })
+})
+
+
+ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
+    var ServiceId = req.params.ServiceId;
+    var bookingId = req.params.bookingId;
+    var data ={}
+    var id =""
+    
+    db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).get()
+    .then((documentSnapshot)=>{
+        data = documentSnapshot.data();
+        db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).delete()
+        
+    })
+    .then(()=>{
+        id = data.CustId
+        db.collection('Customers').doc(id).collection('ongoing').doc(bookingId).delete()
+        db.collection('Services').doc(ServiceId).collection('Completed').doc(bookingId).set(data)
+        .then(()=>{
+            db.collection('Customers').doc(id).collection('Completed').doc(bookingId).set(data)
+            .then((response)=>{
+        
+                res.send(response);
+            })
+        })
+    })
+    
+})
+
 
 module.exports = ongoing;
