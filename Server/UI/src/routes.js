@@ -48,6 +48,7 @@ const Subscription =  React.lazy(() => import('./views/Payment/subscription'));
 const Today = React.lazy(() => import('./views/Today/Today'))
 const InProgress = React.lazy(() => import('./views/InProgress/InProgress'));
 const ongoing = React.lazy(() => import('./views/ongoing/ongoing'));
+const Message = React.lazy(() => import('./views/Message/Message'));
 
 
 
@@ -108,6 +109,7 @@ const routes = [
   { path: '/Today', name:'Today', component:Today},
   { path: '/InProgress', name:'In Progress', component:InProgress},
   { path: '/ongoing/:id', name:'On Going', component:ongoing},
+  { path: '/message', name:'Message Box', component:Message},
 
 
 

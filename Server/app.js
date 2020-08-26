@@ -19,6 +19,7 @@ const booking = require('./routes/bookings');
 const event = require('./routes/calendar');
 const customers = require('./routes/customers');
 const ongoing = require('./routes/ongoing');
+const messaging = require('./routes/messaging')
 
 
 app.use(cors());
@@ -36,6 +37,7 @@ app.use('/bookings',booking);
 app.use('/event',event);
 app.use('/customers',customers);
 app.use('/ongoing',ongoing);
+app.use('/msg',messaging);
 
 
 app.get('/',(req,res) =>{

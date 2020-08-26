@@ -109,6 +109,11 @@ export default {
       url: '/Payment',
       icon: 'icon-handbag',
     },
+    {
+      name: 'Message',
+      url: '/message',
+      icon: 'icon-handbag',
+    },
     
   {
       title: true,

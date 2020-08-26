@@ -2,6 +2,7 @@ const express = require('express');
 const ongoing = express.Router();
 const db = require('../database/database');
 const { QuerySnapshot } = require('@google-cloud/firestore');
+const { response } = require('express');
 
 
 ongoing.get('/list/:ServiceId',(req,res)=>{
@@ -59,6 +60,7 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
         db.collection('Customers').doc(data.CustId).collection('Vehicles').doc(data.Vehicle).get()
         .then(documentSnapshot=>{
             data.VehicleDetails=documentSnapshot.data()
+            data.progressStage=0
             data.progress=0
             data.status=""
             data.notes=[]
@@ -67,8 +69,11 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
             db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).set(data)
             .then(()=>{
                 db.collection('Customers').doc(data.CustId).collection('ongoing').doc(bookingId).set(data)
-                .then(response=>{
-                    res.send(response);
+                .then(()=>{
+                    db.collection('Services').doc(ServiceId).collection('Bookings').doc(bookingId).delete()
+                    .then(response=>{
+                        res.send(response);
+                    })
                 })
                 
             })            
@@ -90,6 +95,7 @@ ongoing.post('/stateUpdate/:ServiceId/:bookingId',(req,res)=>{
 
     var data ={
         status:req.body.status,
+        progressStage:req.body.progressStage,
         progress:req.body.progress
     }
     db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).update(data)
