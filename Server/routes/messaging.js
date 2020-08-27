@@ -47,7 +47,7 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
  messaging.post('/add/:CustId/:ServiceId',(req,res)=>{
     const CustId = req.params.CustId
     const ServiceId = req.params.ServiceId
-    var currentDate = new Date().toUTCString();
+    var currentDate = new Date();
     var data ={
         id:1,
         type:req.body.type,

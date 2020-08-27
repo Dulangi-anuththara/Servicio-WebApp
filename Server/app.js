@@ -49,7 +49,7 @@ app.get('/',(req,res) =>{
      const id = socket.handshake.query.key;
      console.log(socket.handshake.query.key);
      console.log("New Client connected");
-     let doc = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','==','Pending')
+     let doc = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','in',['Pending','Not Available'])
 
      let observer = doc.onSnapshot(querySnapshot =>{
          

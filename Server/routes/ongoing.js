@@ -5,11 +5,12 @@ const { QuerySnapshot } = require('@google-cloud/firestore');
 const { response } = require('express');
 
 
+
 ongoing.get('/list/:ServiceId',(req,res)=>{
     console.log("here");
     var serviceId = req.params.ServiceId
     var data = []
-    db.collection('Services').doc(serviceId).collection('ongoing').get()
+    db.collection('Services').doc(serviceId).collection('ongoing').where("progressStage",'<',5).get()
     .then(querySnapshot=>{
         querySnapshot.forEach(doc =>{
                 let process =doc.data();
@@ -48,7 +49,7 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
   db.collection('Services').doc(ServiceId).collection('Bookings').doc(bookingId).get()
   .then(documentSnapshot =>{
       data = documentSnapshot.data()
-      data.id  = documentSnapshot.id;           
+      data.key  = documentSnapshot.id;           
       
   })
   .then(() =>{      
@@ -64,6 +65,7 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
             data.progress=0
             data.status=""
             data.notes=[]
+            data.pathColor="#FF1D15"
         })
         .then(()=>{
             db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).set(data)
@@ -96,7 +98,8 @@ ongoing.post('/stateUpdate/:ServiceId/:bookingId',(req,res)=>{
     var data ={
         status:req.body.status,
         progressStage:req.body.progressStage,
-        progress:req.body.progress
+        progress:req.body.progress,
+        pathColor:req.body.pathColor
     }
     db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).update(data)
     .then(()=>{
@@ -133,6 +136,7 @@ ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
     .then((documentSnapshot)=>{
         data = documentSnapshot.data();
         db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).delete()
+        data.progressStage = 7
         
     })
     .then(()=>{
@@ -148,6 +152,20 @@ ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
         })
     })
     
+})
+ongoing.get('/picked/:ServiceId',(req,res)=>{
+    var ServiceId = req.params.ServiceId;
+    var data = []
+    db.collection('Services').doc(ServiceId).collection('ongoing').where('progressStage','==',6).get()
+    .then((querySnapshot)=>{
+            querySnapshot.forEach(doc=>{
+                var booking = doc.data()
+                booking.id =doc.id
+                data.push(booking)
+            })
+
+            res.send(data);
+    })
 })
 
 

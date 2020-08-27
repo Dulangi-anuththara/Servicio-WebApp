@@ -33,7 +33,11 @@ Events.post('/add/:key',(req,res) => {
         id:req.body.id,
         start:req.body.bookings.Date,
         end:req.body.bookings.EndDate+":00",
-        text:req.body.bookings.ServiceType + ' - ' + req.body.bookings.CustName + '/' + req.body.bookings.Vehicle
+        text:req.body.bookings.ServiceType + ' - ' + req.body.bookings.CustName + '/' + req.body.bookings.Vehicle,
+        backColor:"#009DDC",
+        tags : {
+          category: 0
+        }
     };
     console.log(req.body);
     let setDoc = db.collection('Services').doc(key).collection('Events').doc(req.body.id).set(data)
@@ -79,7 +83,24 @@ Events.post('/addMan/:key',(req,res) => {
  res.send('Details Updated successfully');
 });
 
+Events.post('/changeColor/:ServiceId/:key',(req,res)=>{
+  console.log("id")
+    var ServiceId = req.params.ServiceId
+    var key = req.params.key
 
+    let data ={
+      backColor:"#20c997",
+      tags : {
+        category: 1
+      }
+    }
+    db.collection('Services').doc(ServiceId).collection('Events').doc(key).update(data)
+    .then(response => {
+      console.log("Document successfully written!");
+      res.send(response);
+      
+    })
+})
 
 
 

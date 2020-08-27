@@ -49,12 +49,7 @@ export default {
         },
         {
           name: 'Done',
-          url: '/Edit',
-          icon: 'icon-check',
-        },
-        {
-          name: 'On Going',
-          url: '/ongoing/:id',
+          url: '/done',
           icon: 'icon-check',
         },
       ]

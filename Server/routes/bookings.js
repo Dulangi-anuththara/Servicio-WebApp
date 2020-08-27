@@ -7,7 +7,7 @@ const TimestampDate = require("timestamp-date");
 booking.get('/:id',(req,res)=>{
    const id = req.params.id
     let data = [];
-    let bookingref = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','==','Pending');
+    let bookingref = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','in',['Pending','Not Available']);
     let allbookings = bookingref.get()
   .then(snapshot => {
     snapshot.forEach(doc => {
@@ -53,16 +53,15 @@ booking.post('/edit/:key',(req,res) =>{
     var key = req.params.key
     var id = req.body.bookingId;
     var CustId = req.body.CustId;
+    var status = req.body.status
     console.log(id);
     res.send("Received Id")
 
   db.collection('Services').doc(key).collection("Bookings").doc(id).update({
-    BookingStatus:'Accepted'
+    BookingStatus:status
   }).then(function() {
-    console.log("Document successfully deleted!");
-
     db.collection('Customers').doc(CustId).collection('Bookings').doc(id).update({
-      BookingStatus:'Accepted'
+      BookingStatus:status
     })
 }).then(()=>{
   console.log('Process Successfully Completed')
@@ -71,6 +70,56 @@ booking.post('/edit/:key',(req,res) =>{
     console.error("Error removing document: ", error);
 });
 })
+
+booking.post('/editPending/:key',(req,res) =>{
+
+  var key = req.params.key
+  var id = req.body.bookingId;
+  var CustId = req.body.CustId;
+  console.log(id);
+  res.send("Received Id")
+
+db.collection('Services').doc(key).collection("Bookings").doc(id).update({
+  BookingStatus:'Not Available'
+}).then(function() {
+  db.collection('Customers').doc(CustId).collection('Bookings').doc(id).update({
+    BookingStatus:'Not Available'
+  })
+}).then(()=>{
+console.log('Process Successfully Completed')
+})
+.catch(function(error) {
+  console.error("Error removing document: ", error);
+});
+})
+
+booking.post('/editDate/:key',(req,res) =>{
+
+  var key = req.params.key
+  var id = req.body.bookingId;
+  var CustId = req.body.CustId;
+  var date = req.body.newDate
+  console.log(id);
+  res.send("Received Id")
+
+db.collection('Services').doc(key).collection("Bookings").doc(id).update({
+  Date:date,
+  EndDate:date,
+  BookingStatus:"Pending"
+}).then(function() {
+  db.collection('Customers').doc(CustId).collection('Bookings').doc(id).update({
+    Date:date,
+    EndDate:date,
+    BookingStatus:"Pending"
+  })
+}).then(()=>{
+console.log('Process Successfully Completed')
+})
+.catch(function(error) {
+  console.error("Error removing document: ", error);
+});
+})
+
 
 
 module.exports = booking;

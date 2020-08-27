@@ -215,7 +215,7 @@ class DefaultHeader extends Component {
             <i className="icon-bell"></i><Badge pill color="danger">{this.state.notifications}</Badge>
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem header tag="div" className="text-center"><strong>Appointments</strong></DropdownItem>
+              
               {this.state.data.map( (item,index) =>
                 
                 <DropdownItem key={index} onClick={e => this.props.goToRequests(index)}><i className="fa fa-tasks"></i><a href="">{item.CustName}</a> request for {item.ServiceType}</DropdownItem>
