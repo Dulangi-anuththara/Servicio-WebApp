@@ -33,33 +33,34 @@ class Calendar extends Component {
       timeRangeSelectedHandling: "Enabled",
       dayBeginsHour : 9,
       dayEndsHour:18,
-      onTimeRangeSelected: args => {
-        var form = [
-          {name: "Name", id: "name"}
-        ];
+      // onTimeRangeSelected: args => {
+      //   var form = [
+      //     {name: "Name", id: "name"}
+      //   ];
         
-        let dp = this.calendar;
-       Modal.form(form).then(function(modal) {
-          var data ={
-            start:args.start,
-            end:args.end,
-            id:DayPilot.guid(),
-            text:modal.result.name
-          }
-          dp.clearSelection();
-          if (!modal.result.name) { return; }
-          dp.events.add(new DayPilot.Event(data));
+      //   let dp = this.calendar;
+      //  Modal.form(form).then(function(modal) {
+      //     var data ={
+      //       start:args.start,
+      //       end:args.end,
+      //       id:DayPilot.guid(),
+      //       text:modal.result.name
+      //     }
+      //     dp.clearSelection();
+      //     if (!modal.result.name) { return; }
+      //     dp.events.add(new DayPilot.Event(data));
 
-          const url ="http://localhost:5000/event/add"
-          Axios.post(url,data).then((response)=>{
-            console.log(response.data);
+      //     const url ="http://localhost:5000/event/add"
+      //     Axios.post(url,data).then((response)=>{
+      //       console.log(response.data);
 
-          })
-        });
-      },
+      //     })
+      //   });
+      // },
       eventDoubleClickHandling:"Enabled",
       onEventDoubleClick: args =>{
         console.log(args.e.data.id);
+        if(args.e.tag("category") == 0){
         confirmAlert({
           message: 'Would you like to start the process?',
           buttons: [
@@ -70,7 +71,12 @@ class Calendar extends Component {
                var url= `http://localhost:5000/ongoing/add/${this.props.uid}/${args.e.data.id}`
                 Axios.post(url)
                 .then((response)=>{
-                  console.log(response);                  
+                  console.log(response);     
+                  var url= `http://localhost:5000/event/changeColor/${this.props.uid}/${args.e.data.id}`
+                  Axios.post(url)
+                  .then(response=>{
+
+                  })             
                 })
                 .then(()=>{
                 this.props.history.push('/InProgress');
@@ -87,12 +93,10 @@ class Calendar extends Component {
             }
           ]
         });
-       /* DayPilot.Modal.confirm('Would You Like to start the process?',{okText:'Yes'})
-        .then(function(modal){
-            console.log(args);
-            console.log(modal.result);
-        })*/
-
+      }
+      else{
+        alert("Process has already started")
+      }
       },
       eventDeleteHandling: "Update",
       onEventClick: args => {
@@ -151,7 +155,7 @@ class Calendar extends Component {
     var {...config} = this.state;
     return (
       <div>
-        <Label>{this.props.uid}</Label>
+
         <div style={styles.main}>
         <DayPilotCalendar
           {...config}

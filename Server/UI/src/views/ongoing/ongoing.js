@@ -3,6 +3,7 @@ import { Badge, Card,CardTitle,CardText, CardBody, CardHeader, Col, Row, Button,
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Image from 'react-bootstrap/Image'
+import {Launcher} from 'react-chat-window'
 import axios from 'axios' ;
 import {
   BrowserRouter as Router,
@@ -22,11 +23,11 @@ class ongoing extends Component {
         this.handleProgress = this.handleProgress.bind(this);
         this.handleNotes = this.handleNotes.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCompletion = this.handleCompletion.bind(this);
 
         this.state={
             id:"",
             progress:0,
+            progressStage:0,
             CustId:"Test",
             CustName:"Test",
             PhoneNo:"Test",
@@ -38,10 +39,11 @@ class ongoing extends Component {
             RegNo:"Test",
             year:"Test",
             miledge:"Test",
-            pathColor:"#92140C",
+            pathColor:"",
             State:"",
             note:"",
-            notes:["Test"]
+            notes:["Test"],
+            messageList: []
 
         }
         console.log(this.props.match.params.id);
@@ -50,7 +52,7 @@ class ongoing extends Component {
         axios.get(url)
         .then(response =>{
 
-          console.log(response.data);
+          //console.log(response.data);
           this.setState({
             id:response.data.id,
             CustId:response.data.CustId,
@@ -62,66 +64,105 @@ class ongoing extends Component {
             VehicleNo:response.data.Vehicle,
             VehicleType:response.data.VehicleDetails.brand + response.data.VehicleDetails.model,
             RegNo:response.data.VehicleDetails.regNo,
-            year:response.data.VehicleDetails.year,   
-            progress:response.data.progress,
+            year:response.data.VehicleDetails.year,
+            progress:response.data.progress,   
+            progressStage:response.data.progressStage,
             State:response.data.status,
-            notes:response.data.notes         
+            notes:response.data.notes,
+            pathColor:response.data.pathColor
+          },()=>{
+            const URL =`http://localhost:5000/msg/${this.state.CustId}/${this.props.uid}`
+            axios.get(URL)
+            .then(response=>{
+              console.log(response.data)
+              this.setState({
+                messageList:response.data
+              })
+            })
+
+
           })
+
+
         })
     }
 
-   handleProgress(e){
+handleProgress(value){
 
-      var temp="";
-    if(e.target.value==5){
-      temp="Vehicle Accepted"       
+      var temp=""
+      var val =0
+      var color=""
+
+  let PromiseName = new Promise((resolve,reject)=>{
+
+    console.log(value)
+    if(value==5){
+      temp="Vehicle Accepted"
+      val=1
+      color="#FF1D15"
+      resolve("Done");
+             
     }
-    else if(e.target.value == 20){
+    else if(value == 20){
       temp="Process Started"
+      val=2
+      color="#2D7DD2"
+      resolve("Done");
     }
-    else if(e.target.value == 80){
+    else if(value == 80){
       temp="Service Finished"
+      val=3
+      color="#E3B505"
+      resolve("Done");
     }
-    else if(e.target.value == 95){
-      temp="Service Finished"
+    else if(value == 95){
+      temp="Ready to pickup"
+      val=4
+      color="#F45D01"
+      resolve("Done");
+    }
+    else if(value == 100){
+      temp="Picked Up"
+      val=5
+      color="#97CC04"
+      resolve("Done");
     }
     else{
       temp="Completed"
+      val=6
+      color="#FF1D15"
+      resolve("Done");
     }
 
-    this.setState({
-      progress:e.target.value,
-      State:temp
-    },()=>{
-      console.log(this.state.State);
-      var data ={
-        status:this.state.State,
-        progress:this.state.progress,
-        id:this.state.id
-      }
-      const url=`http://localhost:5000/ongoing/stateUpdate/${this.props.uid}/${this.state.id}`
-     
-      axios.post(url,data)
-      .then(response =>{
-        console.log(response.data);
-      })
-      
-    })
- 
-  }
+  })
 
-  handleCompletion(e){
-    this.handleProgress(e);
-    const url=`http://localhost:5000/ongoing/completion/${this.props.uid}/${this.state.id}`
-     
-      axios.get(url)
-      .then(response =>{
-        console.log(response.data);
-        this.props.history.push('/InProgress')
-      })
-    
-    
-  }
+    PromiseName.then(
+      
+      this.setState({
+        progress:value,
+        State:temp,
+        progressStage:val,
+        pathColor:color
+      },()=>{
+        console.log(this.state.State);
+        var data ={
+          status:this.state.State,
+          progress:this.state.progress,
+          progressStage:this.state.progressStage,
+          id:this.state.CustId,
+          pathColor:this.state.pathColor
+        }
+        const url=`http://localhost:5000/ongoing/stateUpdate/${this.props.uid}/${this.state.id}`
+       
+        axios.post(url,data)
+        .then(response =>{
+          console.log(response.data);
+        })  
+    })
+    )
+
+
+}
 
   handleNotes(e){
 
@@ -149,9 +190,19 @@ class ongoing extends Component {
         console.log(response.data);
       })
       
-    })
+    })    
+  }
 
-    
+  _onMessageWasSent(message) {
+    console.log(message);
+    this.setState({
+      messageList: [...this.state.messageList, message]
+    })
+    const url=`http://localhost:5000/msg/add/${this.state.CustId}/${this.props.uid}`
+    axios.post(url,message)
+    .then(response=>{
+      console.log(response.data);
+    })
   }
     render() {
         return (
@@ -220,45 +271,56 @@ class ongoing extends Component {
         </Col>
       </Row>
       <Row style={{marginTop:50}}>
-        <Col sm="12" md={{ size: 12, offset: 2 }}>
+        <Col sm="12" md={{ size: 12, offset: 1 }}>
         <ButtonToolbar>
                   <ButtonGroup className="mr-2">
-                    <Button style={{backgroundColor:"#FF1D15",borderWidth:0,color:'white'}} size="lg" value={5} onClick={this.handleProgress}>
+                    <Button style={{backgroundColor:"#FF1D15",borderWidth:0,color:'white'}} size="lg" value={5} onClick={() => this.handleProgress(5)}>
                     <i className="fa fa-car"></i>&nbsp;Vehicle Arrived</Button>
                   </ButtonGroup>
                   <ButtonGroup className="mr-2">
-                    <Button style={{backgroundColor:"#2D7DD2",borderWidth:0,color:'white'}} value={20} size="lg" onClick={this.handleProgress} >
+                    <Button style={{backgroundColor:"#2D7DD2",borderWidth:0,color:'white'}} value={20} size="lg" onClick={() => this.handleProgress(20)} >
                     <i className="fa fa-hourglass"></i>&nbsp;Started</Button>
                   </ButtonGroup>
                   <ButtonGroup className="mr-2">
-                    <Button style={{backgroundColor:"#E3B505",borderWidth:0}} value={80}size="lg" onClick={this.handleProgress}>
+                    <Button style={{backgroundColor:"#E3B505",borderWidth:0}} value={80} size="lg" onClick={() => this.handleProgress(80)}>
                     <i className="fa fa-check"></i>&nbsp;Finished</Button>
                   </ButtonGroup>
                   <ButtonGroup className="mr-2">
-                    <Button style={{backgroundColor:"#F45D01",borderWidth:0}} value={95} size="lg" onClick={this.handleProgress}>
+                    <Button style={{backgroundColor:"#F45D01",borderWidth:0}} value={95} size="lg" onClick={() => this.handleProgress(95)}>
                     <i className="fa fa-bell"></i>&nbsp;Ready to pickup</Button>
                   </ButtonGroup>
                   <ButtonGroup className="mr-2">
-                    <Button style={{backgroundColor:"#97CC04",borderWidth:0}} value={100} size="lg" onClick={this.handleCompletion}>
-                    <i className="fa fa-thumbs-up"></i>&nbsp;Completed</Button>
-                  </ButtonGroup>
-
-                  
+                    <Button style={{backgroundColor:"#97CC04",borderWidth:0}} value={100} size="lg" onClick={() => this.handleProgress(100)}>
+                    <i className="fa fa-bell"></i>&nbsp;Picked Up</Button>
+                  </ButtonGroup>                 
                 </ButtonToolbar>
+
+
         </Col>
       </Row>
 
       <Row style={{marginTop:60}}>
 
-    <Label for="exampleText" sm={2}>Notes</Label>
+      <Label for="exampleText" sm={2}>Notes</Label>
 
       <Col sm={7}>
           <Input type="textarea" name="note" id="exampleText" value={this.state.note} onChange={this.handleNotes} />
         </Col>
-        <Col sm={{ size: 2, offset: 1 }}>
+        <Col sm={{ size: 2, offset: 0}}>
           <Button onClick={this.handleSubmit}>Submit</Button>
         </Col>
       </Row>
+
+      
+      <Launcher
+                agentProfile={{
+                teamName: 'Servico',
+                imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+                }}
+                onMessageWasSent={this._onMessageWasSent.bind(this)}
+                messageList={this.state.messageList}
+                showEmoji
+                />
  
 
           </div>

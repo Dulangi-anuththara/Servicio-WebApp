@@ -63,5 +63,19 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
 
     
  })
- 
+
+ messaging.get('/:Id',(req,res)=>{
+    
+    const Id = req.params.Id
+    db.collection('Messaging').doc().collection('Services').doc(Id).collection('msg').orderBy('time','asc').get()
+    .then(querySnapshot =>{
+        console.log(querySnapshot)
+        querySnapshot.forEach(doc =>{
+            console.log("Hi")
+            console.log(doc.exists)
+        })
+        res.send(Id)
+    })
+    
+ })
 module.exports = messaging

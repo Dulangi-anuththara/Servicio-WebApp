@@ -8,6 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DateTimePicker from 'react-datetime-picker';
 import {DayPilot} from "daypilot-pro-react";
 
 class Requests extends Component {
@@ -27,6 +28,11 @@ class Requests extends Component {
     this.handleDate = this.handleDate.bind(this);
     this.checkAvailabilty=this.checkAvailabilty.bind(this);
     this.addEvent=this.addEvent.bind(this);
+    this.changeTime=this.changeTime.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onchangeTime=this.onchangeTime.bind(this);
+    this.sendMsg=this.sendMsg.bind(this);
+    this.onDecline=this.onDecline.bind(this);
     this.state = {
       test:'',
       open:false,
@@ -40,11 +46,14 @@ class Requests extends Component {
       bookings:{},
       result:false,
       show:false,
+      date: new Date(),
+      timeopen:false,
+      suggestTime:""
     };
 
     const url= `http://localhost:5000/bookings/${props.uid}`;
     Axios.get(url).then(res => {
-        console.log(res.data)
+        //console.log(res.data)
         this.setState({
         data:res.data,
         bookings:res.data[0]
@@ -141,7 +150,7 @@ class Requests extends Component {
     Axios.post(url,data)
          .then( res => {
            console.log(res.data);
-           if(res.data.events >5){
+           if(res.data.events >0){
 
               this.setState({
                 result:false,
@@ -162,13 +171,6 @@ class Requests extends Component {
     this.setState({
       show:false
     })
-
-   /* var data ={
-      id:DayPilot.guid(),
-      start:this.state.bookings.Date,
-      end:this.state.bookings.EndDate+":00",
-      text:this.state.bookings.ServiceType + ' - ' + this.state.bookings.CustName + '/' + this.state.bookings.Vehicle
-    }*/
     console.log(this.state.bookings);
     var data = {
       id:this.state.bookings.id,
@@ -180,7 +182,8 @@ class Requests extends Component {
             console.log(this.state.bookings.CustId)
             const info={
               bookingId:this.state.bookings.id,
-              CustId:this.state.bookings.CustId
+              CustId:this.state.bookings.CustId,
+              status:"Accepted"
             }
             const path = `http://localhost:5000/bookings/edit/${this.props.uid}`
             Axios.post(path,info).then((response) =>{
@@ -192,6 +195,105 @@ class Requests extends Component {
 
   }
 
+  changeTime(){
+    var time = this.state.suggestTime;
+    console.log(time);
+   const bookings = { ...this.state.bookings, Date: time,EndDate:time }
+    this.setState(() => ({ bookings }),
+    () => {
+      console.log("here")
+      var info ={
+        newDate:this.state.suggestTime+":00",
+        bookingId:this.state.bookings.id,
+        CustId:this.state.bookings.CustId
+      }
+      const path = `http://localhost:5000/bookings/editDate/${this.props.uid}`
+      Axios.post(path,info).then((response) =>{
+        console.log(response.data);
+        window.location.reload(false);
+      })
+    });
+  }
+  onchangeTime(e){
+    this.setState({
+      suggestTime:e.target.value
+    })
+  }
+
+  onChange(){
+    this.setState({
+      timeopen:true
+    })
+  }
+  onCancel(){
+    this.setState({
+      timeopen:false
+    })
+  }
+
+  sendMsg(){
+
+    var message ={
+      type:'text',
+      data:{
+        text:'We are sorry to inform that the time you requsted is no longer available. Would you like to get new time?'
+      }     
+    }
+    const info={
+      bookingId:this.state.bookings.id,
+      CustId:this.state.bookings.CustId
+    }
+    const url=`http://localhost:5000/msg/add/${this.state.bookings.CustId}/${this.props.uid}`
+    Axios.post(url,message)
+    .then(response=>{
+      console.log(response.data);
+      this.setState({
+        open:false,
+        show:false,
+      });
+      const path = `http://localhost:5000/bookings/editPending/${this.props.uid}`
+            Axios.post(path,info).then((response) =>{
+              console.log(response.data);
+              //this.props.history.push('CalendarThree');
+            })
+    })
+  }
+
+  onDecline(){
+    this.setState({
+      open:false,
+      show:false,
+    });
+    
+
+  var r = window.confirm("Are you sure you want to delete this request?");
+  if (r == true) {
+    var message ={
+      type:'text',
+      data:{
+        text:'We are sorry to inform you that, your booking has been declined.'
+      }     
+    }
+    const url=`http://localhost:5000/msg/add/${this.state.bookings.CustId}/${this.props.uid}`
+    Axios.post(url,message)
+    .then((response)=>{
+      const info={
+        bookingId:this.state.bookings.id,
+        CustId:this.state.bookings.CustId,
+        status:"Declined"
+      }
+      console.log(response.data)
+      const path = `http://localhost:5000/bookings/edit/${this.props.uid}`
+      Axios.post(path,info).then((response) =>{
+        console.log(response.data);
+        window.location.reload(false);
+      })
+    })
+  } else {
+    console.log("You pressed Cancel!");
+  }
+
+  }
   render() {
 
     let content=<div></div>
@@ -216,15 +318,18 @@ class Requests extends Component {
       content=<div> <DialogTitle id="form-dialog-title">Availability !</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Sorry! requested time is already reserved. Would you like to suggest new time?
+          Sorry! requested time is already reserved.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={this.handleClose} color="primary">
-          Yes
+        <Button onClick={this.sendMsg} color="primary">
+          Send Message
+        </Button>
+        <Button onClick={this.onDecline} color="primary">
+          Decline
         </Button>
         <Button onClick={this.handleClose} color="primary">
-          NO
+          Cancel
         </Button>
       </DialogActions></div>
     }
@@ -266,11 +371,13 @@ class Requests extends Component {
                         <Table responsive>
                   <tbody>
                   <tr>
-                  <td><Link to="/profile">{item.CustName}</Link> needs a {item.ServiceType} for a {item.VehicleType} on <Link to="/CalendarThree">{item.Date}</Link></td>
+                  <td><Link to="/profile">{item.CustName}</Link> needs a {item.ServiceType} for a {item.VehicleType} on <Link to="/CalendarThree">{item.Date}</Link><br></br>Status : {item.BookingStatus}</td>
+                  <td style={{width:100}}>
+                        <Button  block size="lg" style={{width:200,backgroundColor:'#ffc107',borderWidth:0}} onClick={this.onChange.bind(this)}>Change Time</Button></td>
                   <td style={{width:100}}>
                         <Button  block color="info" size="lg" style={{width:200}} onClick={this.handleClickOpen}>Check Availability</Button></td>
                   <td style={{width:20}}>
-                        <Button active block color="danger" aria-pressed="true" size="lg">Decline</Button></td>
+                        <Button active block color="danger" aria-pressed="true" size="lg" onClick={this.onDecline}>Decline</Button></td>
                   </tr>
                   </tbody>
                 </Table>  
@@ -313,6 +420,33 @@ class Requests extends Component {
                       <Dialog open={this.state.show}>
 
                             {content}
+
+                      </Dialog>
+
+                      <Dialog open={this.state.timeopen}>
+                          <DialogContent>
+
+                          <form >
+                          <TextField
+                            id="EndDate"
+                            label="Estimated Finishing Time"
+                            type="datetime-local"
+                            onChange={this.onchangeTime}
+                            defaultValue={this.state.bookings.Date}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </form>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={this.changeTime} color="primary">
+                          OK
+                        </Button>
+                        <Button onClick={this.onCancel.bind(this)} color="primary">
+                          Cancel
+                        </Button>
+                </DialogActions>
 
                       </Dialog>
                    </div>                       
