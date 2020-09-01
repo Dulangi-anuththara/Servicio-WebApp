@@ -67,14 +67,17 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
  messaging.get('/:Id',(req,res)=>{
     
     const Id = req.params.Id
-    db.collection('Messaging').doc().collection('Services').doc(Id).collection('msg').orderBy('time','asc').get()
+    var results = []
+    db.collection('Services').doc(Id).collection('Customers').get()
     .then(querySnapshot =>{
-        console.log(querySnapshot)
         querySnapshot.forEach(doc =>{
-            console.log("Hi")
-            console.log(doc.exists)
-        })
-        res.send(Id)
+            var data = doc.data()
+            data.id=doc.id
+            results.push(data)
+        })       
+    })
+    .then(()=>{
+        res.send(results)
     })
     
  })

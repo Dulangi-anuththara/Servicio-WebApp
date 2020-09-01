@@ -43,13 +43,18 @@ Events.post('/add/:key',(req,res) => {
     let setDoc = db.collection('Services').doc(key).collection('Events').doc(req.body.id).set(data)
                     .then(function() {
                         console.log("Document successfully written!");
+                        db.collection('Services').doc(key).collection('Customers').doc(req.body.bookings.CustId).set({
+                          name:req.body.bookings.CustName,
+                          photo:"https://img.icons8.com/bubbles/100/000000/man-with-envelope.png",
+                          text:`Send message to ${req.body.bookings.CustName}`
+                        })
+                        .then(()=>{
+                          res.send('Details Updated successfully');
+                        })
                     })
                     .catch(function(error) {
                         console.error("Error writing document: ", error);
                     });
-    
-    //res.redirect('http://localhost:3000/#/profile');
-   res.send('Details Updated successfully');
 });
 
 Events.post('/addMan/:key',(req,res) => {

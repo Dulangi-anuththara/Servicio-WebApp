@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
 import { render } from 'react-dom'
-import {Modal, Button} from 'react-bootstrap'
-import { Row, Col } from 'reactstrap'
 import ConversationList from './ConversationList';
-import MessageList from './MessageList'
 import {Launcher} from 'react-chat-window';
 import ClipLoader from "react-spinners/ClipLoader";
 import { css } from "@emotion/core";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Paper } from '@material-ui/core';
+import axios from 'axios' ;
 
 const override = css`
   display: block;
@@ -31,21 +25,7 @@ class Message extends Component{
             loading: false,          
             open:false,
             openDialog:false,
-            messageList: [
-            {
-                author: 'them',
-              type: 'text',
-              data: {
-                text: 'Hi'
-              }
-            },
-            {
-            author: 'me',
-              type: 'text',
-              data: {
-                text: 'Im Dulangi'
-              }
-            }]
+            messageList: []
           };
     }
     _onMessageWasSent(message) {
@@ -66,10 +46,24 @@ class Message extends Component{
         }
       }
 
-      handleChatboxClick(){
+      handleChatboxClick(e){
+        const id = e.target.id
+
           this.setState({
             loading:true,
             openDialog:true
+          },()=>{
+            const URL =`http://localhost:5000/msg/${id}/${this.props.uid}`
+            axios.get(URL)
+            .then(response=>{
+              console.log(response.data)
+              this.setState({
+                messageList:response.data,
+                loading:false,
+                openDialog:false,
+                open:true
+              })
+            })
           })
       }
 
@@ -88,13 +82,14 @@ class Message extends Component{
             <div>
       <div>
       <ConversationList 
+      uid={this.props.uid}
       func={this.handleChatboxClick}
       />
     </div>
     <Launcher
             agentProfile={{
-            teamName: 'Servico',
-            imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+            teamName: 'SERVICIO',
+            imageUrl: "https://img.icons8.com/bubbles/50/000000/man-with-envelope.png"
             }}
             onMessageWasSent={this._onMessageWasSent.bind(this)}
             messageList={this.state.messageList}
@@ -113,6 +108,7 @@ class Message extends Component{
                         size={150}
                         color={"#123abc"}
                         loading={this.state.loading}
+                        
                       />
 
                       </DialogActions>
