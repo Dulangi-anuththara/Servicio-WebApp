@@ -16,13 +16,23 @@ export default {
       icon: 'icon-drop',
     },
     {
-      name: 'Service and Garage Centers',
-      url: '/theme/typography',
+      name: 'Service Centers',
+      url: '/servicecen',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Garage Centers',
+      url: '/garagecen',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Verification Request',
+      url: '/verification_requests',
       icon: 'icon-pencil',
     },
     {
       name: 'Analytics',
-      url: '/theme/typography',
+      url: '/reports',
       icon: 'icon-pencil',
     },
    {

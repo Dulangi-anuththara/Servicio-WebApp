@@ -30,6 +30,16 @@ user.post('/imgUpload',(req,res)=>{
      
 })
 
+user.post('/imgUploadBR',(req,res)=>{
+
+    let data ={
+        Image:req.body.Image
+    }
+    let docRef = db.collection('Users').doc('1');
+    let setDoc = docRef.update(data);
+     res.send("Done");
+     
+})
 
 user.post('/profile/edit',(req,res) => {
         //console.log(req.body);

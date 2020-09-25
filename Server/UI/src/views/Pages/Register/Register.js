@@ -7,6 +7,9 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import '../Login/LoginPage.css';
 import lgo from "../../../assets/images/lgo.jpg"
+import { storage } from "../../../storage";
+import { Dialog, DialogActions, DialogContent,DialogTitle, TextField, } from "@material-ui/core";
+import { Badge, Card, CardBody, CardHeader, Col, Row, Table , FormGroup, Input, Label } from 'reactstrap';
 
 
 
@@ -15,11 +18,70 @@ class Register extends Component {
     state = {
         email: '',
         password: '',
-        full_name: '',
+        Service_name: '',
         // grade: '',
         user_type: '',
-        redirect: null
+        Photo: '',
+        SearchKey: '',
+        Rating:0,
+        Desc:'',
+        redirect: null,
+        isVerified: false,
+        Image:'',
+        Verification:''
     }
+
+    handleClickOpen = () => {
+      this.setState({
+        open:true
+      })
+    };
+    
+    handleClose = () => {
+    this.setState({
+      open:false
+    })
+    };
+
+    handleChange = (e) =>{
+      if(e.target.files[0]){
+        this.setState({Photo:e.target.files[0]});
+        
+      }
+      ;
+  }
+
+  handleUpload = () => {
+    this.setState({
+      open:false
+    })
+    console.log(this.state.Test)
+    
+      // .then(url =>{
+      //   console.log(url);
+        
+      //   const data ={
+      //     Image:url,
+      //   }
+      //   const path= "http://localhost:5000/user/imgUploadBR";
+      //   axios.post(path,data)
+      //         .then((response)=>{
+      //           console.log('Good. '+response.data);
+      //           // this.props.history.push('/profile');
+                
+      //       })
+      //       .catch((err)=>{
+
+      //         console.log(err);
+      //       });
+
+      //  this.setState({
+      //    Image:url,
+      //  })
+        
+    //   })
+    // })
+  }
 
     setEmail = (event) => {
         this.setState({email: event.target.value});
@@ -31,7 +93,20 @@ class Register extends Component {
 
     setName = (event) => {
         this.setState({full_name: event.target.value});
+
+      var names = event.target.value.toUpperCase().trim();
+      this.setState({SearchKey: names[0]});
     }
+
+    setDesc = (event) => {
+      this.setState({Desc: event.target.value});
+
+  }
+
+  //   setLetter = (event) => {
+  //     var names = event.target.value.trim();
+  //     this.setState({SearchKey: names[0]});
+  // }
 
     setUtype = (event) => {
         this.setState({
@@ -80,20 +155,48 @@ else {
                 console.log(err);
             }));
 
-            await fire.firestore().doc(`users/${id}`).set({
-                user_type: this.state.user_type,
-                full_name: this.state.full_name,
-                // grade: this.state.grade
-            }).then(res => {
-                console.log(res);
-                //this.setState({redirect: <Redirect to="/dashboard"/>})
+            const uploadTask = storage.ref(`images/${this.state.Photo.name}`).put(this.state.Photo);
+            uploadTask.on("state_changed", snapshot => {}, error => {
+            console.log(error);
+           
+            },
+            ()=>{
+            
+              storage.ref("images")
+              .child(this.state.Photo.name)
+              .getDownloadURL()
+              .then(URL=>{
+                this.setState({Image:URL})
+                 
+               
+                  // grade: this.state.grade
+              }).then(res => {
+                  console.log(res);
+                  fire.firestore().doc(`Users/${id}`).set({
+                  user_type: this.state.user_type,
+                  Service_Name: this.state.full_name,
+                  Email: this.state.email,
+                  SearchKey: this.state.SearchKey,
+                  BRPhoto: this.state.Image,
+                  Rating: this.state.Rating,
+                  Description: this.state.Desc,
+                  isVerified: this.state.isVerified,
+                  //this.setState({redirect: <Redirect to="/dashboard"/>})
+              }) })
+          
+          .catch((err) => {
+              console.log(err.message);
+              alert(err.message);
+          })
+              
+              
+              })
             })
-        })
-        .catch((err) => {
-            console.log(err.message);
-            alert(err.message);
-        })
+
+           
 }
+
+
    
         
     }
@@ -137,7 +240,8 @@ else {
             <input type="text"
                      id="full_name"
                      label="Full Name"
-                     onChange={this.setName} className="form-control input_user" placeholder="Full Name" required />
+                     onChange={this.setName} onch className="form-control input_user" placeholder="Full Name" required />
+                     
           </div>
 
           <div className="input-group mb-3">
@@ -173,6 +277,43 @@ else {
                             </Select>
                         </FormControl>
                 </div>
+
+                <div className="input-group mb-2">
+            <div className="input-group-append">
+              <span className="input-group-text"><i className="fas fa-key" /></span>
+            </div>
+            <input type="password" id="password"
+                    label="Description"
+                    type="span"
+                    onChange={this.setDesc} className="form-control input_pass" placeholder="Describe About your Company" />
+          </div>
+          <div>
+          
+          <Button color="light" onClick={this.handleClickOpen}> Upload your BR <i className="fa fa-camera fa-lg"></i>&nbsp;</Button>
+          
+          <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                     <DialogTitle id="form-dialog-title">Upload Your Image</DialogTitle>
+                        <DialogContent>     
+                        
+                      <FormGroup row>
+                          <Col md="3">
+                            <Label htmlFor="file-input">File input</Label>
+                          </Col>
+                          <Col xs="12" md="9">
+                            <Input type="file" id="test" name="test" onChange={this.handleChange} />
+                          </Col>
+                      </FormGroup>
+                      </DialogContent>
+                          <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                              Cancel
+                            </Button>
+                            <Button onClick={this.handleUpload} color="primary">
+                              Upload
+                            </Button>
+                          </DialogActions>
+                  </Dialog></div>
+
           <div className="d-flex justify-content-center mt-3 login_container">
           <Button onClick={this.registrationHandler} className="btn login_btn">Register</Button>
           </div>

@@ -36,6 +36,11 @@ const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 const Customer = React.lazy(() => import('./views/Customers/Customer'));
+const Service = React.lazy(() => import('./views/Centers/servicecen'));
+const garage = React.lazy(() => import('./views/Centers/garagecen'));
+const request = React.lazy(() => import('./views/Request/Request'));
+const Reports = React.lazy(() => import('./views/Reports/reports'));
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -81,6 +86,10 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/customer', exact: true, name: 'Customer Details', component: Customer },
+  { path: '/servicecen', exact: true, name: 'Service Details', component: Service },
+  { path: '/garagecen', exact: true, name: 'Garage Details', component: garage },
+  { path: '/verification_requests', exact: true, name: 'Verfication Requests', component: request },
+  { path: '/reports', exact: true, name: 'Report Details', component: Reports },
 
 ];
 

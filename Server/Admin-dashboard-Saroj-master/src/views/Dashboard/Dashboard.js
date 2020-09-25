@@ -1,4 +1,6 @@
 import React, { Component, lazy, Suspense } from 'react';
+import {VictoryPie} from 'victory';
+import firebase from "firebase"
 import { Bar, Line } from 'react-chartjs-2';
 import {
   Badge,
@@ -462,8 +464,47 @@ class Dashboard extends Component {
     this.state = {
       dropdownOpen: false,
       radioSelected: 2,
+      totalcount: '',
+      garcount: '',
+      sercount:''
     };
   }
+
+  componentDidMount(){
+    const url = "http://localhost:5000/admin/profile";
+
+   
+    if(!firebase.apps.length){
+
+      firebase.initializeApp({
+        apiKey: 'AIzaSyC1I4w3OUaDmITrLrA0TDfhicVwVWDnJrk',
+        authDomain: 'servicio-11f11.firebaseapp.com',
+        projectId: 'servicio-11f11'
+      });
+    }
+    
+    var db = firebase.firestore();
+
+   
+    db.collection(`users`)
+      .get()
+      .then( Documents => {
+        console.log(Documents.docs.length)
+        const data = Documents.docs.map( d => d.data());
+       
+        this.setState({ yasa: data });
+        this.setState({totalcount: data.length})
+
+        const serdata = Documents.docs.filter( s => s.data().user_type==='service');
+        this.setState({sercount: serdata.length});
+
+        const gardata = Documents.docs.filter( g => g.data().user_type==='garage');
+        this.setState({garcount: gardata.length});
+
+        
+        //console.log(data)
+      })
+}
 
   toggle() {
     this.setState({
@@ -500,8 +541,8 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
+                <div className="text-value">{this.state.totalcount}</div>
+                <div>Total Users</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                 <Line data={cardChartData2} options={cardChartOpts2} height={70} />
@@ -524,8 +565,8 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
+                <div className="text-value">{this.state.sercount}</div>
+                <div>Service Centers</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                 <Line data={cardChartData1} options={cardChartOpts1} height={70} />
@@ -548,8 +589,8 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
+                <div className="text-value">{this.state.garcount}</div>
+                <div>Repair Centers</div>
               </CardBody>
               <div className="chart-wrapper" style={{ height: '70px' }}>
                 <Line data={cardChartData3} options={cardChartOpts3} height={70} />
@@ -581,6 +622,21 @@ class Dashboard extends Component {
             </Card>
           </Col>
         </Row>
+
+        <h3 style= {{paddingLeft:15}}> Total users upto date </h3>
+                                <VictoryPie 
+                                    radius = {30}
+                                    colorScale = {["orange", "gold"]}
+                                    innerRadius = {15}
+                                    outerRadius = {30}
+                                    height = {100}
+                                    data = {[
+                                        {x: "Services\n"+this.state.sercount, y:this.state.sercount},
+                                        {x: "Garages\n"+this.state.garcount, y:this.state.garcount}
+                                    ]}
+                                    style={{ labels: { fontSize: 7}}}
+                                />     
+
         <Row>
           <Col>
             <Card>

@@ -12,7 +12,8 @@ class Login extends Component {
         email: '',
         password: '',
         userType: '',
-        redirect: null
+        redirect: null,
+        Verification:''
 
     }
 
@@ -47,10 +48,13 @@ class Login extends Component {
             if(!res.user.emailVerified){
               console.log(`not verified`)
               alert("Please verify your email before login");
-              
+              if(this.state.Verification!=false){
+                alert("Your Account is Pending!!");
+              }
+
             }
             else{
-              fire.firestore().doc(`users/${id}`).get().then( res =>{
+              fire.firestore().doc(`Users/${id}`).get().then( res =>{
                 this.setState({
                   userType: res.data().user_type
                 });

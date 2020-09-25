@@ -6,7 +6,7 @@ class Typography extends Component {
       <div className="animated fadeIn">
         <div className="card">
           <div className="card-header">
-            Headings
+            fHeadings
           </div>
           <div className="card-body">
             <p>Documentation and examples for Bootstrap typography, including global settings, headings, body text, lists, and more.</p>

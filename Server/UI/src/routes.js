@@ -43,13 +43,10 @@ const CalendarThree = React.lazy(() => import('./views/Calendar/CalendarThree'))
 const CalendarFour = React.lazy(() => import('./views/Calendar/CalendarFour'));
 const CalendarFive = React.lazy(() => import('./views/Calendar/CalendarFive'));
 const CalendarSix = React.lazy(() => import('./views/Calendar/CalendarSix'));
-<<<<<<< HEAD
 const Requests = React.lazy(() => import('./views/Requests/Requests'));
 const Subscription =  React.lazy(() => import('./views/Payment/subscription'));
 
-=======
 const CustomerView = React.lazy(() => import('./views/Customer/CustomerView'));
->>>>>>> 703b1b6cb8ecb85e32158ab6af5c32030f25f18c
 
 
 
@@ -104,12 +101,9 @@ const routes = [
   { path: '/CalendarFour', name: 'Calendar Two', component: CalendarFour },
   { path: '/CalendarFive', name: 'Calendar Five', component: CalendarFive },
   { path: '/CalendarSix', name: 'Calendar Six', component: CalendarSix },
-<<<<<<< HEAD
   { path: '/Requests', name:'New Requests', component:Requests},
   { path: '/Payment', name:'New Requests', component:Subscription},
-=======
   { path: '/CustomerView', name: 'Customer View', component: CustomerView },
->>>>>>> 703b1b6cb8ecb85e32158ab6af5c32030f25f18c
 
 
 
