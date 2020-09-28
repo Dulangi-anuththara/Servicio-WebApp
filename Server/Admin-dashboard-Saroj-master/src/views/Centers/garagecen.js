@@ -85,7 +85,7 @@ class garage extends Component {
       Description: "",
       Service_Name: "",
       _id: null,
-      user: {}
+      user: {},
     });
   }
 
@@ -115,7 +115,7 @@ class garage extends Component {
     }
 
     let db = firebase.firestore();
-    db.collection(`Users`)
+    db.collection(`Services`)
       .get()
       .then((Documents) => {
         console.log(Documents.docs.length);
@@ -154,7 +154,7 @@ class garage extends Component {
     // Delete User
     const deleteUser = (id) => {
       const db = firebase.firestore();
-      db.collection("Users").doc(id).delete();
+      db.collection("Services").doc(id).delete();
       window.setTimeout(redirect, 2000);
     };
 
@@ -163,19 +163,22 @@ class garage extends Component {
     };
 
     const openEditMoadal = (user) => {
-    
-      this.setState({ user: user });
+      this.setState({
+        user: user,
+        Service_Name: user.Service_Name,
+        Description: user.Description,
+        Email: user.Email,
+      });
       this.setState({
         editmodalVisiblity: true,
       });
     };
 
-    
     //console.log(t)
     return Object.values(t).map(function (currentlist, i) {
       console.log(currentlist);
       if (currentlist.user_type !== "garage" || currentlist.isVerified !== true)
-      return;
+        return;
       return (
         <GarageReg
           id={currentlist.docId}
@@ -209,7 +212,7 @@ class garage extends Component {
   submitVerified = () => {
     firebase
       .firestore()
-      .doc(`Users/${this.state.id}`)
+      .doc(`Services/${this.state.id}`)
       .update({
         isVerified: this.state.isVerified,
       })
@@ -247,25 +250,24 @@ class garage extends Component {
     //firebase
   };
 
+  // Edit User
+  editUser = (Email, Description, Service_Name, user) => {
+    const db = firebase.firestore();
+    db.collection("Services")
+      .doc(user.docId)
+      .set({ ...user, Email, Description, Service_Name });
 
-    // Edit User
-    editUser = (Email, Description, Service_Name, user) => {
-      const db = firebase.firestore();
-      db.collection("Users").doc(user.docId).set({...user, Email, Description, Service_Name});
-
-      this.cloeseEditUserModal()
-      window.setTimeout(()=>{
-        window.location.reload();
-      }, 2000);
-    };
-
-
-  handleSubmit = () => {
-    const {Email, Description, Service_Name, user} = this.state;
-
-    this.editUser(Email, Description, Service_Name, user)
+    this.cloeseEditUserModal();
+    window.setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
+  handleSubmit = () => {
+    const { Email, Description, Service_Name, user } = this.state;
+
+    this.editUser(Email, Description, Service_Name, user);
+  };
 
   render() {
     return (
@@ -337,7 +339,9 @@ class garage extends Component {
                     }}
                   />
                 </div>
-                <button className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+                <button className="btn btn-primary" onClick={this.handleSubmit}>
+                  Submit
+                </button>
               </div>
             </div>
           </Modal>
@@ -345,17 +349,17 @@ class garage extends Component {
           <Modal
             visible={this.state.show}
             width="400"
-            height="500"
+            height="400"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
-            <div>
+            <div style={{ padding: 25 }}>
               <h1>Title</h1>
               <p>Some Contents</p>
-              <div style={{ maxHeight: "50px", maxWidth: "150px" }}>
+              <div style={{ Height: "100px", Width: "100px", paddingLeft: 55 }}>
                 <img
-                  style={{ height: "100%", width: "100%", objectFit: "cover" }}
-                  src={this.state.photo ? this.state.photo : ""}
+                  style={{ width: "80%", objectFit: "cover" }}
+                  src={"https://via.placeholder.com/150"}
                 />
               </div>
               {(this.state.isVerified && this.state.isSubmited) ||

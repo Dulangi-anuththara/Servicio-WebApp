@@ -103,9 +103,10 @@ class Customer extends Component {
     };
 
     const openEditMoadal = (user) => {
-   
       this.setState({
         user: user,
+        full_name: user.name,
+        _tel: user.tel_num,
       });
       this.setState({
         editmodalVisiblity: true,
@@ -114,7 +115,6 @@ class Customer extends Component {
 
     //console.log(t)
     return Object.values(t).map(function (currentlist, i) {
-    
       return (
         <UserReg
           email={currentlist.email}
@@ -137,7 +137,7 @@ class Customer extends Component {
     const db = firebase.firestore();
     db.collection("Customers")
       .doc(user.user_id)
-      .set({ ...user,name,tel_num});
+      .set({ ...user, name, tel_num });
 
     this.cloeseEditUserModal();
     window.setTimeout(() => {
@@ -146,7 +146,7 @@ class Customer extends Component {
   };
 
   handleSubmit = () => {
-    const { _tel,full_name, user } = this.state;
+    const { _tel, full_name, user } = this.state;
 
     this.editUser(_tel, full_name, user);
   };

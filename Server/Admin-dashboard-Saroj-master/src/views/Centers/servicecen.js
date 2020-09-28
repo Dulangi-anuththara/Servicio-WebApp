@@ -88,27 +88,6 @@ class garage extends Component {
     });
   }
   componentDidMount() {
-    // const url = "http://localhost:5000/admin/profile";
-    // Axios
-    //        .get(url)
-    //        .then( response => {
-    //          console.log(response.data);
-    //          this.setState({
-    //            Name:response.data.full_name,
-    //            Email:response.data.Email,
-    //            UserType:response.data.user_type
-    //           });
-    //           console.log(this.state.Image);
-
-    //         }
-    //   )
-    //   .catch((err) => console.log(err))
-
-    // firebase.initializeApp({
-    //   apiKey: 'AIzaSyC1I4w3OUaDmITrLrA0TDfhicVwVWDnJrk',
-    //   authDomain: 'servicio-11f11.firebaseapp.com',
-    //   projectId: 'servicio-11f11'
-    // });
     if (!firebase.apps.length) {
       firebase.initializeApp({
         apiKey: "AIzaSyC1I4w3OUaDmITrLrA0TDfhicVwVWDnJrk",
@@ -118,7 +97,7 @@ class garage extends Component {
     }
     let db = firebase.firestore();
 
-    db.collection(`Users`)
+    db.collection(`Services`)
       .get()
       .then((Documents) => {
         console.log(Documents.docs.length);
@@ -157,7 +136,7 @@ class garage extends Component {
     // Delete User
     const deleteUser = (id) => {
       const db = firebase.firestore();
-      db.collection("Users").doc(id).delete();
+      db.collection("Services").doc(id).delete();
       window.setTimeout(redirect, 2000);
     };
 
@@ -166,7 +145,12 @@ class garage extends Component {
     };
 
     const openEditMoadal = (user) => {
-      this.setState({ user: user });
+      this.setState({
+        user: user,
+        Service_Name: user.Service_Name,
+        Description: user.Description,
+        Email: user.Email,
+      });
       this.setState({
         editmodalVisiblity: true,
       });
@@ -175,7 +159,10 @@ class garage extends Component {
     //console.log(t)
     return Object.values(t).map(function (currentlist, i) {
       console.log(currentlist);
-      if (currentlist.user_type !== "service" || currentlist.isVerified !== true)
+      if (
+        currentlist.user_type !== "service" ||
+        currentlist.isVerified !== true
+      )
         return;
       return (
         <GarageReg
@@ -210,7 +197,7 @@ class garage extends Component {
   submitVerified = () => {
     firebase
       .firestore()
-      .doc(`Users/${this.state.id}`)
+      .doc(`Services/${this.state.id}`)
       .update({
         isVerified: this.state.isVerified,
       })
@@ -250,7 +237,7 @@ class garage extends Component {
   // Edit User
   editUser = (Email, Description, Service_Name, user) => {
     const db = firebase.firestore();
-    db.collection("Users")
+    db.collection("Services")
       .doc(user.docId)
       .set({ ...user, Email, Description, Service_Name });
 
@@ -345,17 +332,17 @@ class garage extends Component {
           <Modal
             visible={this.state.show}
             width="400"
-            height="500"
+            height="400"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
-            <div>
+            <div style={{ padding: 25 }}>
               <h1>Title</h1>
               <p>Some Contents</p>
-              <div style={{ maxHeight: "50px", maxWidth: "150px" }}>
+              <div style={{ height: "100px", Width: "100px", paddingLeft: 55 }}>
                 <img
-                  style={{ height: "100%", width: "100%", objectFit: "cover" }}
-                  src={this.state.photo ? this.state.photo : ""}
+                  style={{ width: "80%", objectFit: "cover" }}
+                  src={"https://via.placeholder.com/150"}
                 />
               </div>
               {(this.state.isVerified && this.state.isSubmited) ||
@@ -366,9 +353,7 @@ class garage extends Component {
                   onChange={this.setVerified}
                 ></input>
               )}
-              <a href="javascript:void(0);" onClick={() => this.closeModal()}>
-                Close
-              </a>
+
               {(this.state.isVerified && this.state.isSubmited) ||
               this.state.initialVerified ? null : (
                 <button onClick={this.submitVerified}>Submit</button>
