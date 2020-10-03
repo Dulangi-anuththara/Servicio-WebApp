@@ -65,16 +65,11 @@ class garage extends Component {
     };
   }
 
-  //    openModal() {
-  //     this.setState({
-  //         visible : true
-  //     });
-  // }
-
   closeModal() {
     this.setState({
       visible: false,
       show: false,
+      photo: "",
     });
   }
 
@@ -118,7 +113,7 @@ class garage extends Component {
     db.collection(`Services`)
       .get()
       .then((Documents) => {
-        console.log(Documents.docs.length);
+        // console.log(Documents.docs.length);
         const data = Documents.docs.map((d) => {
           return {
             ...d.data(),
@@ -131,7 +126,7 @@ class garage extends Component {
           (g) => g.data().user_type === "garage"
         );
         this.setState({ garcount: gardata.length });
-        console.log(gardata);
+        // console.log(gardata);
         //console.log(data)
       });
   }
@@ -147,8 +142,8 @@ class garage extends Component {
         initialVerified: isV,
         id: id,
       });
-      console.log(isV);
-      console.log(id);
+      // console.log(isV);
+      // console.log(id);
     };
 
     // Delete User
@@ -176,9 +171,10 @@ class garage extends Component {
 
     //console.log(t)
     return Object.values(t).map(function (currentlist, i) {
-      console.log(currentlist);
+      // console.log(currentlist);
       if (currentlist.user_type !== "garage" || currentlist.isVerified !== true)
         return;
+      console.log(currentlist);
       return (
         <GarageReg
           id={currentlist.docId}
@@ -217,10 +213,10 @@ class garage extends Component {
         isVerified: this.state.isVerified,
       })
       .then((d) => {
-        console.log(d);
+        // console.log(d);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
 
     this.setState({
@@ -231,7 +227,7 @@ class garage extends Component {
   };
 
   setVerified = () => {
-    console.log("setVerified");
+    // console.log("setVerified");
 
     this.setState({
       isVerified: !this.state.isVerified,
@@ -359,7 +355,7 @@ class garage extends Component {
               <div style={{ Height: "100px", Width: "100px", paddingLeft: 55 }}>
                 <img
                   style={{ width: "80%", objectFit: "cover" }}
-                  src={"https://via.placeholder.com/150"}
+                  src={this.state.photo}
                 />
               </div>
               {(this.state.isVerified && this.state.isSubmited) ||

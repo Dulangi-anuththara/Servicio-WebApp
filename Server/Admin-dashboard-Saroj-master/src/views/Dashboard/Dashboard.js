@@ -486,8 +486,8 @@ class Dashboard extends Component {
   );
 
   getTotalUsers = () => {
-    if (this.state.users && this.state.customers)
-      return this.state.users.length + this.state.customers.length;
+    if (this.state.services && this.state.customers)
+      return this.state.services.length + this.state.customers.length;
   };
 
   getServiceCenters = () => {
@@ -527,7 +527,7 @@ class Dashboard extends Component {
 
   getSystemUsers = () => {
     if (this.state.users) {
-      return this.state.users.length;
+      return this.state.services.length;
     }
   };
 

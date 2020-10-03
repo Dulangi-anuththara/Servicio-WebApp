@@ -10,6 +10,7 @@ import {
   PaginationLink,
   Table,
 } from "reactstrap";
+import _ from "lodash";
 import Modal from "react-awesome-modal";
 
 const UserReg = (props) => (
@@ -45,20 +46,7 @@ class Customer extends Component {
 
   componentDidMount() {
     const url = "http://localhost:5000/admin/profile";
-    // Axios
-    //        .get(url)
-    //        .then( response => {
-    //          console.log(response.data);
-    //          this.setState({
-    //            Name:response.data.full_name,
-    //            Email:response.data.Email,
-    //            UserType:response.data.user_type
-    //           });
-    //           console.log(this.state.Image);
 
-    //         }
-    //   )
-    //   .catch((err) => console.log(err))
     if (!firebase.apps.length) {
       firebase.initializeApp({
         apiKey: "AIzaSyC1I4w3OUaDmITrLrA0TDfhicVwVWDnJrk",
@@ -72,12 +60,11 @@ class Customer extends Component {
     db.collection(`Customers`)
       .get()
       .then((Documents) => {
-        console.log(Documents.docs.length);
         const data = Documents.docs.map((d) => d.data());
         this.setState({ yasa: data });
-        //console.log(data)
       });
   }
+
   cloeseEditUserModal() {
     this.setState({
       editmodalVisiblity: false,
@@ -113,8 +100,15 @@ class Customer extends Component {
       });
     };
 
-    //console.log(t)
-    return Object.values(t).map(function (currentlist, i) {
+    // bug fixes-empty objects being displaying
+    let _customers = [];
+    Object.values(t).map((_customer, index) => {
+      if (_customer.email) {
+        _customers.push(_customer);
+      }
+    });
+    console.log(_customers);
+    return _customers.map(function (currentlist, i) {
       return (
         <UserReg
           email={currentlist.email}

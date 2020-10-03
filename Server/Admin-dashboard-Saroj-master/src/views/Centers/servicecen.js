@@ -75,6 +75,7 @@ class garage extends Component {
     this.setState({
       visible: false,
       show: false,
+      photo: "",
     });
   }
   cloeseEditUserModal() {
@@ -100,7 +101,6 @@ class garage extends Component {
     db.collection(`Services`)
       .get()
       .then((Documents) => {
-        console.log(Documents.docs.length);
         const data = Documents.docs.map((d) => {
           return {
             ...d.data(),
@@ -113,8 +113,6 @@ class garage extends Component {
           (g) => g.data().user_type === "service"
         );
         this.setState({ garcount: gardata.length });
-        console.log(gardata);
-        //console.log(data)
       });
   }
 
@@ -122,6 +120,8 @@ class garage extends Component {
     let t = { ...this.state.yasa };
 
     const openImage = (photo, isV, id) => {
+      console.log("garage -> openImage -> photo", photo);
+
       this.setState({
         photo: photo,
         show: true,
@@ -129,8 +129,6 @@ class garage extends Component {
         initialVerified: isV,
         id: id,
       });
-      console.log(isV);
-      console.log(id);
     };
 
     // Delete User
@@ -158,12 +156,12 @@ class garage extends Component {
 
     //console.log(t)
     return Object.values(t).map(function (currentlist, i) {
-      console.log(currentlist);
       if (
         currentlist.user_type !== "service" ||
         currentlist.isVerified !== true
       )
         return;
+
       return (
         <GarageReg
           id={currentlist.docId}
@@ -202,10 +200,10 @@ class garage extends Component {
         isVerified: this.state.isVerified,
       })
       .then((d) => {
-        console.log(d);
+        // console.log(d);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
 
     this.setState({
@@ -216,23 +214,11 @@ class garage extends Component {
   };
 
   setVerified = () => {
-    console.log("setVerified");
+    // console.log("setVerified");
 
     this.setState({
       isVerified: !this.state.isVerified,
     });
-
-    // db.collection(`Users`)
-    // .where("Email" , "==", "rosicoh983@trufilth.com")
-    // .update({
-    //   isVerified: this.state.isVerified
-    // }).then((d)=> {
-    //   console.log(d);
-    // }).catch((e)=> {
-    //   console.log(e);
-    // })
-
-    //firebase
   };
   // Edit User
   editUser = (Email, Description, Service_Name, user) => {
@@ -257,20 +243,6 @@ class garage extends Component {
     return (
       <div className="animated fadeIn">
         <div>
-          {/* <Modal show={this.state.show} >
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body><img src={this.state.photo ? this.state.photo : ''}/></Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" >
-            Close
-          </Button>
-          <Button variant="primary" >
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
           <Modal
             visible={this.state.editmodalVisiblity}
             onClickAway={() => this.cloeseEditUserModal()}
@@ -342,7 +314,7 @@ class garage extends Component {
               <div style={{ height: "100px", Width: "100px", paddingLeft: 55 }}>
                 <img
                   style={{ width: "80%", objectFit: "cover" }}
-                  src={"https://via.placeholder.com/150"}
+                  src={this.state.photo}
                 />
               </div>
               {(this.state.isVerified && this.state.isSubmited) ||

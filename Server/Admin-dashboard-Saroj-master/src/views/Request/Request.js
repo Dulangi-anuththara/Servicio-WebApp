@@ -64,6 +64,7 @@ class garage extends Component {
     this.setState({
       visible: false,
       show: false,
+      photo: "",
     });
   }
 
@@ -101,6 +102,7 @@ class garage extends Component {
     let t = { ...this.state.yasa };
 
     const openImage = (photo, isV, id, user) => {
+      console.log("garage -> openImage -> photo", photo);
       this.setState({
         photo: photo,
         show: true,
@@ -109,20 +111,19 @@ class garage extends Component {
         id: id,
         _selectedUser: user,
       });
-      // console.log(isV);
-      // console.log(id);
     };
 
     //console.log(t)
     return Object.values(t).map(function (currentlist, i) {
-      // console.log(currentlist);
       if (currentlist.isVerified === true) return;
+      console.log("garage -> Users -> currentlist", currentlist);
+
       return (
         <GarageReg
           id={currentlist.docId}
           openImage={() =>
             openImage(
-              currentlist.Photo,
+              currentlist.BRPhoto,
               currentlist.isVerified,
               currentlist.docId,
               currentlist
@@ -172,8 +173,8 @@ class garage extends Component {
         AddressTwo: "address2",
         City: "please enter a city",
         Favs: ["", ""],
-        Image: "https://via.placeholder.com/150",
-        Photo: "https://via.placeholder.com/150",
+        Image: BRPhoto,
+        Photo: BRPhoto,
         Name: "dummy name",
         Registeration_No: "20XX-XX-XX",
         Service_Id: docId,
@@ -233,7 +234,7 @@ class garage extends Component {
               <div style={{ Height: "100px", Width: "100px", paddingLeft: 60 }}>
                 <img
                   style={{ width: "80%", objectFit: "cover" }}
-                  src={"https://via.placeholder.com/150"}
+                  src={this.state.photo}
                 />
               </div>
               <div style={{ marginTop: 10, marginLeft: 210 }}>
