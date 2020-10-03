@@ -11,7 +11,8 @@ import fire from "../../../storage/index";
 import { connect } from "react-redux";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import "../Login/LoginPage.css";
+// import "../Login/LoginPage.css";
+import "./RegisterPage.css"
 import lgo from "../../../assets/images/lgo.jpg";
 import { storage } from "../../../storage";
 import {
@@ -382,8 +383,8 @@ class Register extends Component {
                   </div>
 
                   <div>
-                    <Button color="light" onClick={this.handleClickOpen}>
-                      Upload your BR <i className="fa fa-camera fa-lg"></i>
+                    <Button color="light" onClick={this.handleClickOpen} className="login_btn">
+                      Upload your BR 📷
                       &nbsp;
                     </Button>
 
@@ -423,9 +424,9 @@ class Register extends Component {
                   <div className="d-flex justify-content-center mt-3 login_container">
                     <Button
                       onClick={() => this.getUserLocation()}
-                      className="btn btn-primary"
+                      className="btn btn-primary login_btn"
                     >
-                      Add service location
+                      Add service location 📍
                     </Button>
                   </div>
                   <div className="d-flex justify-content-center mt-3 login_container">
@@ -433,7 +434,7 @@ class Register extends Component {
                       onClick={this.registrationHandler}
                       className="btn login_btn"
                     >
-                      Register
+                      <b>Register</b>
                     </Button>
                   </div>
                 </form>
