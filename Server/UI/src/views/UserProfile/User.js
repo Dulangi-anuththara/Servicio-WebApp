@@ -131,10 +131,11 @@ class User extends Component {
             <div className="bd-example bd-example-type">
               <table className="table">
                 <tbody>
+                <tr style={{alignContent:'center'}}><img src={'../../assets/img/avatars/8.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" /></tr>
                 <tr>
                   
                   <div style={{height:300,borderRadius:'6px'}}>          
-                  <Image src={this.state.Image} fluid></Image>        
+                  <Image src={this.state.Image} roundedCircle style={{alignItems:'center'}}></Image>        
                 <Button color="light" className="align-items-center" onClick={this.handleClickOpen} size='lg' style={{marginTop:30,marginLeft:980}}>
                   <i className="fa fa-camera fa-lg"></i>&nbsp;Edit Cover Photo
                 </Button>
@@ -177,13 +178,13 @@ class User extends Component {
 
 
         <Row>
-          <Col xs="0" lg="12">
+         <Col xs={10} style={{marginLeft:90}}>
             <Card>
               <CardHeader>
 
                 <Row>
                 <Col col="12" xl className="mb-3 mb-xl-0">
-                My Profile{this.props.uid}
+                My Profile
               </Col>
               <Col xs lg="2">
                 <Link to={{

@@ -58,40 +58,7 @@ export default {
       name: 'My Calendar',
       url: '/CalendarThree',
       icon: 'icon-calendar',
-    /*  children: [
-        {
-          name: 'Calendar One',
-          url: '/CalendarOne',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Two',
-          url: '/CalendarTwo',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Three',
-          url: '/CalendarThree',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Four',
-          url: '/CalendarFour',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Five',
-          url: '/CalendarFive',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Six',
-          url: '/CalendarSix',
-          icon: 'icon-calendar',
-        },
-      ]*/
-    },
-    
+    },  
     
     
     {
@@ -100,14 +67,14 @@ export default {
       icon: 'icon-plus',
     },
     {
-      name: 'Pay Subscription',
-      url: '/Payment',
-      icon: 'icon-handbag',
+      name: 'Message List',
+      url: '/message',
+      icon: 'icon-envelope',
     },
     {
-      name: 'Message',
-      url: '/message',
-      icon: 'icon-handbag',
+      name: 'Pay Subscription',
+      url: '/Payment',
+      icon: 'icon-paypal',
     },
     
   {
@@ -368,5 +335,5 @@ export default {
       variant: 'danger',
       attributes: { target: '_blank', rel: "noopener" },
     },
-  ],
+   ],
 };

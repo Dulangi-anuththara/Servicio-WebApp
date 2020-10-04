@@ -80,7 +80,9 @@ class Message extends Component{
         
     return (
             <div>
-      <div>
+      <div style={{
+        margin:20
+      }}>
       <ConversationList 
       uid={this.props.uid}
       func={this.handleChatboxClick}
