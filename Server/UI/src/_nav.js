@@ -4,10 +4,6 @@ export default {
       name: 'Dashboard',
       url: '/dashboard',
       icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
     },
     {
       title: true,
@@ -43,70 +39,45 @@ export default {
       children: [
         {
           name: 'Pending',
-          url: '/profile',
+          url: '/Today',
           icon: 'icon-hourglass',
         },
         {
           name: 'In Progress',
-          url: '/Edit',
+          url: '/InProgress',
           icon: 'icon-wrench',
         },
         {
           name: 'Done',
-          url: '/Edit',
+          url: '/done',
           icon: 'icon-check',
         },
       ]
     },
     {
-      name: 'Calendar',
+      name: 'My Calendar',
       url: '/CalendarThree',
       icon: 'icon-calendar',
-    /*  children: [
-        {
-          name: 'Calendar One',
-          url: '/CalendarOne',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Two',
-          url: '/CalendarTwo',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Three',
-          url: '/CalendarThree',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Four',
-          url: '/CalendarFour',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Five',
-          url: '/CalendarFive',
-          icon: 'icon-calendar',
-        },
-        {
-          name: 'Calendar Six',
-          url: '/CalendarSix',
-          icon: 'icon-calendar',
-        },
-      ]*/
-    },
+    },  
+    
+    
     {
       name: 'New Requests',
       url: '/Requests',
       icon: 'icon-plus',
     },
     {
+      name: 'Message List',
+      url: '/message',
+      icon: 'icon-envelope',
+    },
+    {
       name: 'Pay Subscription',
       url: '/Payment',
-      icon: 'icon-handbag',
+      icon: 'icon-paypal',
     },
     
- /*   {
+  {
       title: true,
       name: 'Components',
       wrapper: {
@@ -363,6 +334,6 @@ export default {
       icon: 'icon-layers',
       variant: 'danger',
       attributes: { target: '_blank', rel: "noopener" },
-    },*/
-  ],
+    },
+   ],
 };

@@ -17,10 +17,10 @@ const propTypes = {
 
 const defaultProps = {};
 
-const ENDPOINT = "http://127.0.0.1:5000";
+
 
 class DefaultHeader extends Component {
-  constructor(){
+  constructor(props){
     super()
 
     this.state={
@@ -33,9 +33,9 @@ class DefaultHeader extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     //handle notifications
-    const url= 'http://localhost:5000/bookings';
+    const url= `http://localhost:5000/bookings/${props.uid}`;
     Axios.get(url).then(res => {
-        
+
        /* res.data.forEach(element => {
           element.Date = element.Date.slice(0,16);
           element.EndDate = element.EndDate.slice(0,16);
@@ -45,12 +45,14 @@ class DefaultHeader extends Component {
       });
      
     })
-
+  
 
   }
 
   componentDidMount(){
-    
+
+    const ENDPOINT = `http://127.0.0.1:5000?key=${this.props.uid}`;
+    console.log(this.props.uid)
     const socket = socketIOClient(ENDPOINT);
     socket.on("FromAPI", response => {
       this.setState(
@@ -142,78 +144,12 @@ class DefaultHeader extends Component {
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
-
-                  { /*                  <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" maxWidth="md">
-                                    <DialogTitle id="form-dialog-title">New Reservation</DialogTitle>
-                                    <Form >
-                                    <DialogContent>                                     
-                                      <TextField  style={{marginRight:30}} id="outlined-basic" label="Outlined" variant="outlined" label="Customer"  name="CustName" onChange={this.handleChange} value={this.state.booking.CustName}/>
-                                      <TextField
-                                          name="Date"
-                                          id="Date"
-                                          label="Starting Time"
-                                          variant="outlined"
-                                          type="datetime-local"
-                                          defaultValue={this.state.booking.Date}
-                                          onChange={this.handleChange}                                        
-                                          InputLabelProps={{
-                                            shrink: true,
-                                          }}
-                                        />
-                                        <TextField
-                                          style={{marginLeft:30}}
-                                          name="EndDate"
-                                          id="Edate"
-                                          label="Ending Time"
-                                          variant="outlined"
-                                          type="datetime-local"
-                                          defaultValue={this.state.booking.EndDate}
-                                          onChange={this.handleChange}                                        
-                                          InputLabelProps={{
-                                            shrink: true,
-                                          }}
-                                        />
-                                      <TextField
-                                        style={{marginTop:30}}
-                                        margin="dense"
-                                        variant="outlined"
-                                        id="service"
-                                        name="ServiceType"
-                                        label="Service"
-                                        type="text"
-                                        onChange={this.handleChange}
-                                        value={this.state.booking.ServiceType}
-                                        fullWidth
-                                      />
-                                      <TextField
-                                        style={{marginTop:30}}
-                                        margin="dense"
-                                        variant="outlined"
-                                        id="vehicle"
-                                        name="VehicleType"
-                                        label="Vehicle"
-                                        type="text"
-                                        value={this.state.booking.VehicleType}
-                                        fullWidth
-                                      />
-                                    </DialogContent>
-                                    
-                                    <DialogActions>
-                                    <Button variant="contained" color="secondary" onClick={this.handleClose}>
-                                        Decline
-                                      </Button>                                       
-                                      <Button variant="contained" color="primary" onClick={this.checkAvailability.bind(this)}>
-                                          Check Availability
-                                       </Button>
-                                    </DialogActions>
-                                    </Form>
-                                  </Dialog> */ }
         <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav>
             <i className="icon-bell"></i><Badge pill color="danger">{this.state.notifications}</Badge>
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem header tag="div" className="text-center"><strong>Appointments</strong></DropdownItem>
+              
               {this.state.data.map( (item,index) =>
                 
                 <DropdownItem key={index} onClick={e => this.props.goToRequests(index)}><i className="fa fa-tasks"></i><a href="">{item.CustName}</a> request for {item.ServiceType}</DropdownItem>

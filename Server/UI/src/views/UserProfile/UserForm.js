@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowswerRouter as Router,Route,Link } from 'react-router-dom'
+import { BrowswerRouter as Router,Route,Link, withRouter } from 'react-router-dom'
 import axios from 'axios' ;
 import {
   Badge,
@@ -124,11 +124,12 @@ class UserForm extends Component {
         }
         console.log(data);
         
-        const path = "http://localhost:5000/user/profile/edit";
+        const path = `http://localhost:5000/user/profile/edit/${this.props.uid}`;
         axios.post(path,data)
               .then((response)=>{
                   console.log('Good. '+response.data);
-                  this.props.history.push('/profile');
+                  this.props.history.push('/profile/');
+                  //console.log(this.props.history)
               })
               .catch((err)=>{
     
@@ -161,19 +162,19 @@ class UserForm extends Component {
   }
 
   componentDidMount(){
-    const url = "http://localhost:5000/user/profile";
+    const url = `http://localhost:5000/user/profile/${this.props.uid}`;
     axios
                         .get(url)
                         .then( response => {
                                 this.setState({
-                                  Name:response.data.Name,
+                                  Name:response.data.Service_Name,
                                   Registration_No:response.data.Registration_No,
                                   Address:response.data.Address,
                                   AddressTwo:response.data.AddressTwo,
                                   City:response.data.City,
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
-                                  Image:response.data.Image,
+                                  Image:response.data.Photo,
 
                                 })                           
                               
@@ -304,4 +305,4 @@ class UserForm extends Component {
   }
 }
 
-export default UserForm;
+export default withRouter(UserForm);
