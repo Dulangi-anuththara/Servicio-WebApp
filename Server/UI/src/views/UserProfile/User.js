@@ -131,7 +131,7 @@ class User extends Component {
             <div className="bd-example bd-example-type">
               <table className="table">
                 <tbody>
-                <tr style={{alignContent:'center'}}><img src={'../../assets/img/avatars/8.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" /></tr>
+                <tr style={{alignContent:'center'}}><img src={'../../assets/img/avatars/8.jpg'} style={{}} className="img-avatar" alt="admin@bootstrapmaster.com" /></tr>
                 <tr>
                   
                   <div style={{height:300,borderRadius:'6px'}}>          
