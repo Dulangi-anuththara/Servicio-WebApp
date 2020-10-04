@@ -19,6 +19,8 @@ const booking = require('./routes/bookings');
 const event = require('./routes/calendar');
 const customers = require('./routes/customers');
 const admin = require('./routes/admin');
+const ongoing = require('./routes/ongoing');
+const messaging = require('./routes/messaging')
 
 
 app.use(cors());
@@ -39,6 +41,8 @@ app.use('/bookings',booking);
 app.use('/event',event);
 app.use('/customers',customers);
 app.use('/admin',admin);
+app.use('/ongoing',ongoing);
+app.use('/msg',messaging);
 
 
 app.get('/',(req,res) =>{
@@ -46,8 +50,11 @@ app.get('/',(req,res) =>{
 });
 
  io.on("connection",(socket) =>{
+
+     const id = socket.handshake.query.key;
+     console.log(socket.handshake.query.key);
      console.log("New Client connected");
-     let doc = db.collection('Bookings')
+     let doc = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','in',['Pending','Not Available'])
 
      let observer = doc.onSnapshot(querySnapshot =>{
          
@@ -59,6 +66,8 @@ app.get('/',(req,res) =>{
     );
 
  })
+
+
 
 
 server.listen(port,()=>{

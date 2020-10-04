@@ -27,6 +27,8 @@ class App extends Component {
   componentDidMount(){
     this.props.checkLocal();
 
+    
+
   } 
 
   render() {
@@ -53,7 +55,10 @@ class App extends Component {
     </Switch>
   }*/
 
+  //console.log(this.props);
+
     return (
+
     <HashRouter>
        <Suspense fallback={this.loading()}>  
       <Switch>
@@ -66,7 +71,7 @@ class App extends Component {
                         path={route.path}
                         exact={route.exact}
                         name={route.name}
-                        render={props => <DefaultLayout {...props}/>} />
+                        render={props => <DefaultLayout {...props} uid={this.props.uid}/>} />
                     ) : (null);
                   })}
                 <Redirect from="/" to="/dashboard" /> 

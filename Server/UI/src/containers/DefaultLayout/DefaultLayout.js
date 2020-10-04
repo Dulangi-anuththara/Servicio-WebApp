@@ -27,6 +27,11 @@ const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
 
+  constructor(props){
+    super()
+    console.log(props.uid);
+  }
+
   componentDidMount(){
   }
 
@@ -47,7 +52,7 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} />
+            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} uid={this.props.uid} />
           </Suspense>
         </AppHeader>
         <div className="app-body">
@@ -72,7 +77,9 @@ class DefaultLayout extends Component {
                         path={route.path}
                         exact={route.exact}
                         name={route.name}
-                        component={route.component}/>
+                        component={() => <route.component uid={this.props.uid}/>}
+                        
+                        />
                     ) : (null);
                   })}
                 <Redirect from="/" to="/dashboard" /> 
