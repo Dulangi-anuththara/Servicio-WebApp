@@ -43,6 +43,8 @@ const CalendarThree = React.lazy(() => import('./views/Calendar/CalendarThree'))
 const CalendarFour = React.lazy(() => import('./views/Calendar/CalendarFour'));
 const CalendarFive = React.lazy(() => import('./views/Calendar/CalendarFive'));
 const CalendarSix = React.lazy(() => import('./views/Calendar/CalendarSix'));
+const Requests = React.lazy(() => import('./views/Requests/Requests'));
+const Subscription =  React.lazy(() => import('./views/Payment/subscription'));
 const CustomerView = React.lazy(() => import('./views/Customer/CustomerView'));
 
 
@@ -106,6 +108,7 @@ const routes = [
   { path: '/ongoing/:id', name:'On Going', component:ongoing},
   { path: '/done', name:'Picked Up', component:Done},
   { path: '/message', name:'Message Box', component:Message},
+
 
 
 
