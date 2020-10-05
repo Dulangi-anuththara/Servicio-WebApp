@@ -20,6 +20,7 @@ const event = require('./routes/calendar');
 const customers = require('./routes/customers');
 const ongoing = require('./routes/ongoing');
 const messaging = require('./routes/messaging')
+const dashboard = require('./routes/dashboard');
 
 
 app.use(cors());
@@ -38,6 +39,7 @@ app.use('/event',event);
 app.use('/customers',customers);
 app.use('/ongoing',ongoing);
 app.use('/msg',messaging);
+app.use('/dashboard',dashboard);
 
 
 app.get('/',(req,res) =>{
