@@ -111,12 +111,7 @@ const routes = [
   { path: '/InProgress', name:'In Progress', component:InProgress},
   { path: '/ongoing/:id', name:'On Going', component:ongoing},
   { path: '/done', name:'Picked Up', component:Done},
-  { path: '/message', name:'Message Box', component:Message},
-
-
-
-
-  
+  { path: '/message', name:'Message Box', component:Message},  
 
 ];
 
