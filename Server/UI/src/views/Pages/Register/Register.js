@@ -11,8 +11,7 @@ import fire from "../../../storage/index";
 import { connect } from "react-redux";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-// import "../Login/LoginPage.css";
-import "./RegisterPage.css"
+import "../Login/LoginPage.css";
 import lgo from "../../../assets/images/lgo.jpg";
 import { storage } from "../../../storage";
 import {
@@ -230,6 +229,7 @@ class Register extends Component {
                     Description: this.state.Desc,
                     Location: this.state.location,
                     isVerified: this.state.isVerified,
+                    paymentStatus: false,
                   });
 
                   alert("Account has been registered successfully!");
@@ -383,8 +383,8 @@ class Register extends Component {
                   </div>
 
                   <div>
-                    <Button color="light" onClick={this.handleClickOpen} className="login_btn">
-                      Upload your BR 📷
+                    <Button color="light" onClick={this.handleClickOpen}>
+                      Upload your BR <i className="fa fa-camera fa-lg"></i>
                       &nbsp;
                     </Button>
 
@@ -424,9 +424,9 @@ class Register extends Component {
                   <div className="d-flex justify-content-center mt-3 login_container">
                     <Button
                       onClick={() => this.getUserLocation()}
-                      className="btn btn-primary login_btn"
+                      className="btn btn-primary"
                     >
-                      Add service location 📍
+                      Add service location
                     </Button>
                   </div>
                   <div className="d-flex justify-content-center mt-3 login_container">
@@ -434,7 +434,7 @@ class Register extends Component {
                       onClick={this.registrationHandler}
                       className="btn login_btn"
                     >
-                      <b>Register</b>
+                      Register
                     </Button>
                   </div>
                 </form>
