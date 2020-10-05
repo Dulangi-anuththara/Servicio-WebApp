@@ -23,6 +23,7 @@ const GarageReg = (props) => (
     <td>
       <button onClick={() => props.openImage()}>View BR</button>
     </td>
+    {props.paymentStatus ? <td>Done</td> : <td>Pending</td>}
     <td>{props.isVerified ? "true" : "false"}</td>
     <td>
       <button onClick={() => props.editUser()}>🖋</button>
@@ -57,11 +58,31 @@ class garage extends Component {
       users: null,
       db: null,
       editmodalVisiblity: false,
-      Email: "",
-      Description: "",
+
       Service_Name: "",
       _id: null,
-      user: {},
+      paymentStatus: false,
+      user: {}, //====================================
+      createModalVisibility: false,
+      AddressTwo: "",
+      BRPhoto: "",
+      Address: "",
+      City: "",
+      Description: "",
+      Email: "",
+      Favs: ["", ""],
+      Image: "",
+      Name: "",
+      Photo: "",
+      Rating: "",
+      Registeration_No: "",
+      SearchKey: "",
+      Service_Types: ["", ""],
+      Telephone: "",
+      isVerified: true,
+      user_type: "",
+      paymentStatus: false,
+      //============================================
     };
   }
 
@@ -83,6 +104,90 @@ class garage extends Component {
       user: {},
     });
   }
+  cloeseCreateUserModal() {
+    this.setState({
+      createModalVisibility: false,
+    });
+  }
+
+  openCreateMoadal = () => {
+    this.setState({
+      createModalVisibility: true,
+    });
+  };
+
+  handleCreateGarage = () => {
+    const {
+      AddressTwo,
+      BRPhoto,
+      Address,
+      City,
+      Description,
+      Email,
+      Favs,
+      Image,
+      Name,
+      Photo,
+      Rating,
+      Registeration_No,
+      SearchKey,
+      Service_Types,
+      Telephone,
+      isVerified,
+      user_type,
+      paymentStatus,
+    } = this.state;
+    console.log(
+      AddressTwo,
+      BRPhoto,
+      Address,
+      City,
+      Description,
+      Email,
+      Favs,
+      Image,
+      Name,
+      Photo,
+      Rating,
+      Registeration_No,
+      SearchKey,
+      Service_Types,
+      Telephone,
+      isVerified,
+      user_type,
+      paymentStatus
+    );
+    const db = firebase.firestore();
+
+    var newDocRef = db.collection("Services").doc();
+    newDocRef
+      .set({
+        AddressTwo,
+        BRPhoto: "https://via.placeholder.com/150",
+        City,
+        Description,
+        Email,
+        Favs: ["", ""],
+        Image: "https://via.placeholder.com/150",
+        Location: ["0.00000 °N", "0.00000 °E"],
+        Name,
+        Service_Name: Name,
+        Photo: "https://via.placeholder.com/150",
+        Rating: 4,
+        Registeration_No: "20XX-XX-XX",
+        SearchKey: Name[0].toUpperCase(),
+        Service_Types: ["", ""],
+        Telephone,
+        isVerified,
+        user_type: "garage",
+        paymentStatus: false,
+        Service_Id: newDocRef.id,
+      })
+      .then(function () {
+        alert("Created a garage!");
+        window.location.reload();
+      });
+  };
 
   componentDidMount() {
     const url = "http://localhost:5000/admin/profile";
@@ -247,11 +352,11 @@ class garage extends Component {
   };
 
   // Edit User
-  editUser = (Email, Description, Service_Name, user) => {
+  editUser = (Email, Description, Service_Name, user, paymentStatus) => {
     const db = firebase.firestore();
     db.collection("Services")
       .doc(user.docId)
-      .set({ ...user, Email, Description, Service_Name });
+      .set({ ...user, Email, Description, Service_Name, paymentStatus });
 
     this.cloeseEditUserModal();
     window.setTimeout(() => {
@@ -260,9 +365,15 @@ class garage extends Component {
   };
 
   handleSubmit = () => {
-    const { Email, Description, Service_Name, user } = this.state;
+    const {
+      Email,
+      Description,
+      Service_Name,
+      user,
+      paymentStatus,
+    } = this.state;
 
-    this.editUser(Email, Description, Service_Name, user);
+    this.editUser(Email, Description, Service_Name, user, paymentStatus);
   };
 
   render() {
@@ -376,10 +487,136 @@ class garage extends Component {
             </div>
           </Modal>
 
+          <Modal
+            visible={this.state.createModalVisibility}
+            onClickAway={() => this.cloeseCreateUserModal()}
+            width="500"
+          >
+            <div style={{ padding: 20 }}>
+              <div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Enter Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput"
+                    placeholder="Ex: Jhon Doe"
+                    value={this.state.Name}
+                    onChange={(e) => {
+                      this.setState({
+                        Name: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Enter Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput"
+                    placeholder="Ex: this is nice"
+                    value={this.state.Description}
+                    onChange={(e) => {
+                      this.setState({
+                        Description: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput">
+                    Enter Telephone Number
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput"
+                    placeholder="Ex: 011-2729729"
+                    value={this.state.Telephone}
+                    onChange={(e) => {
+                      this.setState({
+                        Telephone: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Enter Email:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.Email}
+                    onChange={(e) => {
+                      this.setState({ Email: e.target.value });
+                    }}
+                    placeholder="Ex: jhon@gmail.com"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Enter Address:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.Address}
+                    onChange={(e) => {
+                      this.setState({ Address: e.target.value });
+                    }}
+                    placeholder="Ex: address"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Enter Address Two:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.AddressTwo}
+                    onChange={(e) => {
+                      this.setState({ AddressTwo: e.target.value });
+                    }}
+                    placeholder="Ex: address2"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Enter City:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.City}
+                    onChange={(e) => {
+                      this.setState({ City: e.target.value });
+                    }}
+                    placeholder="Ex: Colombo"
+                  />
+                </div>
+                <button
+                  className="btn btn-primary"
+                  onClick={this.handleCreateGarage}
+                >
+                  Create
+                </button>
+              </div>
+            </div>
+          </Modal>
+
           <Card>
             <CardHeader>
               <i className="fa fa-align-justify"></i>Registered Garage Centers
               {this.state.garcount}
+              <button
+                onClick={() => {
+                  this.openCreateMoadal();
+                }}
+              >
+                Create a garage
+              </button>
             </CardHeader>
             <CardBody>
               <Table responsive striped>
@@ -390,6 +627,7 @@ class garage extends Component {
                     <th>User Type</th>
                     <th>Rating</th>
                     <th>BRPhoto</th>
+                    <th>Payment Status</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>

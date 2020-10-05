@@ -180,6 +180,7 @@ class garage extends Component {
         Service_Id: docId,
         Service_Types: ["", ""],
         Telephone: "07XXXXXXX",
+        paymentStatus: false,
       });
 
     if (!result) {

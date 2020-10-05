@@ -410,7 +410,7 @@ class Dashboard extends Component {
 
     var db = firebase.firestore();
 
-    db.collection(`Users`)
+    db.collection(`Services`)
       .get()
       .then((Documents) => {
         const data = Documents.docs.map((d) => {
@@ -486,8 +486,8 @@ class Dashboard extends Component {
   );
 
   getTotalUsers = () => {
-    if (this.state.services && this.state.customers)
-      return this.state.services.length + this.state.customers.length;
+    if (this.state.users && this.state.customers)
+      return this.state.users.length + this.state.customers.length;
   };
 
   getServiceCenters = () => {
@@ -527,7 +527,7 @@ class Dashboard extends Component {
 
   getSystemUsers = () => {
     if (this.state.users) {
-      return this.state.services.length;
+      return this.state.users.length;
     }
   };
 

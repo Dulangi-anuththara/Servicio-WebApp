@@ -10,11 +10,12 @@ import {
   PaginationLink,
   Table,
 } from "reactstrap";
-
+import moment from "moment";
 class Typography extends Component {
   state = {
     complains: [],
     users: [],
+    services: [],
     resolved: false,
   };
 
@@ -42,7 +43,7 @@ class Typography extends Component {
           complains: _complains,
         });
       });
-    db.collection(`Users`)
+    db.collection(`Customers`)
       .get()
       .then((Documents) => {
         const data = Documents.docs.map((d) => {
@@ -55,14 +56,41 @@ class Typography extends Component {
           users: data,
         });
       });
+
+    db.collection(`Services`)
+      .get()
+      .then((Documents) => {
+        const data = Documents.docs.map((d) => {
+          return {
+            ...d.data(),
+            docId: d.id,
+          };
+        });
+        this.setState({
+          services: data,
+        });
+      });
+  };
+
+  getServiceName = (servie_id) => {
+    const { services } = this.state;
+
+    if (services.length !== 0) {
+      let user = _.filter(services, { docId: servie_id });
+      console.log("Typography -> getUserName -> user", user);
+
+      return user[0].Service_Name;
+    }
   };
 
   getUserName = (user_id) => {
     const { users } = this.state;
+
     if (users.length !== 0) {
       let user = _.filter(users, { docId: user_id });
+      console.log("Typography -> getUserName -> user", user);
 
-      return user[0].Service_Name;
+      return user[0].name;
     }
   };
 
@@ -87,12 +115,16 @@ class Typography extends Component {
     const { complains } = this.state;
     return complains.map((complain, index) => {
       let _userId = complain.user_id;
+      let _serviceId = complain.service_id;
+      let date = complain.date;
+      let _date = new Date(date.seconds * 1000);
 
       return (
         <tr key={index}>
           <td>{this.getUserName(_userId)}</td>
+          <td>{this.getServiceName(_serviceId)}</td>
           <td>{complain.complain}</td>
-          <td>{complain.date}</td>
+          <td>{_date.toDateString()}</td>
           <td>
             <button onClick={() => this.resolveComplain(complain)}>✔</button>
           </td>
@@ -113,6 +145,7 @@ class Typography extends Component {
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Service Name</th>
                   <th>Complain</th>
                   <th>Date</th>
                   <th>Action</th>
