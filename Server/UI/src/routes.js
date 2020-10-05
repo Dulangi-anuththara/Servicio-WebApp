@@ -44,7 +44,7 @@ const CalendarFour = React.lazy(() => import('./views/Calendar/CalendarFour'));
 const CalendarFive = React.lazy(() => import('./views/Calendar/CalendarFive'));
 const CalendarSix = React.lazy(() => import('./views/Calendar/CalendarSix'));
 const CustomerView = React.lazy(() => import('./views/Customer/CustomerView'));
-const Subscription = React.lazy(() => import('./views/Payment/Subscription'));
+const Subscription = React.lazy(() => import('./views/Pages/Payment/Subscription'));
 
 
 
@@ -100,7 +100,7 @@ const routes = [
   { path: '/CalendarFive', name: 'Calendar Five', component: CalendarFive },
   { path: '/CalendarSix', name: 'Calendar Six', component: CalendarSix },
   { path: '/CustomerView', name: 'Customer View', component: CustomerView },
-  { path: '/Payment', name: 'Calendar Six', component: Subscription },
+  { path: '/Payment', name: 'Pay Subscription', component: Subscription },
 
 
 

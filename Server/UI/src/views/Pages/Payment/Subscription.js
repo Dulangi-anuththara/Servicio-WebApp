@@ -1,10 +1,4 @@
 import React, { Component } from 'react'
-import payhere from 'https://www.payhere.lk/lib/payhere.js'
-
-payhere.onCompleted = function onCompleted(orderId) {
-    console.log("Payment completed. OrderID:" + orderId);
-    //Note: validate the payment and show success or failure page to the customer
-};
 
 export default class Subscription extends Component {
     render() {

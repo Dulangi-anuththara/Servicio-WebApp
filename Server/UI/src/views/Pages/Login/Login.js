@@ -6,6 +6,7 @@ import { Redirect, Link } from 'react-router-dom';
 import "./LoginPage.css";
 import lgo from '../../../assets/images/lgo.jpg'
 import routes from '../../../routes';
+import Axios from 'axios';
 
 
 
@@ -48,6 +49,9 @@ class Login extends Component {
             console.log(res);
             var user = fire.auth().currentUser;
             var id = user.uid
+            Axios.post("http://localhost:5000/id",{
+              userId: id
+            });
 
             if(!res.user.emailVerified){
               console.log(`not verified`)
