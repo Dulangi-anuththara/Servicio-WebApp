@@ -41,7 +41,7 @@ class Login extends Component {
    loginHandler = () => {
         fire.auth().signInWithEmailAndPassword(this.state.email,this.state.password)
         .then(res => {
-            console.log(res);
+            //console.log(res);
             var user = fire.auth().currentUser;
             var id = user.uid
 
@@ -57,13 +57,23 @@ class Login extends Component {
               // fire.firestore().doc(`Users/${id}`).get().then( res =>{
 
               fire.firestore().doc(`Services/${id}`).get().then( res =>{
-                console.log(res.data())
-
-                this.setState({
-                  userType: res.data().user_type
-                });
-                this.props.onAuth(id, this.state.userType);
-                this.setState({redirect: <Redirect to="/dashboard"/>})
+                if(typeof res.data() === 'undefined') {
+                  console.log("dont log in")
+                  alert("PLease wait till admin approve");
+                } else {
+                  console.log("log in")
+                  this.setState({
+                        userType: res.data().user_type
+                      });
+                      this.props.onAuth(id, this.state.userType);
+                      this.setState({redirect: <Redirect to="/dashboard"/>})
+                }
+                // if(!res.data()) {
+                //   
+                // } else {
+                //   alert("PLease wait till admin approve");
+                // }
+                
               })
 
 
@@ -84,10 +94,10 @@ class Login extends Component {
     }
 
     render() {
-        let redirect = null;
-        if(this.props.isLoggedin) {
-            redirect = <Redirect to="/"/>
-        }
+        // let redirect = null;
+        // if(this.props.isLoggedin) {
+        //     redirect = <Redirect to="/"/>
+        // }
 
         return(
             <div  style={{
@@ -96,7 +106,7 @@ class Login extends Component {
                 textAlign: 'center', }}
             >          
                 {this.state.redirect}
-                {redirect}
+                {/* {redirect} */}
 
             <div id="login" className="banner h-100 ">
               <div className="d-flex justify-content-center h-100">
