@@ -10,6 +10,7 @@ import {
 import fire from "../../../storage/index";
 import { connect } from "react-redux";
 import axios from "axios";
+import firebase from "firebase";
 import { Redirect } from "react-router-dom";
 import "../Login/LoginPage.css";
 import lgo from "../../../assets/images/lgo.jpg";
@@ -54,7 +55,7 @@ class Register extends Component {
     Verification: "",
     latitude: "",
     longitude: "",
-    location: [],
+    location: null,
   };
 
   getUserLocation = () => {
@@ -214,7 +215,7 @@ class Register extends Component {
                 .then((URL) => {
                   console.log("=========================>", URL);
                   this.setState({ Image: URL });
-
+                  // 2 - sucess 0- pending -1 cancel -2 failed -3 chargedback
                   // grade: this.state.grade
                 })
                 .then((res) => {
@@ -229,7 +230,7 @@ class Register extends Component {
                     Description: this.state.Desc,
                     Location: this.state.location,
                     isVerified: this.state.isVerified,
-                    paymentStatus: false,
+                    paymentStatus: 0,
                   });
 
                   alert("Account has been registered successfully!");
@@ -252,7 +253,10 @@ class Register extends Component {
   handleLocationConfirm = (latitude, longitude) => {
     this.closeModal();
     this.setState({
-      location: [`${longitude} °N`, `${latitude} °E`],
+      location: new firebase.firestore.GeoPoint(
+        Number(latitude),
+        Number(longitude)
+      ),
     });
   };
 
@@ -275,7 +279,6 @@ class Register extends Component {
                     height: '80%',
                     width: '30%',
                     display: 'inline-block',
-
                 }}> */}
 
         <div id="register" className="banner h-100 ">

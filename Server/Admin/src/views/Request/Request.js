@@ -154,6 +154,7 @@ class garage extends Component {
       docId,
       isVerified,
       user_type,
+      Location,
     } = this.state._selectedUser;
 
     const db = firebase.firestore();
@@ -180,7 +181,8 @@ class garage extends Component {
         Service_Id: docId,
         Service_Types: ["", ""],
         Telephone: "07XXXXXXX",
-        paymentStatus: false,
+        paymentStatus: "0",
+        Location:Location,
       });
 
     if (!result) {
