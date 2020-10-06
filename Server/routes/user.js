@@ -43,6 +43,7 @@ user.post('/profile/edit/:id',(req,res) => {
             Email:req.body.Email,
             Telephone:req.body.Telephone,
             Image:req.body.Image,
+            Service_Types:req.body.Service_Types
         };
 
         //let Image = req.body.Image;

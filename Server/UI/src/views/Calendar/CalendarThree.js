@@ -29,7 +29,7 @@ class Calendar extends Component {
       durationBarVisible: false,
       cellWidth:80,
       timeRangeSelectedHandling: "Enabled",
-      dayBeginsHour : 8,
+      dayBeginsHour : 9,
       dayEndsHour:18,
       eventMoveHandling:'Disabled',
       contextMenu: new DayPilot.Menu({
@@ -60,27 +60,36 @@ class Calendar extends Component {
     }),
       onTimeRangeSelected: args => {
         var form = [
-          {name: "Name", id: "name",Service:"Service"}
+          {name: "Name", id: "name"},
+          {name:"Service Type", id:"service"}
         ];
         
         let dp = this.calendar;
-       Modal.form(form).then(function(modal) {
-          var data ={
-            start:args.start,
-            end:args.end,
-            id:DayPilot.guid(),
-            text:modal.result.name
-          }
-          dp.clearSelection();
-          if (!modal.result.name) { return; }
-          dp.events.add(new DayPilot.Event(data));
+        let now = new Date().toISOString().slice(0,19);
+        if(args.start.value<now){
+          console.log("Date has passed");
+          DayPilot.Modal.alert("Please note that you cannot make reservations for old dates.");
+        }
+        else{
+          Modal.form(form).then(function(modal) {
+            var data ={
+              start:args.start,
+              end:args.end,
+              id:DayPilot.guid(),
+              text:modal.result.name+ " " +modal.result.service
+            }
+            dp.clearSelection();
+            if (!modal.result.name) { return; }
+            dp.events.add(new DayPilot.Event(data));
+  
+            const url =`http://localhost:5000/event/addMan/${props.uid}`
+            Axios.post(url,data).then((response)=>{
+              console.log(response.data);
+  
+            })
+          });
+        }
 
-          const url =`http://localhost:5000/event/addMan/${props.uid}`
-          Axios.post(url,data).then((response)=>{
-            console.log(response.data);
-
-          })
-        });
       },
       eventDeleteHandling: "Update",
 

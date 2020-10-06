@@ -37,6 +37,7 @@ class UserForm extends Component {
     this.toggleFade = this.toggleFade.bind(this);
     this.validatePhone=this.validatePhone.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onAdd = this.onAdd.bind(this);
     this.state = {
       collapse: true,
       fadeIn: true,
@@ -53,7 +54,9 @@ class UserForm extends Component {
       City:"",
       Email:"",
       Telephone:"",
-      Image:""    
+      Image:"",
+      Services:[],
+      isChecked:{},    
   
     };
   }
@@ -72,6 +75,25 @@ class UserForm extends Component {
         [e.target.name]:e.target.value
       }
     )
+  }
+  onAdd (e){
+    console.log(this.state.isChecked)
+    if(!this.state.Services.includes(e.target.value)){
+      this.setState({
+        Services:[...this.state.Services,e.target.value],
+        isChecked:{...this.state.isChecked,[e.target.name]:true}
+      },()=>{
+        console.log(this.state.Services);
+      })
+    }else{
+      let remove = this.state.Services.indexOf(e.target.value);
+      this.setState({
+        Services: this.state.Services.filter((_, i) => i !== remove),
+        isChecked:{...this.state.isChecked,[e.target.name]:false}
+      },()=>{
+        console.log(this.state.Services);
+      })
+    }
   }
 
   onChangeHandler = (e) =>{
@@ -126,6 +148,7 @@ class UserForm extends Component {
           Email:this.state.Email,
           Telephone:this.state.Telephone,
           Image:this.state.Image,
+          Service_Types:this.state.Services
         }
         console.log(data);
         
@@ -180,11 +203,44 @@ class UserForm extends Component {
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
                                   Image:response.data.Photo,
+                                  Services:response.data.Service_Types
 
                                 })                           
                               
                               }
                         )
+                        .then(()=>{
+                          if(this.state.Services.includes("Body Wash")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_wash:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_wash:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Full Service")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Full_service:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Full_service:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Oil Change")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Oil_change:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Oil_change:false}
+                            })
+                          }
+                        })
                         .catch((err) => console.log(err))
 
   }
@@ -291,13 +347,30 @@ class UserForm extends Component {
                               value={this.state.Telephone}
                               onChange={this.onChange} 
                               required
-                              style={{}}
                               />                              
                     </FormGroup>
                     {Alerts}
                   </Col>
                 </FormGroup>
-
+                <FormGroup row>
+                    <Col md="3">
+                      <Label>Services</Label>
+                    </Col>
+                    <Col md="9">
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox1" name="Body_wash" value="Body Wash" onChange={this.onAdd} checked={this.state.isChecked.Body_wash}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox1">Body Wash</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox2" name="Full_service" value="Full Service" onChange={this.onAdd} checked={this.state.isChecked.Full_service}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox2">Full Service</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Oil_change" value="Oil Change" onChange={this.onAdd} checked={this.state.isChecked.Oil_change}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Oil Change</Label>
+                      </FormGroup>
+                    </Col>
+                  </FormGroup>
                 <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
               </CardBody>
             </Card>
