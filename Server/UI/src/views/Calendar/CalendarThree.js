@@ -29,7 +29,7 @@ class Calendar extends Component {
       durationBarVisible: false,
       cellWidth:80,
       timeRangeSelectedHandling: "Enabled",
-      dayBeginsHour : 9,
+      dayBeginsHour : 8,
       dayEndsHour:18,
       eventMoveHandling:'Disabled',
       contextMenu: new DayPilot.Menu({
@@ -60,7 +60,7 @@ class Calendar extends Component {
     }),
       onTimeRangeSelected: args => {
         var form = [
-          {name: "Name", id: "name"}
+          {name: "Name", id: "name",Service:"Service"}
         ];
         
         let dp = this.calendar;

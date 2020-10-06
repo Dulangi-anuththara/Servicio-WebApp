@@ -1,24 +1,24 @@
 import React, { Component, lazy, Suspense } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
+import Axios from 'axios' ;
 import {
   Badge,
-  Button,
   ButtonDropdown,
   ButtonGroup,
-  ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  CardTitle,
   Col,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Progress,
-  Row,
-  Table,
+  Pagination, 
+  PaginationItem, 
+  PaginationLink, 
+  Row, 
+  Table
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
@@ -226,61 +226,8 @@ const cardChartOpts4 = {
   },
 };
 
-// Social Box Chart
-const socialBoxData = [
-  { data: [65, 59, 84, 84, 51, 55, 40], label: 'facebook' },
-  { data: [1, 13, 9, 17, 34, 41, 38], label: 'twitter' },
-  { data: [78, 81, 80, 45, 34, 12, 40], label: 'linkedin' },
-  { data: [35, 23, 56, 22, 97, 23, 64], label: 'google' },
-];
 
-const makeSocialBoxData = (dataSetNo) => {
-  const dataset = socialBoxData[dataSetNo];
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        backgroundColor: 'rgba(255,255,255,.1)',
-        borderColor: 'rgba(255,255,255,.55)',
-        pointHoverBackgroundColor: '#fff',
-        borderWidth: 2,
-        data: dataset.data,
-        label: dataset.label,
-      },
-    ],
-  };
-  return () => data;
-};
 
-const socialChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  responsive: true,
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        display: false,
-      }],
-    yAxes: [
-      {
-        display: false,
-      }],
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 10,
-      hoverRadius: 4,
-      hoverBorderWidth: 3,
-    },
-  },
-};
 
 // sparkline charts
 const sparkLineChartData = [
@@ -377,81 +324,6 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-const mainChart = {
-  labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: hexToRgba(brandInfo, 10),
-      borderColor: brandInfo,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 2,
-      data: data1,
-    },
-    {
-      label: 'My Second dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandSuccess,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 2,
-      data: data2,
-    },
-    {
-      label: 'My Third dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandDanger,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5],
-      data: data3,
-    },
-  ],
-};
-
-const mainChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips,
-    intersect: true,
-    mode: 'index',
-    position: 'nearest',
-    callbacks: {
-      labelColor: function(tooltipItem, chart) {
-        return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor }
-      }
-    }
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        gridLines: {
-          drawOnChartArea: false,
-        },
-      }],
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250,
-        },
-      }],
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 10,
-      hoverRadius: 4,
-      hoverBorderWidth: 3,
-    },
-  },
-};
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -462,8 +334,35 @@ class Dashboard extends Component {
     this.state = {
       dropdownOpen: false,
       radioSelected: 2,
+      data:{},
+      completed:[],
+      toggle:0,
     };
+
+    const url= `http://localhost:5000/dashboard/${props.uid}`;
+    Axios.get(url).then(res => {
+        this.setState({
+        data:res.data
+      });
+     
+    })
+    .then(()=>{
+      console.log(this.state.data);
+    })
   }
+
+componentDidMount(){
+  const url= `http://localhost:5000/dashboard/completed/${this.props.uid}`;
+    Axios.get(url).then(res => {
+        this.setState({
+        completed:res.data
+      });
+     
+    })
+    .then(()=>{
+      console.log(this.state.completed);
+    })
+}
 
   toggle() {
     this.setState({
@@ -480,7 +379,6 @@ class Dashboard extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   render() {
-
     return (
       <div className="animated fadeIn">
         <Row>
@@ -500,7 +398,7 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+                <div className="text-value">{this.state.data.completed}</div>
                 <div>Total Completed</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
@@ -524,7 +422,7 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+    <div className="text-value">{this.state.data.today}</div>
                 <div>Today's Pending</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
@@ -548,7 +446,7 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+                <div className="text-value">{this.state.data.inProgress}</div>
                 <div>In Progress</div>
               </CardBody>
               <div className="chart-wrapper" style={{ height: '70px' }}>
@@ -572,7 +470,7 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
+                <div className="text-value">{this.state.data.customers}</div>
                 <div>Customers</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
@@ -581,6 +479,59 @@ class Dashboard extends Component {
             </Card>
           </Col>
         </Row>
+        <Row>
+<Col>
+  <Card>
+    <CardHeader>
+      <i className="fa fa-align-justify"></i> Recent History
+    </CardHeader>
+    <CardBody>
+      <Table responsive bordered>
+        <thead>
+        <tr>
+          <th>Vehicle</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Service</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+          {this.state.completed.map(item=>
+                    <tr>
+                    <td>{item.vehicle}</td>
+                    <td><Link to={`/customer/${item.custId}`}>{item.CustName}</Link></td>
+                    <td>{item.date}</td>
+                    <td>{item.service}</td>
+                    <td>
+                      {item.rating >3 &&
+                        <Badge color="success">{item.rating}</Badge>
+                      }
+                      { item.rating < 4 &&
+
+                        <Badge color="danger">{item.rating}</Badge>
+                      }
+                      
+                    </td>
+                  </tr>
+          )}
+        </tbody>
+      </Table>
+      <Pagination>
+        <PaginationItem><PaginationLink previous tag="button" onClick={()=>{console.log("Hi")}}>Prev</PaginationLink></PaginationItem>
+        <PaginationItem active>
+          <PaginationLink tag="button">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem className="page-item"><PaginationLink tag="button">2</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationLink tag="button">3</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationLink tag="button">4</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
+      </Pagination>
+    </CardBody>
+  </Card>
+</Col>
+
+</Row>
       </div>
     );
   }

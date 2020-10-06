@@ -49,7 +49,7 @@ class InProgress extends Component {
           <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>List Group</strong> <small>with TabPanes</small>
+                <i className="fa fa-align-justify"></i><strong>In Progress</strong>
               </CardHeader>
               <CardBody>               
               <Row>

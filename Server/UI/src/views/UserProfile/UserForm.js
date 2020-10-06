@@ -43,11 +43,11 @@ class UserForm extends Component {
       timeout: 300,
       isValidated:true,
       isCorrect:true,
-      lock:false,
-      lock_R:false,
+      lock:true,
+      lock_R:true,
 
       Name:"",
-      Registration_No:"",
+      Registeration_No:"",
       Address:"",
       AddressTwo:"",
       City:"",
@@ -82,8 +82,10 @@ class UserForm extends Component {
     })
   }
   validatePhone(e){
+    
     var count=this.state.Telephone.toString().length;
     if(count == 10){
+      console.log("Handle Submit")
       return true;
     }
     else{
@@ -92,10 +94,11 @@ class UserForm extends Component {
   }
 
   validateRegister(e){
-
+    
     var Regex =/^[0-9]{4}[-]{1}[A-Z]{2}[-]{1}[0-9]{2}$/;
-    var result = Regex.test(this.state.Registration_No);
+    var result = Regex.test(this.state.Registeration_No);
     if(result){
+      console.log("Handle Submit2")
       return true
     }
     
@@ -103,6 +106,7 @@ class UserForm extends Component {
 
   handleSubmit(e){
     e.preventDefault();
+    
 
     this.setState({
       lock:this.validatePhone(),
@@ -110,11 +114,12 @@ class UserForm extends Component {
       isValidated:true,
       isCorrect:true
     },() => {
-
+      
       if(this.state.lock && this.state.lock_R){
+
         const data = {
           Name:this.state.Name,
-          Registration_No:this.state.Registration_No,
+          Registeration_No:this.state.Registeration_No,
           Address:this.state.Address,
           AddressTwo:this.state.AddressTwo,
           City:this.state.City,
@@ -168,7 +173,7 @@ class UserForm extends Component {
                         .then( response => {
                                 this.setState({
                                   Name:response.data.Service_Name,
-                                  Registration_No:response.data.Registration_No,
+                                  Registeration_No:response.data.Registeration_No,
                                   Address:response.data.Address,
                                   AddressTwo:response.data.AddressTwo,
                                   City:response.data.City,
@@ -203,7 +208,7 @@ class UserForm extends Component {
           <Col xs="12">
             <Card>
               <CardHeader>
-                <strong>Company</strong>
+                <strong>Update</strong>
                 <small> Form</small>
               </CardHeader>
               <CardBody>
@@ -223,8 +228,8 @@ class UserForm extends Component {
                   <Input 
                           type="text" 
                           id="vat"
-                          name="Registration_No" 
-                          value={this.state.Registration_No} 
+                          name="Registeration_No" 
+                          value={this.state.Registeration_No} 
                           onChange={this.onChange}
                           required
                           
@@ -293,7 +298,7 @@ class UserForm extends Component {
                   </Col>
                 </FormGroup>
 
-                <Button type="submit" size="sm" color="primary" ><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
               </CardBody>
             </Card>
           </Col>

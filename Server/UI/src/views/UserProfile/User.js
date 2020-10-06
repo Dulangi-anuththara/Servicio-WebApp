@@ -43,7 +43,7 @@ class User extends Component {
                                 console.log(response.data);
                                 this.setState({
                                   Name:response.data.Service_Name,
-                                  Registration_No:response.data.Registration_No,
+                                  Registration_No:response.data.Registeration_No,
                                   Address:response.data.Address,
                                   AddressTwo:response.data.AddressTwo,
                                   City:response.data.City,
@@ -131,11 +131,11 @@ class User extends Component {
             <div className="bd-example bd-example-type">
               <table className="table">
                 <tbody>
-                <tr style={{alignContent:'center'}}><img src={'../../assets/img/avatars/8.jpg'} style={{}} className="img-avatar" alt="admin@bootstrapmaster.com" /></tr>
+
                 <tr>
                   
                   <div style={{height:300,borderRadius:'6px'}}>          
-                  <Image src={this.state.Image} roundedCircle style={{alignItems:'center'}}></Image>        
+                  <Image src={this.state.Image} style={{alignItems:'center',height:300,width:600,marginLeft:300}}></Image>        
                 <Button color="light" className="align-items-center" onClick={this.handleClickOpen} size='lg' style={{marginTop:30,marginLeft:980}}>
                   <i className="fa fa-camera fa-lg"></i>&nbsp;Edit Cover Photo
                 </Button>
@@ -165,7 +165,8 @@ class User extends Component {
                 
                 
                 
-                </div></tr>
+                </div>
+                </tr>
                 <tr>
                     <td align="center"><span className="h1">{this.state.Name}</span></td>
                 </tr>

@@ -1,5 +1,6 @@
 const { QuerySnapshot } = require('@google-cloud/firestore');
 const express = require('express');
+const { doc } = require('../database/database');
 const dash = express.Router();
 const db = require('../database/database');
 
@@ -15,28 +16,43 @@ dash.get('/:id',(req,res) =>{
 
     var customers = doc.collection('Customers').get()
     .then(querySnapshot =>{
-        console.log(querySnapshot.size);
         data.customers = querySnapshot.size;
         doc.collection('ongoing').get()
         .then(querySnapshot =>{
-            console.log(querySnapshot.size);
             data.inProgress = querySnapshot.size;
             doc.collection('Completed').get()
             .then(querySnapshot =>{
-                console.log(querySnapshot.size);
                 data.completed = querySnapshot.size;
                 doc.collection('Events').where('start','<',dateend).where('start','>',datestart).get()
             .then(querySnapshot=>{
                 data.today = querySnapshot.size;
-                console.log(querySnapshot.size);
                 res.send(data)
             })
             })
         })
     })
-
-   
-    
 });
+
+dash.get('/completed/:id',(req,res)=>{
+    var id = req.params.id
+    var data =[]
+
+    db.collection('Services').doc(id).collection('Completed').get()
+    .then(querySnapshot=>{
+        querySnapshot.forEach(doc=>{
+            let event = {}
+            event.CustName =doc.data().CustName;
+            event.vehicle= doc.data().VehicleDetails.regNo;
+            event.rating = doc.data().Rating;
+            event.date = doc.data().EndDate;
+            event.service= doc.data().ServiceType;
+            event.custId= doc.data().CustId;
+            event.id=doc.id;
+            data.push(event);
+        })
+        console.log(data)
+        res.send(data);
+    })
+})
 
 module.exports = dash;

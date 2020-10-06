@@ -50,6 +50,7 @@ const InProgress = React.lazy(() => import('./views/InProgress/InProgress'));
 const ongoing = React.lazy(() => import('./views/ongoing/ongoing'));
 const Done = React.lazy(() => import('./views/Done/Done'));
 const Message = React.lazy(() => import('./views/Message/Message'));
+const Customer = React.lazy(() => import('./views/Customer/Customer'));
 
 
 
@@ -112,6 +113,7 @@ const routes = [
   { path: '/ongoing/:id', name:'On Going', component:ongoing},
   { path: '/done', name:'Picked Up', component:Done},
   { path: '/message', name:'Message Box', component:Message},
+  { path: '/customer/:id', name:'Customer Details', component:Customer},
 
 
 

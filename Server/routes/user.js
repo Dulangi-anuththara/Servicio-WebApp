@@ -36,7 +36,7 @@ user.post('/profile/edit/:id',(req,res) => {
         console.log(req.body);
         let data ={
             Name:req.body.Name,
-            Registration_No:req.body.Registration_No,
+            Registeration_No:req.body.Registeration_No,
             Address:req.body.Address,
             AddressTwo:req.body.AddressTwo,
             City:req.body.City,
