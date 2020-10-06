@@ -18,7 +18,7 @@ const UserReg = (props) => (
     <td>{props.name}</td>
     <td>{props.email}</td>
     <td>{props.tel_num}</td>
-    {props.paymentStatus ? <td>Done</td> : <td>Pending</td>}
+    {/* {props.paymentStatus ? <td>Done</td> : <td>Pending</td>} */}
     <td>
       <button onClick={() => props.editUser()}>🖋</button>
       <button style={{ marginLeft: 5 }} onClick={() => props.deleteUser()}>
@@ -106,7 +106,7 @@ class Customer extends Component {
         favs,
         location: ["0.00000 °N", "0.00000 °E"],
         photo: ' "https://via.placeholder.com/150"',
-        paymentStatus: false,
+        paymentStatus: "0",
         user_id: newDocRef.id,
       })
       .then(function () {
@@ -317,7 +317,7 @@ class Customer extends Component {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Telephone Number</th>
-                    <th>Payment Status</th>
+                    {/* <th>Payment Status</th> */}
                     <th>Actions</th>
                   </tr>
                 </thead>

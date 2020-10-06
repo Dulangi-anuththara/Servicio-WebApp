@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import Modal from "react-awesome-modal";
-import { Link } from "react-router-dom";
+import GeoPoint from "geopoint";
 import {
   Badge,
   Card,
@@ -14,6 +14,28 @@ import {
   Button,
 } from "reactstrap";
 
+const renderPaymentStatus = (status) => {
+  switch (status) {
+    case "0":
+      return <td>Pending</td>;
+      break;
+    case "2":
+      return <td>Sucess</td>;
+      break;
+    case "-1":
+      return <td>Cancelled</td>;
+      break;
+    case "-2":
+      return <td>Failed</td>;
+      break;
+    case "-3":
+      return <td>Chargedback</td>;
+      break;
+    default:
+      return null;
+  }
+};
+
 const GarageReg = (props) => (
   <tr>
     <td>{props.full_name}</td>
@@ -23,7 +45,7 @@ const GarageReg = (props) => (
     <td>
       <button onClick={() => props.openImage()}>View BR</button>
     </td>
-    {props.paymentStatus ? <td>Done</td> : <td>Pending</td>}
+    {renderPaymentStatus(props.paymentStatus)}
     <td>{props.isVerified ? "true" : "false"}</td>
     <td>
       <button onClick={() => props.editUser()}>🖋</button>
@@ -58,15 +80,14 @@ class garage extends Component {
       users: null,
       db: null,
       editmodalVisiblity: false,
-
       Service_Name: "",
       _id: null,
       paymentStatus: false,
       user: {}, //====================================
       createModalVisibility: false,
-      AddressTwo: "",
+      Lantitude: "",
       BRPhoto: "",
-      Address: "",
+      Longitude: "",
       City: "",
       Description: "",
       Email: "",
@@ -137,50 +158,35 @@ class garage extends Component {
       user_type,
       paymentStatus,
     } = this.state;
-    console.log(
-      AddressTwo,
-      BRPhoto,
-      Address,
-      City,
-      Description,
-      Email,
-      Favs,
-      Image,
-      Name,
-      Photo,
-      Rating,
-      Registeration_No,
-      SearchKey,
-      Service_Types,
-      Telephone,
-      isVerified,
-      user_type,
-      paymentStatus
-    );
+
     const db = firebase.firestore();
 
     var newDocRef = db.collection("Services").doc();
     newDocRef
       .set({
-        AddressTwo,
+        AddressTwo: "draft address2",
         BRPhoto: "https://via.placeholder.com/150",
+        Address: "draft address",
         City,
         Description,
         Email,
-        Favs: ["", ""],
+        Favs: ["fav1", "fav2"],
         Image: "https://via.placeholder.com/150",
-        Location: ["0.00000 °N", "0.00000 °E"],
+        Location: new firebase.firestore.GeoPoint(
+          Number(this.state.Lantitude),
+          Number(this.state.Longitude)
+        ),
         Name,
         Service_Name: Name,
         Photo: "https://via.placeholder.com/150",
         Rating: 4,
         Registeration_No: "20XX-XX-XX",
         SearchKey: Name[0].toUpperCase(),
-        Service_Types: ["", ""],
+        Service_Types: ["type1", "type2"],
         Telephone,
         isVerified,
         user_type: "garage",
-        paymentStatus: false,
+        paymentStatus: "0",
         Service_Id: newDocRef.id,
       })
       .then(function () {
@@ -191,20 +197,6 @@ class garage extends Component {
 
   componentDidMount() {
     const url = "http://localhost:5000/admin/profile";
-    // Axios
-    //        .get(url)
-    //        .then( response => {
-    //          console.log(response.data);
-    //          this.setState({
-    //            Name:response.data.full_name,
-    //            Email:response.data.Email,
-    //            UserType:response.data.user_type
-    //           });
-    //           console.log(this.state.Image);
-
-    //         }
-    //   )
-    //   .catch((err) => console.log(err))
 
     if (!firebase.apps.length) {
       firebase.initializeApp({
@@ -218,7 +210,6 @@ class garage extends Component {
     db.collection(`Services`)
       .get()
       .then((Documents) => {
-        // console.log(Documents.docs.length);
         const data = Documents.docs.map((d) => {
           return {
             ...d.data(),
@@ -231,8 +222,6 @@ class garage extends Component {
           (g) => g.data().user_type === "garage"
         );
         this.setState({ garcount: gardata.length });
-        // console.log(gardata);
-        //console.log(data)
       });
   }
 
@@ -279,7 +268,7 @@ class garage extends Component {
       // console.log(currentlist);
       if (currentlist.user_type !== "garage" || currentlist.isVerified !== true)
         return;
-      console.log(currentlist);
+
       return (
         <GarageReg
           id={currentlist.docId}
@@ -304,6 +293,7 @@ class garage extends Component {
           Rating={currentlist.Rating}
           BRPhoto={currentlist.BRPhoto}
           Verify={currentlist.Verification}
+          paymentStatus={currentlist.paymentStatus}
           key={i}
         />
       );
@@ -332,23 +322,9 @@ class garage extends Component {
   };
 
   setVerified = () => {
-    // console.log("setVerified");
-
     this.setState({
       isVerified: !this.state.isVerified,
     });
-
-    // db.collection(`Users`)
-    // .where("Email" , "==", "rosicoh983@trufilth.com")
-    // .update({
-    //   isVerified: this.state.isVerified
-    // }).then((d)=> {
-    //   console.log(d);
-    // }).catch((e)=> {
-    //   console.log(e);
-    // })
-
-    //firebase
   };
 
   // Edit User
@@ -558,29 +534,29 @@ class garage extends Component {
                 </div>
 
                 <div class="form-group">
-                  <label for="formGroupExampleInput2">Enter Address:</label>
+                  <label for="formGroupExampleInput2">Enter Latitude:</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="formGroupExampleInput2"
-                    value={this.state.Address}
+                    id="formGroupExampleInput"
+                    value={this.state.Lantitude}
                     onChange={(e) => {
-                      this.setState({ Address: e.target.value });
+                      this.setState({ Lantitude: e.target.value });
                     }}
-                    placeholder="Ex: address"
+                    placeholder="Ex: 78.42656"
                   />
                 </div>
                 <div class="form-group">
-                  <label for="formGroupExampleInput2">Enter Address Two:</label>
+                  <label for="formGroupExampleInput2">Enter Longitude:</label>
                   <input
                     type="text"
                     class="form-control"
                     id="formGroupExampleInput2"
-                    value={this.state.AddressTwo}
+                    value={this.state.Longitude}
                     onChange={(e) => {
-                      this.setState({ AddressTwo: e.target.value });
+                      this.setState({ Longitude: e.target.value });
                     }}
-                    placeholder="Ex: address2"
+                    placeholder="Ex: 69.548695"
                   />
                 </div>
                 <div class="form-group">
