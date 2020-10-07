@@ -240,6 +240,56 @@ class UserForm extends Component {
                               isChecked:{...this.state.isChecked,Oil_change:false}
                             })
                           }
+                          if(this.state.Services.includes("Body Painting")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_painting:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_painting:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Wheel Alignment")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Wheel_alignment:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Wheel_alignment:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Collision Repairs")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Collision_repairs:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Collision_repairs:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Engine Checkup")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Engine_checkup:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Engine_checkup:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Interior Cleaning")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Interior_cleaning:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Interior_cleaning:false}
+                            })
+                          }
                         })
                         .catch((err) => console.log(err))
 
@@ -368,6 +418,26 @@ class UserForm extends Component {
                       <FormGroup check inline>
                         <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Oil_change" value="Oil Change" onChange={this.onAdd} checked={this.state.isChecked.Oil_change}/>
                         <Label className="form-check-label" check htmlFor="inline-checkbox3">Oil Change</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Body_painting" value="Body Painting" onChange={this.onAdd} checked={this.state.isChecked.Body_painting}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Body Painting</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Wheel_alignment" value="Wheel Alignment" onChange={this.onAdd} checked={this.state.isChecked.Wheel_alignment}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Wheel Alignment</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Collision_repairs" value="Collision Repairs" onChange={this.onAdd} checked={this.state.isChecked.Collision_repairs}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Collision Repairs</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Engine_checkup" value="Engine Checkup" onChange={this.onAdd} checked={this.state.isChecked.Engine_checkup}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Engine Checkup</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Interior_cleaning" value="Interior Cleaning" onChange={this.onAdd} checked={this.state.isChecked.Interior_cleaning}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Interior Cleaning</Label>
                       </FormGroup>
                     </Col>
                   </FormGroup>

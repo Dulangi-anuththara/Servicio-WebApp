@@ -21,7 +21,8 @@ import {
   Table
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+import routes from '../../routes';
 
 const Widget03 = lazy(() => import('../../views/Widgets/Widget03'));
 
@@ -391,10 +392,7 @@ componentDidMount(){
                       <i className="icon-settings"></i>
                     </DropdownToggle>
                     <DropdownMenu right>
-                      <DropdownItem>Action</DropdownItem>
-                      <DropdownItem>Another action</DropdownItem>
-                      <DropdownItem disabled>Disabled action</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
+                      <DropdownItem onClick={()=> this.props.history.push('/Complete')}>View Completes</DropdownItem>
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
@@ -423,7 +421,7 @@ componentDidMount(){
                   </Dropdown>
                 </ButtonGroup>
     <div className="text-value">{this.state.data.today}</div>
-                <div>Today's Pending</div>
+                <div>Today</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                 <Line data={cardChartData1} options={cardChartOpts1} height={70} />
@@ -537,4 +535,4 @@ componentDidMount(){
   }
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);

@@ -80,8 +80,10 @@ class Calendar extends Component {
         ];
         
         let dp = this.calendar;
-        let now = new Date().toISOString().slice(0,19);
-        if(args.start.value<now){
+        let today = new Date(args.start.value)
+        let todayTime = new Date();
+        
+        if(today<todayTime){
           console.log("Date has passed");
           DayPilot.Modal.alert("Please note that you cannot make reservations for old dates.");
         }

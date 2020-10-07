@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
-import CalendarThree from '../../views/Calendar/CalendarThree';
+import fire from '../../storage/index';
 
 import {
   AppAside,
@@ -32,19 +32,25 @@ class DefaultLayout extends Component {
     console.log(props.uid);
   }
 
-  componentDidMount(){
-  }
-
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   signOut(e) {
     e.preventDefault()
-    this.props.history.push('/profile')
+    //this.props.history.push('/')
+    fire.auth().signOut()
+    .then(()=>{
+      this.props.history.push('/');
+    });
   }
   checkRequest(e){
-    //e.preventDefault()
-    //console.log(e.target.value);
     this.props.history.push('/Requests')
+  }
+
+  updateProfile(e){
+    this.props.history.push('/Edit');
+  }
+  viewProfile(){
+    this.props.history.push('/profile');
   }
 
   render() {
@@ -52,7 +58,8 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} uid={this.props.uid} />
+            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} uid={this.props.uid} goToProfile={e => this.viewProfile(e)}
+            goUpdate={e=> this.updateProfile(e)}/>
           </Suspense>
         </AppHeader>
         <div className="app-body">

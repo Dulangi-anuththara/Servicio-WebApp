@@ -54,4 +54,13 @@ dash.get('/completed/:id',(req,res)=>{
     })
 })
 
+dash.get('/image/:id',(req,res)=>{
+    var id = req.params.id
+    db.collection('Services').doc(id).get()
+    .then(documentSnapshot =>{
+        var Image = documentSnapshot.data().Image;
+        res.send(Image);
+    })
+})
+
 module.exports = dash;
