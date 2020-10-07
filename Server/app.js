@@ -11,26 +11,43 @@ const app = express();
 
 const port = 5000;
 
+global.id = undefined;
+
 const server = http.createServer(app);
 const io = socketIO(server);
 
 const user = require('./routes/user');
 const booking = require('./routes/bookings');
+const event = require('./routes/calendar');
+const customers = require('./routes/customers');
+const admin = require('./routes/admin');
+const ongoing = require('./routes/ongoing');
+const messaging = require('./routes/messaging')
+const dashboard = require('./routes/dashboard');
+const { merge } = require('./routes/user');
 
-global.uid = undefined;
 
 app.use(cors());
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: 'http://localhost:3001'}));
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('views', path.join(__dirname, 'UI/src/views'));
+app.set('views', path.join(__dirname, 'Admin Dashboard/src/views'));
 app.set('view engine', 'ejs');
 //app.engine('jsx', require('express-react-views').createEngine());
 
 app.use('/user',user);
 app.use('/bookings',booking);
+app.use('/event',event);
+app.use('/customers',customers);
+app.use('/admin',admin);
+app.use('/ongoing',ongoing);
+app.use('/msg',messaging);
+app.use('/dashboard',dashboard);
 
 
 app.get('/',(req,res) =>{
@@ -38,8 +55,11 @@ app.get('/',(req,res) =>{
 });
 
  io.on("connection",(socket) =>{
+
+     id = socket.handshake.query.key;
+     console.log(socket.handshake.query.key);
      console.log("New Client connected");
-     let doc = db.collection('Bookings')
+     let doc = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','in',['Pending','Not Available'])
 
      let observer = doc.onSnapshot(querySnapshot =>{
          
@@ -52,16 +72,10 @@ app.get('/',(req,res) =>{
 
  })
 
- app.post('/id', (req,res) => {
-    console.log('id', req.body);
-    uid = req.body.userId;
-    console.log(uid);
-
-});
-
  app.post('/notify', (req, res) => {
     console.log('payment:', req.body);
     const data = {
+        userId: id,
         merchant_id: req.body.merchant_id,
         payment_id: req.body.payment_id,
         payhere_amount: req.body.payhere_amount,
@@ -76,8 +90,13 @@ app.get('/',(req,res) =>{
       };
       
     const start = async function(){
-        const result = await db.collection('Payment').doc(uid).set(data);
+        const result = await db.collection('Payment').add(data);
+        const ser = db.collection('Services').doc(id);
+        const res = await ser.update({
+            paymentStatus: req.body.status_code
+        });
         console.log(result);
+        console.log(res);
     }
 
     start();
@@ -86,6 +105,7 @@ app.get('/',(req,res) =>{
     res.sendStatus(200);
 
 });
+
 
 
 server.listen(port,()=>{
