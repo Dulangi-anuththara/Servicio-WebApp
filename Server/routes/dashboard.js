@@ -9,7 +9,6 @@ dash.get('/:id',(req,res) =>{
     var date = new Date().toISOString().slice(0,11);
     var datestart = date + '00:00:00';
     var dateend = date + '23:59:00';
-    console.log(dateend);
     var id = req.params.id
     var data ={}
     var doc = db.collection('Services').doc(id)
@@ -50,7 +49,7 @@ dash.get('/completed/:id',(req,res)=>{
             event.id=doc.id;
             data.push(event);
         })
-        console.log(data)
+
         res.send(data);
     })
 })

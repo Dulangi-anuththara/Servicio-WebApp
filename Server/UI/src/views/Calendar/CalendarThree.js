@@ -38,21 +38,36 @@ class Calendar extends Component {
             text: "Delete",
             icon:"icon-close icons",
             onClick: args => {
-              var e = args.source;
-              this.calendar.events.remove(e);
+
+              DayPilot.Modal.confirm("Are you sure you want to delete this?").then((args)=>{
+                if(args.result){
+                  var e = args.source;
+                  this.calendar.events.remove(e);
+                  const url =`http://localhost:5000/event/delete/${props.uid}/${args.source.data.id}`
+                  Axios.post(url).then((response)=>{
+                    console.log(response.data);        
+                  })
+                }
+              })
             }
           },
           {
             text: "Update",
             icon:"icon-pencil icons",
             onClick: args =>{
-              console.log(args.source.data)
+              console.log(args.source.data.text)
               let dp = this.calendar;
+              let e = args.source
               DayPilot.Modal.prompt("Update event text:", args.source.data.text).then(function(modal) {
                 if (!modal.result) { return; }
-                args.e.data.text = modal.result;
-                dp.events.update(args.e);
-              });
+                e.data.text = modal.result;
+                dp.events.update(e);
+                const url =`http://localhost:5000/event/update/${props.uid}/${args.source.data.id}`
+                Axios.post(url,{text:modal.result})
+               .then((response)=>{
+                  console.log(response.data);    
+              })
+            });
 
             }
           }
@@ -76,7 +91,8 @@ class Calendar extends Component {
               start:args.start,
               end:args.end,
               id:DayPilot.guid(),
-              text:modal.result.name+ " " +modal.result.service
+              text:modal.result.name+ " " +modal.result.service,
+              backColor:'#ffc107'
             }
             dp.clearSelection();
             if (!modal.result.name) { return; }

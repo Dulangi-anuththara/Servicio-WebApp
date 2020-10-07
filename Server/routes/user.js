@@ -6,7 +6,7 @@ const db = require('../database/database');
 
 
 user.get('/profile/:id',(req,res) =>{
-   // console.log(req.params.id);
+
    const User = db.collection('Services');
    let getDoc = User.doc(req.params.id).get()
                 .then( doc => {
@@ -21,7 +21,6 @@ user.get('/profile/:id',(req,res) =>{
 
 user.post('/imgUpload/:id',(req,res)=>{
     const id= req.params.id
-    console.log("hERE");
     let data ={
         Photo:req.body.Image
     }
@@ -33,7 +32,6 @@ user.post('/imgUpload/:id',(req,res)=>{
 
 
 user.post('/profile/edit/:id',(req,res) => {
-        console.log(req.body);
         let data ={
             Name:req.body.Name,
             Registeration_No:req.body.Registeration_No,
@@ -47,7 +45,7 @@ user.post('/profile/edit/:id',(req,res) => {
         };
 
         //let Image = req.body.Image;
-        console.log(req.body);
+
         let setDoc = db.collection('Services').doc(req.params.id).update(data);
         //res.redirect('http://localhost:3000/#/profile');
        res.send('Details Updated successfully');
