@@ -11,7 +11,7 @@ import fire from "../../../storage/index";
 import { connect } from "react-redux";
 import axios from "axios";
 import firebase from "firebase";
-import { Redirect } from "react-router-dom";
+
 import "../Login/LoginPage.css";
 import lgo from "../../../assets/images/lgo.jpg";
 import { storage } from "../../../storage";
@@ -154,18 +154,31 @@ class Register extends Component {
     });
   };
 
+  validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  validatePassword = (password) => {
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    return re.test(password);
+  };
+
   registrationHandler = () => {
     if (this.state.full_name == "") {
       alert("Please Enter your business name");
-    } else if (this.state.email == "") {
+    } else if (!this.validateEmail(this.state.email)) {
       alert("Please Enter an valid Email");
-    } else if (this.state.password == "") {
-      alert("Please Enter a password");
-    }
-    if (this.state.user_type.length == 0) {
+    } else if (!this.validatePassword(this.state.password)) {
+      alert("Please Enter a password in a proper format"); // 6 Digits minimum|| special character || Numbers || Capital || simple
+    } else if (this.state.Desc.length == 0) {
+      alert("Please Enter a description");
+    } else if (this.state.user_type.length == 0) {
       alert("Enter your User Type");
     } else if (this.state.location.length == 0) {
-      alert("Add yout service locaion");
+      alert("Add you service locaion");
+    } else if (this.state.Photo.length == 0) {
+      alert("Add an image");
     } else {
       fire
         .auth()
@@ -294,7 +307,7 @@ class Register extends Component {
                   <div className="input-group mb-3">
                     <div className="input-group-append">
                       <span className="input-group-text">
-                        <i className="fas fa-user" />
+                        <i className="fa fa-user" />
                       </span>
                     </div>
                     <input
@@ -312,7 +325,7 @@ class Register extends Component {
                   <div className="input-group mb-3">
                     <div className="input-group-append">
                       <span className="input-group-text">
-                        <i className="fas fa-at" />
+                        <i className="fa fa-at" />
                       </span>
                     </div>
                     <input
@@ -328,7 +341,7 @@ class Register extends Component {
                   <div className="input-group mb-2">
                     <div className="input-group-append">
                       <span className="input-group-text">
-                        <i className="fas fa-key" />
+                        <i className="fa fa-key" />
                       </span>
                     </div>
                     <input
@@ -370,7 +383,7 @@ class Register extends Component {
                   <div className="input-group mb-2">
                     <div className="input-group-append">
                       <span className="input-group-text">
-                        <i className="fas fa-key" />
+                        <i className="fa fa-home" />
                       </span>
                     </div>
                     <input

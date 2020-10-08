@@ -180,7 +180,7 @@ class garage extends Component {
         Registeration_No: "20XX-XX-XX",
         Service_Id: docId,
         Service_Types: ["", ""],
-        Telephone: "07XXXXXXX",
+        Telephone: parseInt('0700000000'),
         paymentStatus: "0",
         Location:Location,
       });
