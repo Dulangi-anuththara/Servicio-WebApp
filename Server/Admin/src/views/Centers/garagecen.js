@@ -137,6 +137,17 @@ class garage extends Component {
     });
   };
 
+  validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  validateTel = (Telephone) => {
+    const re = /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6}$/;
+    return re.test(Number(Telephone));
+  };
+  
+
   handleCreateGarage = () => {
     const {
       AddressTwo,
@@ -159,40 +170,56 @@ class garage extends Component {
       paymentStatus,
     } = this.state;
 
-    const db = firebase.firestore();
+    if (Name.length == 0) {
+      alert("Name is required");
+    } else if (Description.length == 0) {
+      alert("Description is required");
+    } else if (!this.validateTel(this.state.Telephone)) {
+      alert("Enter a valid telephone number");
+    } else if (!this.validateEmail(this.state.Email)) {
+      alert("Enter a proper mail 'examp@mail.com' ");
+    } else if (this.state.Lantitude.length == 0) {
+      alert("Lantitude is required");
+    } else if (this.state.Longitude.length == 0) {
+      alert("Longitude is required");
+    } else if (City.length == 0) {
+      alert("City is required");
+    } else {
+      const db = firebase.firestore();
 
-    var newDocRef = db.collection("Services").doc();
-    newDocRef
-      .set({
-        AddressTwo: "draft address2",
-        BRPhoto: "https://via.placeholder.com/150",
-        Address: "draft address",
-        City,
-        Description,
-        Email,
-        Favs: ["fav1", "fav2"],
-        Image: "https://via.placeholder.com/150",
-        Location: new firebase.firestore.GeoPoint(
-          Number(this.state.Lantitude),
-          Number(this.state.Longitude)
-        ),
-        Name,
-        Service_Name: Name,
-        Photo: "https://via.placeholder.com/150",
-        Rating: 4,
-        Registeration_No: "20XX-XX-XX",
-        SearchKey: Name[0].toUpperCase(),
-        Service_Types: ["type1", "type2"],
-        Telephone,
-        isVerified,
-        user_type: "garage",
-        paymentStatus: "0",
-        Service_Id: newDocRef.id,
-      })
-      .then(function () {
-        alert("Created a garage!");
-        window.location.reload();
-      });
+      var newDocRef = db.collection("Services").doc();
+      newDocRef
+        .set({
+          AddressTwo: "draft address2",
+          BRPhoto: "https://via.placeholder.com/150",
+          Address: "draft address",
+          City,
+          Description,
+          Email,
+          Favs: ["fav1", "fav2"],
+          Image: "https://via.placeholder.com/150",
+          Location: new firebase.firestore.GeoPoint(
+            Number(this.state.Lantitude),
+            Number(this.state.Longitude)
+          ),
+          Name,
+          Service_Name: Name,
+          Photo: "https://via.placeholder.com/150",
+          Rating: 0,
+          Registeration_No: "20XX-XX-XX",
+          SearchKey: Name[0].toUpperCase(),
+          Service_Types: ["type1", "type2"],
+          Telephone: Number(Telephone),
+          isVerified,
+          user_type: "garage",
+          paymentStatus: "0",
+          Service_Id: newDocRef.id,
+        })
+        .then(function () {
+          alert("Created a garage!");
+          window.location.reload();
+        });
+    }
   };
 
   componentDidMount() {
