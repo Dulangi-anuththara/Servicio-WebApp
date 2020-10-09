@@ -28,7 +28,7 @@ customer.get('/:id',(req,res)=>{
 
   db.collection('Customers').doc(id).get()
   .then(response=>{
-    console.log(response.data());
+    //console.log(response.data());
     res.send(response.data());
   })
 })

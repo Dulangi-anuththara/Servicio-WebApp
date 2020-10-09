@@ -44,6 +44,7 @@ Events.post('/add/:key',(req,res) => {
                     .then(function() {
                         console.log("Document successfully written!");
                         db.collection('Services').doc(key).collection('Customers').doc(req.body.bookings.CustId).set({
+                          count:0,
                           name:req.body.bookings.CustName,
                           photo:"https://img.icons8.com/bubbles/100/000000/man-with-envelope.png",
                           text:`Send message to ${req.body.bookings.CustName}`

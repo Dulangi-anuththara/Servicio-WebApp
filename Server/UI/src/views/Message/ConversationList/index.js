@@ -23,6 +23,7 @@ export default function ConversationList(props) {
      console.log(response.data)
         let newConversations = response.data.map(result => {
           return {
+            count:result.count,
             photo:result.photo,
             name: result.name,
             text: result.text,

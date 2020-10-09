@@ -73,8 +73,12 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
                 db.collection('Customers').doc(data.CustId).collection('ongoing').doc(bookingId).set(data)
                 .then(()=>{
                     db.collection('Services').doc(ServiceId).collection('Bookings').doc(bookingId).delete()
-                    .then(response=>{
-                        res.send(response);
+                    .then(()=>{
+                        db.collection('Customers').doc(data.CustId).collection('Bookings').doc(bookingId).delete()
+                        .then(response=>{
+                            res.send(response);
+                        })
+                       
                     })
                 })
                 

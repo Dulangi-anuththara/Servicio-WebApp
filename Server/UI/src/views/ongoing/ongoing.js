@@ -14,6 +14,7 @@ import {
   Redirect,
   useParams
 } from "react-router-dom";
+import { Height } from '@material-ui/icons';
 
 
 class ongoing extends Component {
@@ -210,7 +211,7 @@ handleProgress(value){
         <div className="card">          
           <div className="card-body">            
  
-        <Row>
+        <Row height={200}>
             <Col xs="6">
             <Card body >
             <CardHeader tag="h4">Vehicle Details</CardHeader>
@@ -314,7 +315,7 @@ handleProgress(value){
       
       <Launcher
                 agentProfile={{
-                teamName: 'Servico',
+                teamName: this.state.CustName,
                 imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
                 }}
                 onMessageWasSent={this._onMessageWasSent.bind(this)}

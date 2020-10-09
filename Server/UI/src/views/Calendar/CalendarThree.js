@@ -39,13 +39,14 @@ class Calendar extends Component {
             icon:"icon-close icons",
             onClick: args => {
 
-              DayPilot.Modal.confirm("Are you sure you want to delete this?").then((args)=>{
-                if(args.result){
+              DayPilot.Modal.confirm("Are you sure you want to delete this?").then((result)=>{
+                if(result.result){
                   var e = args.source;
+                  console.log(args.source.data.id)
                   this.calendar.events.remove(e);
                   const url =`http://localhost:5000/event/delete/${props.uid}/${args.source.data.id}`
                   Axios.post(url).then((response)=>{
-                    console.log(response.data);        
+                    console.log(response);        
                   })
                 }
               })

@@ -37,8 +37,14 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
          })
      })
      .then(()=>{
+        db.collection('Services').doc(ServiceId).collection('Customers').doc(CustId).update({
+            count:0
+        })
+        .then(()=>{
             res.send(data);
+        })
      })
+     
 
  })
 
