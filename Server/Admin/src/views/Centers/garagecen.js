@@ -185,39 +185,55 @@ class garage extends Component {
     } else if (City.length == 0) {
       alert("City is required");
     } else {
-      const db = firebase.firestore();
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(Email, "tesT@123")
+        .then(async (res) => {
+          let garage = firebase.auth().currentUser;
 
-      var newDocRef = db.collection("Services").doc();
-      newDocRef
-        .set({
-          AddressTwo: "draft address2",
-          BRPhoto: "https://via.placeholder.com/150",
-          Address: "draft address",
-          City,
-          Description,
-          Email,
-          Favs: ["fav1", "fav2"],
-          Image: "https://via.placeholder.com/150",
-          Location: new firebase.firestore.GeoPoint(
-            Number(this.state.Lantitude),
-            Number(this.state.Longitude)
-          ),
-          Name,
-          Service_Name: Name,
-          Photo: "https://via.placeholder.com/150",
-          Rating: 0,
-          Registeration_No: "20XX-XX-XX",
-          SearchKey: Name[0].toUpperCase(),
-          Service_Types: ["type1", "type2"],
-          Telephone: Number(Telephone),
-          isVerified,
-          user_type: "garage",
-          paymentStatus: "0",
-          Service_Id: newDocRef.id,
-        })
-        .then(function () {
-          alert("Created a garage!");
-          window.location.reload();
+          garage
+            .sendEmailVerification()
+            .then(function () {
+              alert("Verfication has been sent to the garage email!");
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
+          const db = firebase.firestore();
+          let id = garage.uid;
+          var newDocRef = db.collection(`Services`).doc(id);
+          newDocRef
+            .set({
+              AddressTwo: "draft address2",
+              BRPhoto: "https://via.placeholder.com/150",
+              Address: "draft address",
+              City,
+              Description,
+              Email,
+              Favs: ["fav1", "fav2"],
+              Image: "https://via.placeholder.com/150",
+              Location: new firebase.firestore.GeoPoint(
+                Number(this.state.Lantitude),
+                Number(this.state.Longitude)
+              ),
+              Name,
+              Service_Name: Name,
+              Photo: "https://via.placeholder.com/150",
+              Rating: 0,
+              Registeration_No: "20XX-XX-XX",
+              SearchKey: Name[0].toUpperCase(),
+              Service_Types: ["type1", "type2"],
+              Telephone: Number(Telephone),
+              isVerified,
+              user_type: "garage",
+              paymentStatus: "0",
+              Service_Id: garage.uid,
+            })
+            .then(function () {
+              alert("Created a garage!");
+              window.location.reload();
+            });
         });
     }
   };

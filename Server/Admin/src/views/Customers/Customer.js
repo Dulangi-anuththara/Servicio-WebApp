@@ -95,26 +95,48 @@ class Customer extends Component {
 
   handleCreateCustomer = () => {
     const { email, tel_num, full_name, favs } = this.state;
-    const db = firebase.firestore();
+    if (full_name.length == 0) {
+      alert("Name is required");
+    } else if (email.length == 0) {
+      alert("Email number is required");
+    } else if (tel_num.length == 0) {
+      alert("Telephone number is required");
+    } else {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, "test@123")
+        .then(async (res) => {
+          let customer = firebase.auth().currentUser;
 
-    var newDocRef = db.collection("Customers").doc();
-    newDocRef
-      .set({
-        email,
-        tel_num,
-        name: full_name,
-        favs,
-        location: ["0.00000 °N", "0.00000 °E"],
-        photo: ' "https://via.placeholder.com/150"',
-        paymentStatus: "0",
-        user_id: newDocRef.id,
-      })
-      .then(function () {
-        alert("Create a customer!");
-        window.location.reload();
-      });
+          customer
+            .sendEmailVerification()
+            .then(function () {
+              alert("Verfication has been sent to the service email!");
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          const db = firebase.firestore();
+          let id = customer.uid;
+          var newDocRef = db.collection("Customers").doc(id);
+          newDocRef
+            .set({
+              email,
+              tel_num,
+              name: full_name,
+              favs,
+              location: ["0.00000 °N", "0.00000 °E"],
+              photo: ' "https://via.placeholder.com/150"',
+              paymentStatus: "0",
+              user_id: id,
+            })
+            .then(function () {
+              alert("Create a customer!");
+              window.location.reload();
+            });
+        });
+    }
   };
-
   openCreateMoadal = () => {
     this.setState({
       createModalVisibility: true,
