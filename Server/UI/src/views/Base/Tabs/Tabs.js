@@ -32,7 +32,7 @@ class Tabs extends Component {
           {`1. ${this.lorem()}`}
         </TabPane>
         <TabPane tabId="2">
-          {`2. ${this.lorem()}`}
+          {<div><i className="fa fa-align-justify"></i><strong>In Progress</strong></div>}
         </TabPane>
         <TabPane tabId="3">
           {`3. ${this.lorem()}`}

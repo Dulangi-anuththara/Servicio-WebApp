@@ -157,7 +157,7 @@ ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
     })
     
 })
-ongoing.get('/picked/:ServiceId',(req,res)=>{
+ongoing.get('/rated/:ServiceId',(req,res)=>{
     var ServiceId = req.params.ServiceId;
     var data = []
     db.collection('Services').doc(ServiceId).collection('ongoing').where('progressStage','==',6).get()
@@ -166,6 +166,41 @@ ongoing.get('/picked/:ServiceId',(req,res)=>{
                 var booking = doc.data()
                 booking.id =doc.id
                 data.push(booking)
+            })
+
+            res.send(data);
+    })
+})
+ongoing.get('/picked/:ServiceId',(req,res)=>{
+    var ServiceId = req.params.ServiceId;
+    var data = []
+    db.collection('Services').doc(ServiceId).collection('ongoing').where('progressStage','==',5).get()
+    .then((querySnapshot)=>{
+            querySnapshot.forEach(doc=>{
+                var booking = doc.data()
+                booking.id =doc.id
+                data.push(booking)
+            })
+
+            res.send(data);
+    })
+})
+ongoing.get('/completed/:ServiceId',(req,res)=>{
+    var ServiceId = req.params.ServiceId;
+    var today = new Date()
+    var todayDate = today.getFullYear()+'-'+today.getMonth()+'-'+today.getDate()
+    var data = []
+    db.collection('Services').doc(ServiceId).collection('Completed').get()
+    .then((querySnapshot)=>{
+            querySnapshot.forEach(doc=>{
+                    var date = new Date(doc.data().Date)
+                    var bookingDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()
+                    if(bookingDate==todayDate){
+                        var booking = doc.data()
+                        booking.id =doc.id
+                        data.push(booking)
+                    }
+
             })
 
             res.send(data);

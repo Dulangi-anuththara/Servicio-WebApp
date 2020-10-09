@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
-import { Badge, Card,CardTitle,CardText, CardBody, CardHeader, Col, Row, Button, Input, Label, ButtonToolbar,ButtonGroup} from 'reactstrap';
+import { Card,CardText, CardHeader, Col, Row, Button, Input, Label, ButtonToolbar,ButtonGroup} from 'reactstrap';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Image from 'react-bootstrap/Image'
 import {Launcher} from 'react-chat-window'
 import axios from 'axios' ;
 import {
   BrowserRouter as Router,
   withRouter,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  useParams
 } from "react-router-dom";
-import { Height } from '@material-ui/icons';
+
 
 
 class ongoing extends Component {
@@ -158,6 +152,9 @@ handleProgress(value){
         axios.post(url,data)
         .then(response =>{
           console.log(response.data);
+          if(this.state.progressStage==5){
+            this.props.history.push('/done')
+          }
         })  
     })
     )
