@@ -183,6 +183,7 @@ class garage extends Component {
         Telephone: parseInt('0700000000'),
         paymentStatus: "0",
         Location:Location,
+        createdDate: firebase.firestore.Timestamp.fromDate(new Date()),
       });
 
     if (!result) {

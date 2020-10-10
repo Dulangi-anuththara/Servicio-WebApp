@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import Modal from "react-awesome-modal";
 import GeoPoint from "geopoint";
+import moment from "moment";
 import {
   Badge,
   Card,
@@ -13,6 +14,33 @@ import {
   Table,
   Button,
 } from "reactstrap";
+
+const renderTimeDuration = (status, createdDate) => {
+  if (status == "2") {
+    return <td>-</td>;
+  }
+  if (createdDate) {
+    let created_date = new Date(createdDate.seconds * 1000);
+    let _startDate = moment(created_date).format("YYYY-MM-DD HH:mm:ss");
+    let _nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
+
+    let _date = moment(_nowDate).diff(_startDate, "months");
+    let _ago = moment(_startDate).fromNow();
+
+    if (status == 0 && _date == 2) {
+      return (
+        <td>
+          {" "}
+          <span className="badge badge-warning">Over Due</span>
+        </td>
+      );
+    } else {
+      return <td>{_ago}</td>;
+    }
+  } else {
+    return <td>No record</td>;
+  }
+};
 
 const renderPaymentStatus = (status) => {
   switch (status) {
@@ -46,6 +74,7 @@ const GarageReg = (props) => (
       <button onClick={() => props.openImage()}>View BR</button>
     </td>
     {renderPaymentStatus(props.paymentStatus)}
+    {renderTimeDuration(props.paymentStatus, props.createdDate)}
     <td>{props.isVerified ? "true" : "false"}</td>
     <td>
       <button onClick={() => props.editUser()}>🖋</button>
@@ -337,6 +366,7 @@ class garage extends Component {
           BRPhoto={currentlist.BRPhoto}
           Verify={currentlist.Verification}
           paymentStatus={currentlist.paymentStatus}
+          createdDate={currentlist.createdDate}
           key={i}
         />
       );
@@ -647,6 +677,7 @@ class garage extends Component {
                     <th>Rating</th>
                     <th>BRPhoto</th>
                     <th>Payment Status</th>
+                    <th>Time Duration</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
