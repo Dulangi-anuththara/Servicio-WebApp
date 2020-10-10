@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Rating  from 'react-rating-scale';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 class Done extends Component {
@@ -22,7 +23,8 @@ class Done extends Component {
       pending:[],
       rated:[],
       completed:[],
-      lock:false
+      lock:false,
+      customerRate:0
     };
   }
 
@@ -72,7 +74,9 @@ class Done extends Component {
     
     const url=`http://localhost:5000/ongoing/completion/${this.props.uid}/${e.target.value}`
      
-      Axios.get(url)
+      Axios.post(url,{
+        rating:this.state.customerRate
+      })
       .then(response =>{
         console.log(response.data);
         this.props.history.push('/done')
@@ -118,6 +122,10 @@ class Done extends Component {
                     <DialogContentText>
                     Comment : {item.Comment}
                     </DialogContentText>
+                    <DialogContentText>
+                    Rate your customer :
+                    </DialogContentText>
+                      <Rating onSelect={(val)=>{ this.setState({customerRate:val})}} length={5}></Rating>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={this.handleCompletion} color="primary" value={item.id}>

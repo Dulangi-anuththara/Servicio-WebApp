@@ -53,7 +53,7 @@ class UserForm extends Component {
       AddressTwo:"",
       City:"",
       Email:"",
-      Telephone:"",
+      Telephone:0,
       Image:"",
       Services:[],
       isChecked:{},    

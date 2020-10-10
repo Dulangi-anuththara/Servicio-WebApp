@@ -22,7 +22,7 @@ user.get('/profile/:id',(req,res) =>{
 user.post('/imgUpload/:id',(req,res)=>{
     const id= req.params.id
     let data ={
-        Photo:req.body.Image
+        Image:req.body.Image
     }
     let docRef = db.collection('Services').doc(id);
     let setDoc = docRef.update(data);
@@ -39,7 +39,7 @@ user.post('/profile/edit/:id',(req,res) => {
             AddressTwo:req.body.AddressTwo,
             City:req.body.City,
             Email:req.body.Email,
-            Telephone:req.body.Telephone,
+            Telephone:parseInt(req.body.Telephone),
             Image:req.body.Image,
             Service_Types:req.body.Service_Types
         };

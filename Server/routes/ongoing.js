@@ -130,17 +130,21 @@ ongoing.post('/addNotes/:ServiceId/:bookingId',(req,res)=>{
 })
 
 
-ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
+ongoing.post('/completion/:ServiceId/:bookingId',(req,res)=>{
     var ServiceId = req.params.ServiceId;
     var bookingId = req.params.bookingId;
+    var rating = req.body.rating
     var data ={}
     var id =""
+    var num =0
+    var count =0
     
     db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).get()
     .then((documentSnapshot)=>{
         data = documentSnapshot.data();
         db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).delete()
         data.progressStage = 7
+        data.customerRating = rating
         
     })
     .then(()=>{
@@ -149,9 +153,28 @@ ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
         db.collection('Services').doc(ServiceId).collection('Completed').doc(bookingId).set(data)
         .then(()=>{
             db.collection('Customers').doc(id).collection('Completed').doc(bookingId).set(data)
-            .then((response)=>{
-        
-                res.send(response);
+            .then(()=>{
+                // db.collection('Reviews').doc(bookingId).update({customerRating:rating})
+                // .then(()=>{
+                //     db.collection('Reviews').where('CustId','==',id).get()
+                //     .then(querySnapshot =>{
+                //         num = querySnapshot.size
+                //         count =0
+                //         querySnapshot.forEach(doc =>{
+                //             count=count+doc.data().customerRating
+                //         })
+                        
+                //     })
+                //     .then(()=>{
+                //         var rate = count/num;
+                //         db.collection('Customers').doc(id).update({Rating:rate})
+                //         .then(response=>{
+                //             res.send(response);
+                //         })
+                //     })
+                // })
+                
+                res.send("Customer Rated");
             })
         })
     })

@@ -63,8 +63,12 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
     }
     db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).collection('msg').add(data)
     .then(response=>{
-        console.log(response)
-        res.send("Task Completed")
+        db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).update({read:true})
+        .then(()=>{
+            console.log(response)
+            res.send("Task Completed")
+        })
+        
     })
 
 

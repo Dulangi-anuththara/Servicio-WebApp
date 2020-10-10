@@ -49,7 +49,7 @@ class User extends Component {
                                   City:response.data.City,
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
-                                  Image:response.data.Photo,
+                                  Image:response.data.Image,
                                 });
                                 console.log(this.state.Image);                           
                               
