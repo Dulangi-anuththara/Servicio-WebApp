@@ -353,6 +353,8 @@ class Register extends Component {
                       className="form-control input_pass"
                       placeholder="password"
                       required
+                      title="Password should atleast be of 6 characters
+                      should include atleast one simple letter, capital letter, special character and number" 
                     />
                   </div>
                   <div className="form-group">

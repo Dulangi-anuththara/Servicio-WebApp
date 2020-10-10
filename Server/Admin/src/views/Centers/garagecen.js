@@ -27,7 +27,7 @@ const renderTimeDuration = (status, createdDate) => {
     let _date = moment(_nowDate).diff(_startDate, "months");
     let _ago = moment(_startDate).fromNow();
 
-    if (status == 0 && _date == 2) {
+    if (status == 0 && _date >= 2) {
       return (
         <td>
           {" "}

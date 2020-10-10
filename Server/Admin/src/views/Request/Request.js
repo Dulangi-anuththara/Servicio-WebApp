@@ -179,7 +179,7 @@ class garage extends Component {
         Name: "dummy name",
         Registeration_No: "20XX-XX-XX",
         Service_Id: docId,
-        Service_Types: ["", ""],
+        Service_Types: ["Body Wash"],
         Telephone: parseInt('0700000000'),
         paymentStatus: "0",
         Location:Location,
