@@ -409,16 +409,7 @@ componentDidMount(){
             <Card className="text-white bg-primary">
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
-                  <Dropdown id='card2' isOpen={this.state.card2} toggle={() => { this.setState({ card2: !this.state.card2 }); }}>
-                    <DropdownToggle className="p-0" color="transparent">
-                      <i className="icon-location-pin"></i>
-                    </DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem>Action</DropdownItem>
-                      <DropdownItem>Another action</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
+                 
                 </ButtonGroup>
     <div className="text-value">{this.state.data.today}</div>
                 <div>Today</div>
@@ -433,16 +424,6 @@ componentDidMount(){
             <Card className="text-white bg-warning">
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
-                  <Dropdown id='card3' isOpen={this.state.card3} toggle={() => { this.setState({ card3: !this.state.card3 }); }}>
-                    <DropdownToggle caret className="p-0" color="transparent">
-                      <i className="icon-settings"></i>
-                    </DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem>Action</DropdownItem>
-                      <DropdownItem>Another action</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
                 </ButtonGroup>
                 <div className="text-value">{this.state.data.inProgress}</div>
                 <div>In Progress</div>
@@ -458,14 +439,6 @@ componentDidMount(){
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
                   <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
-                    <DropdownToggle caret className="p-0" color="transparent">
-                      <i className="icon-settings"></i>
-                    </DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem>Action</DropdownItem>
-                      <DropdownItem>Another action</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
-                    </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
                 <div className="text-value">{this.state.data.customers}</div>
@@ -515,16 +488,6 @@ componentDidMount(){
           )}
         </tbody>
       </Table>
-      <Pagination>
-        <PaginationItem><PaginationLink previous tag="button" onClick={()=>{console.log("Hi")}}>Prev</PaginationLink></PaginationItem>
-        <PaginationItem active>
-          <PaginationLink tag="button">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem className="page-item"><PaginationLink tag="button">2</PaginationLink></PaginationItem>
-        <PaginationItem><PaginationLink tag="button">3</PaginationLink></PaginationItem>
-        <PaginationItem><PaginationLink tag="button">4</PaginationLink></PaginationItem>
-        <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
-      </Pagination>
     </CardBody>
   </Card>
 </Col>
