@@ -226,18 +226,20 @@ class garage extends Component {
       <div className="animated fadeIn">
         <div>
           <Modal
-            visible={this.state.show}
-            width="400"
-            height="400"
-            effect="fadeInUp"
-            onClickAway={() => this.closeModal()}
+           visible={this.state.show}
+           effect="fadeInUp"
+           onClickAway={() => this.closeModal()}
           >
             <div style={{ padding: 20 }}>
-              <h1>Title</h1>
-              <p>Some Contents</p>
-              <div style={{ Height: "100px", Width: "100px", paddingLeft: 60 }}>
+            <h1>Business Registration </h1>
+              <p>Please Check the BR and Approve Account</p>
+              <div style={{ Height: "500px", Width: "500px" }}>
                 <img
-                  style={{ width: "80%", objectFit: "cover" }}
+                  style={{
+                    width: "500px",
+                    height: "500px",
+                    objectFit: "contain",
+                  }}
                   src={this.state.photo}
                 />
               </div>
