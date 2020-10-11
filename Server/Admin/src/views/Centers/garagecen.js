@@ -503,18 +503,20 @@ class garage extends Component {
           </Modal>
 
           <Modal
-            visible={this.state.show}
-            width="400"
-            height="400"
-            effect="fadeInUp"
-            onClickAway={() => this.closeModal()}
+           visible={this.state.show}
+           effect="fadeInUp"
+           onClickAway={() => this.closeModal()}
           >
             <div style={{ padding: 25 }}>
-              <h1>Title</h1>
-              <p>Some Contents</p>
-              <div style={{ Height: "100px", Width: "100px", paddingLeft: 55 }}>
+              <h1>Business Registration </h1>
+              <p>BR is checked and <span class="badge badge-success">Approved Account</span></p>
+              <div style={{ Height: "500px", Width: "500px" }}>
                 <img
-                  style={{ width: "80%", objectFit: "cover" }}
+                  style={{
+                    width: "500px",
+                    height: "500px",
+                    objectFit: "contain",
+                  }}
                   src={this.state.photo}
                 />
               </div>
