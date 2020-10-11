@@ -154,6 +154,7 @@ class garage extends Component {
       docId,
       isVerified,
       user_type,
+      Location,
     } = this.state._selectedUser;
 
     const db = firebase.firestore();
@@ -173,13 +174,16 @@ class garage extends Component {
         AddressTwo: "address2",
         City: "please enter a city",
         Favs: ["", ""],
-        Image: BRPhoto,
-        Photo: BRPhoto,
+        Image: "https://firebasestorage.googleapis.com/v0/b/servicio-11f11.appspot.com/o/images%2FNissan-Service-Center-534x462.jpg?alt=media&token=8a8e6fe7-e649-4ee5-8101-8880a9e13395",
+        Photo: "https://firebasestorage.googleapis.com/v0/b/servicio-11f11.appspot.com/o/images%2FNissan-Service-Center-534x462.jpg?alt=media&token=8a8e6fe7-e649-4ee5-8101-8880a9e13395",
         Name: "dummy name",
         Registeration_No: "20XX-XX-XX",
         Service_Id: docId,
-        Service_Types: ["", ""],
-        Telephone: "07XXXXXXX",
+        Service_Types: ["Body Wash"],
+        Telephone: parseInt('0700000000'),
+        paymentStatus: "0",
+        Location:Location,
+        createdDate: firebase.firestore.Timestamp.fromDate(new Date()),
       });
 
     if (!result) {

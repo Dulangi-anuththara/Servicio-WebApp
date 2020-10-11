@@ -6,6 +6,7 @@ import './App.scss';
 import Login from './views/Pages/Login/Login';
 import DefaultLayout from './containers/DefaultLayout';
 import Register from './views/Pages/Register/Register';
+import AdminLogin from "./views/Pages/Login/AdminLogin";
 import routes from './routes'
 
 
@@ -64,6 +65,7 @@ class App extends Component {
       <Switch>
         <Route path="/" exact component={Login}/>
         <Route path="/register" component={Register}/>
+        <Route path="/admin-login" exact component={AdminLogin} />
         {routes.map((route, idx) => {
                     return route.component ? (
                       <Route

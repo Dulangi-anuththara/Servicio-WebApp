@@ -18,6 +18,7 @@ const UserReg = (props) => (
     <td>{props.name}</td>
     <td>{props.email}</td>
     <td>{props.tel_num}</td>
+    {/* {props.paymentStatus ? <td>Done</td> : <td>Pending</td>} */}
     <td>
       <button onClick={() => props.editUser()}>🖋</button>
       <button style={{ marginLeft: 5 }} onClick={() => props.deleteUser()}>
@@ -35,7 +36,11 @@ class Customer extends Component {
       password: "",
       name: "",
       tel_num: "",
+      location: ["", ""],
+      favs: ["", ""],
+      photo: "",
       editmodalVisiblity: false,
+      createModalVisibility: false,
       yasa: "null",
       full_name: "",
       _tel: "",
@@ -75,6 +80,68 @@ class Customer extends Component {
       user: {},
     });
   }
+
+  cloeseCreateUserModal() {
+    this.setState({
+      createModalVisibility: false,
+      email: "",
+      tel_num: "",
+      full_name: "",
+      favs: ["", ""],
+      location: ["0.00000 °N", "0.00000 °E"],
+      photo: "",
+    });
+  }
+
+  handleCreateCustomer = () => {
+    const { email, tel_num, full_name, favs } = this.state;
+    if (full_name.length == 0) {
+      alert("Name is required");
+    } else if (email.length == 0) {
+      alert("Email number is required");
+    } else if (tel_num.length == 0) {
+      alert("Telephone number is required");
+    } else {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, "test@123")
+        .then(async (res) => {
+          let customer = firebase.auth().currentUser;
+
+          customer
+            .sendEmailVerification()
+            .then(function () {
+              alert("Verfication has been sent to the service email!");
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          const db = firebase.firestore();
+          let id = customer.uid;
+          var newDocRef = db.collection("Customers").doc(id);
+          newDocRef
+            .set({
+              email,
+              tel_num,
+              name: full_name,
+              favs,
+              location: ["0.00000 °N", "0.00000 °E"],
+              photo: ' "https://via.placeholder.com/150"',
+              paymentStatus: "0",
+              user_id: id,
+            })
+            .then(function () {
+              alert("Create a customer!");
+              window.location.reload();
+            });
+        });
+    }
+  };
+  openCreateMoadal = () => {
+    this.setState({
+      createModalVisibility: true,
+    });
+  };
   Users() {
     let t = { ...this.state.yasa };
 
@@ -191,10 +258,79 @@ class Customer extends Component {
           </div>
         </Modal>
 
+        <Modal
+          visible={this.state.createModalVisibility}
+          onClickAway={() => this.cloeseCreateUserModal()}
+          width="500"
+        >
+          <div style={{ padding: 20 }}>
+            <div>
+              <div class="form-group">
+                <label for="formGroupExampleInput">Enter Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formGroupExampleInput"
+                  placeholder="Ex: Jhon Doe"
+                  value={this.state.full_name}
+                  onChange={(e) => {
+                    this.setState({
+                      full_name: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="formGroupExampleInput">Enter Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formGroupExampleInput"
+                  placeholder="Ex: jhon@gmail.com"
+                  value={this.state.email}
+                  onChange={(e) => {
+                    this.setState({
+                      email: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div class="form-group">
+                <label for="formGroupExampleInput2">Enter TP No:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formGroupExampleInput2"
+                  value={this.state.tel_num}
+                  onChange={(e) => {
+                    this.setState({ tel_num: e.target.value });
+                  }}
+                  placeholder="Ex: 0789554563"
+                />
+              </div>
+
+              <button
+                className="btn btn-primary"
+                onClick={this.handleCreateCustomer}
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </Modal>
+
         <div className="animated fadeIn">
           <Card>
             <CardHeader>
               <i className="fa fa-align-justify"></i>Customers
+              <button
+                onClick={() => {
+                  this.openCreateMoadal();
+                }}
+              >
+                Create a customer
+              </button>
             </CardHeader>
             <CardBody>
               <Table responsive striped>
@@ -203,6 +339,7 @@ class Customer extends Component {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Telephone Number</th>
+                    {/* <th>Payment Status</th> */}
                     <th>Actions</th>
                   </tr>
                 </thead>

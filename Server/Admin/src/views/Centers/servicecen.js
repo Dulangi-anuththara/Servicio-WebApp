@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import Modal from "react-awesome-modal";
+import moment from "moment";
 import _ from "lodash";
 import {
   Badge,
@@ -14,6 +15,55 @@ import {
   Button,
 } from "reactstrap";
 
+const renderTimeDuration = (status, createdDate) => {
+  if (status == "2") {
+    return <td>-</td>;
+  }
+  if (createdDate) {
+    let created_date = new Date(createdDate.seconds * 1000);
+    let _startDate = moment(created_date).format("YYYY-MM-DD HH:mm:ss");
+    let _nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
+
+    let _date = moment(_nowDate).diff(_startDate, "months");
+    let _ago = moment(_startDate).fromNow();
+    console.log("status==========>", status);
+    if (status == 0 && _date >= 2) {
+      return (
+        <td>
+          {" "}
+          <span className="badge badge-warning">Over Due</span>
+        </td>
+      );
+    } else {
+      return <td>{_ago}</td>;
+    }
+  } else {
+    return <td>No record</td>;
+  }
+};
+
+const renderPaymentStatus = (status) => {
+  switch (status) {
+    case "0":
+      return <td>Pending</td>;
+      break;
+    case "2":
+      return <td>Sucess</td>;
+      break;
+    case "-1":
+      return <td>Cancelled</td>;
+      break;
+    case "-2":
+      return <td>Failed</td>;
+      break;
+    case "-3":
+      return <td>Chargedback</td>;
+      break;
+    default:
+      return null;
+  }
+};
+
 const GarageReg = (props) => (
   <tr>
     <td>{props.full_name}</td>
@@ -23,6 +73,8 @@ const GarageReg = (props) => (
     <td>
       <button onClick={() => props.openImage()}>View BR</button>
     </td>
+    {renderPaymentStatus(props.paymentStatus)}
+    {renderTimeDuration(props.paymentStatus, props.createdDate)}
     <td>{props.isVerified ? "true" : "false"}</td>
     <td>
       <button onClick={() => props.editUser()}>🖋</button>
@@ -62,6 +114,26 @@ class garage extends Component {
       Service_Name: "",
       _id: null,
       user: {},
+      createModalVisibility: false,
+      Lantitude: "",
+      BRPhoto: "",
+      Longitude: "",
+      City: "",
+      Description: "",
+      Email: "",
+      Favs: ["", ""],
+      Image: "",
+      Name: "",
+      Photo: "",
+      Rating: "",
+      Registeration_No: "",
+      SearchKey: "",
+      Service_Types: ["", ""],
+      Telephone: "",
+      isVerified: true,
+      user_type: "",
+      paymentStatus: false,
+      //============================================
     };
   }
 
@@ -88,6 +160,117 @@ class garage extends Component {
       user: {},
     });
   }
+  cloeseCreateUserModal() {
+    this.setState({
+      createModalVisibility: false,
+    });
+  }
+
+  openCreateMoadal = () => {
+    this.setState({
+      createModalVisibility: true,
+    });
+  };
+
+  validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  validateTel = (Telephone) => {
+    const re = /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6}$/;
+    return re.test(Number(Telephone));
+  };
+
+  handleCreateService = () => {
+    const {
+      AddressTwo,
+      BRPhoto,
+      Address,
+      City,
+      Description,
+      Email,
+      Favs,
+      Image,
+      Name,
+      Photo,
+      Rating,
+      Registeration_No,
+      SearchKey,
+      Service_Types,
+      Telephone,
+      isVerified,
+      user_type,
+      paymentStatus,
+    } = this.state;
+
+    if (Name.length == 0) {
+      alert("Name is required");
+    } else if (Description.length == 0) {
+      alert("Description is required");
+    } else if (!this.validateTel(this.state.Telephone)) {
+      alert("Enter a valid Telephone Number");
+    } else if (!this.validateEmail(this.state.Email)) {
+      alert("Enter a proper mail 'examp@mail.com' ");
+    } else if (this.state.Lantitude.length == 0) {
+      alert("Lantitude is required");
+    } else if (this.state.Longitude.length == 0) {
+      alert("Longitude is required");
+    } else if (City.length == 0) {
+      alert("City is required");
+    } else {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(Email, "tesT@123")
+        .then(async (res) => {
+          let service = firebase.auth().currentUser;
+
+          service
+            .sendEmailVerification()
+            .then(function () {
+              alert("Verfication has been sent to the service email!");
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
+          const db = firebase.firestore();
+          let id = service.uid;
+          var newDocRef = db.collection(`Services`).doc(id);
+          newDocRef
+            .set({
+              AddressTwo: "draft address2",
+              BRPhoto: "https://via.placeholder.com/150",
+              Address: "draft address",
+              City,
+              Description,
+              Email,
+              Favs: ["fav1", "fav2"],
+              Image: "https://via.placeholder.com/150",
+              Location: new firebase.firestore.GeoPoint(
+                Number(this.state.Lantitude),
+                Number(this.state.Longitude)
+              ),
+              Name,
+              Service_Name: Name,
+              Photo: "https://via.placeholder.com/150",
+              Rating: 0,
+              Registeration_No: "20XX-XX-XX",
+              SearchKey: Name[0].toUpperCase(),
+              Service_Types: ["type1", "type2"],
+              Telephone: Number(Telephone),
+              isVerified,
+              user_type: "service",
+              paymentStatus: "0",
+              Service_Id: service.uid,
+            })
+            .then(function () {
+              alert("Created a service!");
+              window.location.reload();
+            });
+        });
+    }
+  };
   componentDidMount() {
     if (!firebase.apps.length) {
       firebase.initializeApp({
@@ -186,6 +369,8 @@ class garage extends Component {
           Rating={currentlist.Rating}
           BRPhoto={currentlist.BRPhoto}
           Verify={currentlist.Verification}
+          paymentStatus={currentlist.paymentStatus}
+          createdDate={currentlist.createdDate}
           key={i}
         />
       );
@@ -332,11 +517,137 @@ class garage extends Component {
               )}
             </div>
           </Modal>
+          <Modal
+            visible={this.state.createModalVisibility}
+            onClickAway={() => this.cloeseCreateUserModal()}
+            width="500"
+          >
+            <div style={{ padding: 20 }}>
+              <div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Enter Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput"
+                    placeholder="Ex: Jhon Doe"
+                    value={this.state.Name}
+                    onChange={(e) => {
+                      this.setState({
+                        Name: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
 
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Enter Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput"
+                    placeholder="Ex: this is nice"
+                    value={this.state.Description}
+                    onChange={(e) => {
+                      this.setState({
+                        Description: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput">
+                    Enter Telephone Number
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput"
+                    placeholder="Ex: 011-2729729"
+                    value={this.state.Telephone}
+                    onChange={(e) => {
+                      this.setState({
+                        Telephone: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Enter Email:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.Email}
+                    onChange={(e) => {
+                      this.setState({ Email: e.target.value });
+                    }}
+                    placeholder="Ex: jhon@gmail.com"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Enter Lantitude:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.Lantitude}
+                    onChange={(e) => {
+                      this.setState({ Lantitude: e.target.value });
+                    }}
+                    placeholder="Ex: 78.83854"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">
+                    Enter Address Longitude:
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.Longitude}
+                    onChange={(e) => {
+                      this.setState({ Longitude: e.target.value });
+                    }}
+                    placeholder="Ex: 69.45932"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Enter City:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    value={this.state.City}
+                    onChange={(e) => {
+                      this.setState({ City: e.target.value });
+                    }}
+                    placeholder="Ex: Colombo"
+                  />
+                </div>
+                <button
+                  className="btn btn-primary"
+                  onClick={this.handleCreateService}
+                >
+                  Create
+                </button>
+              </div>
+            </div>
+          </Modal>
           <Card>
             <CardHeader>
               <i className="fa fa-align-justify"></i>Registered Garage Centers{" "}
-              {this.state.garcount}
+              {this.state.garcount}{" "}
+              <button
+                onClick={() => {
+                  this.openCreateMoadal();
+                }}
+              >
+                Create a service
+              </button>
             </CardHeader>
             <CardBody>
               <Table responsive striped>
@@ -347,6 +658,8 @@ class garage extends Component {
                     <th>User Type</th>
                     <th>Rating</th>
                     <th>BRPhoto</th>
+                    <th>Payment Status</th>
+                    <th>Time Duration</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
