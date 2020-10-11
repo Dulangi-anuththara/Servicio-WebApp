@@ -153,7 +153,7 @@ class garage extends Component {
   cloeseEditUserModal() {
     this.setState({
       editmodalVisiblity: false,
-      Email: "",
+      Telephone: "",
       Description: "",
       Service_Name: "",
       _id: null,
@@ -330,7 +330,7 @@ class garage extends Component {
         user: user,
         Service_Name: user.Service_Name,
         Description: user.Description,
-        Email: user.Email,
+        Telephone: user.Telephone,
       });
       this.setState({
         editmodalVisiblity: true,
@@ -406,11 +406,11 @@ class garage extends Component {
     });
   };
   // Edit User
-  editUser = (Email, Description, Service_Name, user) => {
+  editUser = (Telephone, Description, Service_Name, user) => {
     const db = firebase.firestore();
     db.collection("Services")
       .doc(user.docId)
-      .set({ ...user, Email, Description, Service_Name });
+      .set({ ...user, Telephone, Description, Service_Name });
 
     this.cloeseEditUserModal();
     window.setTimeout(() => {
@@ -419,9 +419,9 @@ class garage extends Component {
   };
 
   handleSubmit = () => {
-    const { Email, Description, Service_Name, user } = this.state;
+    const { Telephone, Description, Service_Name, user } = this.state;
 
-    this.editUser(Email, Description, Service_Name, user);
+    this.editUser(Telephone, Description, Service_Name, user);
   };
 
   render() {
@@ -466,16 +466,16 @@ class garage extends Component {
                   />
                 </div>
                 <div class="form-group">
-                  <label for="formGroupExampleInput2">Enter Email</label>
+                  <label for="formGroupExampleInput2">Telephone</label>
                   <input
                     type="text"
                     class="form-control"
                     id="formGroupExampleInput2"
                     placeholder="Ex. jhon@gmail.com"
-                    value={this.state.Email}
+                    value={this.state.Telephone}
                     onChange={(e) => {
                       this.setState({
-                        Email: e.target.value,
+                        Telephone: parseInt(e.target.value),
                       });
                     }}
                   />
