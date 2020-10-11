@@ -11,15 +11,13 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
      console.log(ServiceId + " " + CustId)
      db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).collection('msg').orderBy('time','asc').get()
      .then((querySnapshot)=>{
-        console.log(querySnapshot.size);
          querySnapshot.forEach(doc =>{
-            console.log("here")
-             console.log(doc.data());
+
              let message ={}
              message.data ={}
              if(doc.data().id == 0){
                  message.author = 'them'
-                 console.log("here 1")
+                 
              }
              else{
                  message.author = 'me'
@@ -39,12 +37,19 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
          })
      })
      .then(()=>{
+        db.collection('Services').doc(ServiceId).collection('Customers').doc(CustId).update({
+            count:0
+        })
+        .then(()=>{
             res.send(data);
+        })
      })
+     
 
  })
 
  messaging.post('/add/:CustId/:ServiceId',(req,res)=>{
+     console.log("In here msg app");
     const CustId = req.params.CustId
     const ServiceId = req.params.ServiceId
     var currentDate = new Date();
@@ -52,12 +57,18 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
         id:1,
         type:req.body.type,
         text:req.body.data.text,
-        time:currentDate
+        time:currentDate,
+        serviceread:1,
+        customerservice:0,
     }
     db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).collection('msg').add(data)
     .then(response=>{
-        console.log(response)
-        res.send("Task Completed")
+        db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).update({read:true})
+        .then(()=>{
+            console.log(response)
+            res.send("Task Completed")
+        })
+        
     })
 
 

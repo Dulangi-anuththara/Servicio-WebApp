@@ -37,23 +37,26 @@ class UserForm extends Component {
     this.toggleFade = this.toggleFade.bind(this);
     this.validatePhone=this.validatePhone.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onAdd = this.onAdd.bind(this);
     this.state = {
       collapse: true,
       fadeIn: true,
       timeout: 300,
       isValidated:true,
       isCorrect:true,
-      lock:false,
-      lock_R:false,
+      lock:true,
+      lock_R:true,
 
       Name:"",
-      Registration_No:"",
+      Registeration_No:"",
       Address:"",
       AddressTwo:"",
       City:"",
       Email:"",
-      Telephone:"",
-      Image:""    
+      Telephone:0,
+      Image:"",
+      Services:[],
+      isChecked:{},    
   
     };
   }
@@ -73,6 +76,25 @@ class UserForm extends Component {
       }
     )
   }
+  onAdd (e){
+    console.log(this.state.isChecked)
+    if(!this.state.Services.includes(e.target.value)){
+      this.setState({
+        Services:[...this.state.Services,e.target.value],
+        isChecked:{...this.state.isChecked,[e.target.name]:true}
+      },()=>{
+        console.log(this.state.Services);
+      })
+    }else{
+      let remove = this.state.Services.indexOf(e.target.value);
+      this.setState({
+        Services: this.state.Services.filter((_, i) => i !== remove),
+        isChecked:{...this.state.isChecked,[e.target.name]:false}
+      },()=>{
+        console.log(this.state.Services);
+      })
+    }
+  }
 
   onChangeHandler = (e) =>{
     
@@ -82,8 +104,10 @@ class UserForm extends Component {
     })
   }
   validatePhone(e){
+    
     var count=this.state.Telephone.toString().length;
     if(count == 10){
+      console.log("Handle Submit")
       return true;
     }
     else{
@@ -92,10 +116,11 @@ class UserForm extends Component {
   }
 
   validateRegister(e){
-
+    
     var Regex =/^[0-9]{4}[-]{1}[A-Z]{2}[-]{1}[0-9]{2}$/;
-    var result = Regex.test(this.state.Registration_No);
+    var result = Regex.test(this.state.Registeration_No);
     if(result){
+      console.log("Handle Submit2")
       return true
     }
     
@@ -103,6 +128,7 @@ class UserForm extends Component {
 
   handleSubmit(e){
     e.preventDefault();
+    
 
     this.setState({
       lock:this.validatePhone(),
@@ -110,17 +136,19 @@ class UserForm extends Component {
       isValidated:true,
       isCorrect:true
     },() => {
-
+      
       if(this.state.lock && this.state.lock_R){
+
         const data = {
           Name:this.state.Name,
-          Registration_No:this.state.Registration_No,
+          Registeration_No:this.state.Registeration_No,
           Address:this.state.Address,
           AddressTwo:this.state.AddressTwo,
           City:this.state.City,
           Email:this.state.Email,
           Telephone:this.state.Telephone,
           Image:this.state.Image,
+          Service_Types:this.state.Services
         }
         console.log(data);
         
@@ -168,18 +196,101 @@ class UserForm extends Component {
                         .then( response => {
                                 this.setState({
                                   Name:response.data.Service_Name,
-                                  Registration_No:response.data.Registration_No,
+                                  Registeration_No:response.data.Registeration_No,
                                   Address:response.data.Address,
                                   AddressTwo:response.data.AddressTwo,
                                   City:response.data.City,
                                   Email:response.data.Email,
                                   Telephone:response.data.Telephone,
                                   Image:response.data.Photo,
+                                  Services:response.data.Service_Types
 
                                 })                           
                               
                               }
                         )
+                        .then(()=>{
+                          if(this.state.Services.includes("Body Wash")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_wash:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_wash:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Full Service")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Full_service:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Full_service:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Oil Change")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Oil_change:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Oil_change:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Body Painting")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_painting:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Body_painting:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Wheel Alignment")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Wheel_alignment:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Wheel_alignment:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Collision Repairs")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Collision_repairs:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Collision_repairs:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Engine Checkup")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Engine_checkup:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Engine_checkup:false}
+                            })
+                          }
+                          if(this.state.Services.includes("Interior Cleaning")){
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Interior_cleaning:true}
+                            })
+                          }
+                          else{
+                            this.setState({
+                              isChecked:{...this.state.isChecked,Interior_cleaning:false}
+                            })
+                          }
+                        })
                         .catch((err) => console.log(err))
 
   }
@@ -203,7 +314,7 @@ class UserForm extends Component {
           <Col xs="12">
             <Card>
               <CardHeader>
-                <strong>Company</strong>
+                <strong>Update</strong>
                 <small> Form</small>
               </CardHeader>
               <CardBody>
@@ -223,8 +334,8 @@ class UserForm extends Component {
                   <Input 
                           type="text" 
                           id="vat"
-                          name="Registration_No" 
-                          value={this.state.Registration_No} 
+                          name="Registeration_No" 
+                          value={this.state.Registeration_No} 
                           onChange={this.onChange}
                           required
                           
@@ -286,14 +397,51 @@ class UserForm extends Component {
                               value={this.state.Telephone}
                               onChange={this.onChange} 
                               required
-                              style={{}}
                               />                              
                     </FormGroup>
                     {Alerts}
                   </Col>
                 </FormGroup>
-
-                <Button type="submit" size="sm" color="primary" ><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                <FormGroup row>
+                    <Col md="3">
+                      <Label>Services</Label>
+                    </Col>
+                    <Col md="9">
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox1" name="Body_wash" value="Body Wash" onChange={this.onAdd} checked={this.state.isChecked.Body_wash}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox1">Body Wash</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox2" name="Full_service" value="Full Service" onChange={this.onAdd} checked={this.state.isChecked.Full_service}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox2">Full Service</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Oil_change" value="Oil Change" onChange={this.onAdd} checked={this.state.isChecked.Oil_change}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Oil Change</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Body_painting" value="Body Painting" onChange={this.onAdd} checked={this.state.isChecked.Body_painting}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Body Painting</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Wheel_alignment" value="Wheel Alignment" onChange={this.onAdd} checked={this.state.isChecked.Wheel_alignment}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Wheel Alignment</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Collision_repairs" value="Collision Repairs" onChange={this.onAdd} checked={this.state.isChecked.Collision_repairs}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Collision Repairs</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Engine_checkup" value="Engine Checkup" onChange={this.onAdd} checked={this.state.isChecked.Engine_checkup}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Engine Checkup</Label>
+                      </FormGroup>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="inline-checkbox3" name="Interior_cleaning" value="Interior Cleaning" onChange={this.onAdd} checked={this.state.isChecked.Interior_cleaning}/>
+                        <Label className="form-check-label" check htmlFor="inline-checkbox3">Interior Cleaning</Label>
+                      </FormGroup>
+                    </Col>
+                  </FormGroup>
+                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
               </CardBody>
             </Card>
           </Col>

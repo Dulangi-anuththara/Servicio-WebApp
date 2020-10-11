@@ -25,14 +25,23 @@ class Message extends Component{
             loading: false,          
             open:false,
             openDialog:false,
-            messageList: []
+            messageList: [],
+            CustId:"",
+            name:'Servicio'
           };
     }
+
     _onMessageWasSent(message) {
         this.setState({
           messageList: [...this.state.messageList, message]
         })
-      }
+        const url=`http://localhost:5000/msg/add/${this.state.CustId}/${this.props.uid}`
+    axios.post(url,message)
+    .then(response=>{
+      console.log(response.data);
+    })
+  }
+
 
       _sendMessage(text) {
         if (text.length > 0) {
@@ -48,10 +57,12 @@ class Message extends Component{
 
       handleChatboxClick(e){
         const id = e.target.id
-
+        console.log(e.target.title);
           this.setState({
             loading:true,
-            openDialog:true
+            openDialog:true,
+            CustId:e.target.id,
+            name:e.target.title
           },()=>{
             const URL =`http://localhost:5000/msg/${id}/${this.props.uid}`
             axios.get(URL)
@@ -90,7 +101,7 @@ class Message extends Component{
     </div>
     <Launcher
             agentProfile={{
-            teamName: 'SERVICIO',
+            teamName: this.state.name,
             imageUrl: "https://img.icons8.com/bubbles/50/000000/man-with-envelope.png"
             }}
             onMessageWasSent={this._onMessageWasSent.bind(this)}

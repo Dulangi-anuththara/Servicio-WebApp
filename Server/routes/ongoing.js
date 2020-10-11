@@ -73,8 +73,12 @@ ongoing.post('/add/:ServiceId/:bookingId',(req,res)=>{
                 db.collection('Customers').doc(data.CustId).collection('ongoing').doc(bookingId).set(data)
                 .then(()=>{
                     db.collection('Services').doc(ServiceId).collection('Bookings').doc(bookingId).delete()
-                    .then(response=>{
-                        res.send(response);
+                    .then(()=>{
+                        db.collection('Customers').doc(data.CustId).collection('Bookings').doc(bookingId).delete()
+                        .then(response=>{
+                            res.send(response);
+                        })
+                       
                     })
                 })
                 
@@ -126,17 +130,21 @@ ongoing.post('/addNotes/:ServiceId/:bookingId',(req,res)=>{
 })
 
 
-ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
+ongoing.post('/completion/:ServiceId/:bookingId',(req,res)=>{
     var ServiceId = req.params.ServiceId;
     var bookingId = req.params.bookingId;
+    var rating = req.body.rating
     var data ={}
     var id =""
+    var num =0
+    var count =0
     
     db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).get()
     .then((documentSnapshot)=>{
         data = documentSnapshot.data();
         db.collection('Services').doc(ServiceId).collection('ongoing').doc(bookingId).delete()
         data.progressStage = 7
+        data.customerRating = rating
         
     })
     .then(()=>{
@@ -145,15 +153,34 @@ ongoing.get('/completion/:ServiceId/:bookingId',(req,res)=>{
         db.collection('Services').doc(ServiceId).collection('Completed').doc(bookingId).set(data)
         .then(()=>{
             db.collection('Customers').doc(id).collection('Completed').doc(bookingId).set(data)
-            .then((response)=>{
-        
-                res.send(response);
+            .then(()=>{
+                // db.collection('Reviews').doc(bookingId).update({customerRating:rating})
+                // .then(()=>{
+                //     db.collection('Reviews').where('CustId','==',id).get()
+                //     .then(querySnapshot =>{
+                //         num = querySnapshot.size
+                //         count =0
+                //         querySnapshot.forEach(doc =>{
+                //             count=count+doc.data().customerRating
+                //         })
+                        
+                //     })
+                //     .then(()=>{
+                //         var rate = count/num;
+                //         db.collection('Customers').doc(id).update({Rating:rate})
+                //         .then(response=>{
+                //             res.send(response);
+                //         })
+                //     })
+                // })
+                
+                res.send("Customer Rated");
             })
         })
     })
     
 })
-ongoing.get('/picked/:ServiceId',(req,res)=>{
+ongoing.get('/rated/:ServiceId',(req,res)=>{
     var ServiceId = req.params.ServiceId;
     var data = []
     db.collection('Services').doc(ServiceId).collection('ongoing').where('progressStage','==',6).get()
@@ -162,6 +189,41 @@ ongoing.get('/picked/:ServiceId',(req,res)=>{
                 var booking = doc.data()
                 booking.id =doc.id
                 data.push(booking)
+            })
+
+            res.send(data);
+    })
+})
+ongoing.get('/picked/:ServiceId',(req,res)=>{
+    var ServiceId = req.params.ServiceId;
+    var data = []
+    db.collection('Services').doc(ServiceId).collection('ongoing').where('progressStage','==',5).get()
+    .then((querySnapshot)=>{
+            querySnapshot.forEach(doc=>{
+                var booking = doc.data()
+                booking.id =doc.id
+                data.push(booking)
+            })
+
+            res.send(data);
+    })
+})
+ongoing.get('/completed/:ServiceId',(req,res)=>{
+    var ServiceId = req.params.ServiceId;
+    var today = new Date()
+    var todayDate = today.getFullYear()+'-'+today.getMonth()+'-'+today.getDate()
+    var data = []
+    db.collection('Services').doc(ServiceId).collection('Completed').get()
+    .then((querySnapshot)=>{
+            querySnapshot.forEach(doc=>{
+                    var date = new Date(doc.data().Date)
+                    var bookingDate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()
+                    if(bookingDate==todayDate){
+                        var booking = doc.data()
+                        booking.id =doc.id
+                        data.push(booking)
+                    }
+
             })
 
             res.send(data);

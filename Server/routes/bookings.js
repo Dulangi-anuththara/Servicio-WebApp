@@ -35,9 +35,12 @@ booking.post('/checkAvailability/:id',(req,res) =>{
     .then((querySnapshot)=>{
             let count = 0;
             querySnapshot.forEach((doc) =>{
-              if(doc.data().start <= end && doc.data().end >= start){
-                count++;
-            }
+              if(!(doc.data().start==end) && !(doc.data().end==start)){
+                if(doc.data().start < end && doc.data().end > start){
+                  count++;
+                }
+              }
+              
             })
             return count;
     }).then((input)=>{

@@ -44,6 +44,7 @@ Events.post('/add/:key',(req,res) => {
                     .then(function() {
                         console.log("Document successfully written!");
                         db.collection('Services').doc(key).collection('Customers').doc(req.body.bookings.CustId).set({
+                          count:0,
                           name:req.body.bookings.CustName,
                           photo:"https://img.icons8.com/bubbles/100/000000/man-with-envelope.png",
                           text:`Send message to ${req.body.bookings.CustName}`
@@ -105,6 +106,43 @@ Events.post('/changeColor/:ServiceId/:key',(req,res)=>{
       res.send(response);
       
     })
+})
+
+Events.post('/delete/:ServiceId/:key',(req,res)=>{
+    var ServiceId = req.params.ServiceId
+    var key = req.params.key
+    var data ={}
+
+    db.collection('Services').doc(ServiceId).collection('Events').doc(key).get()
+    .then((documentSnapshot)=>{
+      data = documentSnapshot.data();
+      console.log(data);
+    })
+    .then(()=>{
+      db.collection('Services').doc(ServiceId).collection('deletedEvents').doc(key).set(data)
+      .then(()=>{
+        db.collection('Services').doc(ServiceId).collection('Events').doc(key).delete()
+        .then((response)=>{
+          console.log(response)
+          res.send("Event Deleted")
+        })
+      })
+    })
+    
+})
+
+Events.post('/update/:ServiceId/:key',(req,res)=>{
+    var ServiceId = req.params.ServiceId
+    var key = req.params.key
+    var text = req.body.text;
+
+    db.collection('Services').doc(ServiceId).collection('Events').doc(key).update({
+      text:text
+    })
+    .then(()=>{
+      res.send("Event Updated")
+    })
+
 })
 
 

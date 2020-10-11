@@ -18,7 +18,6 @@ const user = require('./routes/user');
 const booking = require('./routes/bookings');
 const event = require('./routes/calendar');
 const customers = require('./routes/customers');
-const admin = require('./routes/admin');
 const ongoing = require('./routes/ongoing');
 const messaging = require('./routes/messaging')
 const dashboard = require('./routes/dashboard');
@@ -26,14 +25,11 @@ const dashboard = require('./routes/dashboard');
 
 app.use(cors());
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-app.use(cors({credentials: true, origin: 'http://localhost:3001'}));
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('views', path.join(__dirname, 'UI/src/views'));
-app.set('views', path.join(__dirname, 'Admin Dashboard/src/views'));
 app.set('view engine', 'ejs');
 //app.engine('jsx', require('express-react-views').createEngine());
 
@@ -41,7 +37,6 @@ app.use('/user',user);
 app.use('/bookings',booking);
 app.use('/event',event);
 app.use('/customers',customers);
-app.use('/admin',admin);
 app.use('/ongoing',ongoing);
 app.use('/msg',messaging);
 app.use('/dashboard',dashboard);
