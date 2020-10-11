@@ -75,7 +75,7 @@ const GarageReg = (props) => (
     </td>
     {renderPaymentStatus(props.paymentStatus)}
     {renderTimeDuration(props.paymentStatus, props.createdDate)}
-    <td>{props.isVerified ? "true" : "false"}</td>
+    <td>{props.isVerified ?  <span className="badge badge-success"> Verified</span> : <span class="badge badge-danger">Not Verified</span>}</td>
     <td>
       <button onClick={() => props.editUser()}>🖋</button>
       <button style={{ marginLeft: 5 }} onClick={() => props.deleteUser()}>

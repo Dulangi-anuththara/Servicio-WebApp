@@ -23,7 +23,7 @@ const GarageReg = (props) => (
     <td>
       <button onClick={() => props.openImage()}>View BR</button>
     </td>
-    <td>{props.isVerified ? "true" : "false"}</td>
+    <td>{props.isVerified ?  <span className="badge badge-success"> Verified</span> : <span class="badge badge-danger">Not Verified</span>}</td>
   </tr>
 );
 
