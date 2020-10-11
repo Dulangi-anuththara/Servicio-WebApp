@@ -345,7 +345,7 @@ class Customer extends Component {
                 </thead>
                 <tbody>{this.Users()}</tbody>
               </Table>
-              <Pagination>
+              {/* <Pagination>
                 <PaginationItem disabled>
                   <PaginationLink previous tag="button">
                     Prev
@@ -368,7 +368,7 @@ class Customer extends Component {
                     Next
                   </PaginationLink>
                 </PaginationItem>
-              </Pagination>
+              </Pagination> */}
             </CardBody>
           </Card>
         </div>

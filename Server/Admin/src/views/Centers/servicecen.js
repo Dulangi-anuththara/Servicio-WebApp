@@ -669,7 +669,7 @@ class garage extends Component {
                 <tbody>{this.Users()}</tbody>
               </Table>
 
-              <Pagination>
+              {/* <Pagination>
                 <PaginationItem disabled>
                   <PaginationLink previous tag="button">
                     Prev
@@ -692,7 +692,7 @@ class garage extends Component {
                     Next
                   </PaginationLink>
                 </PaginationItem>
-              </Pagination>
+              </Pagination> */}
             </CardBody>
           </Card>
         </div>
