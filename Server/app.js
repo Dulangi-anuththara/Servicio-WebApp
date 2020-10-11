@@ -12,6 +12,7 @@ const app = express();
 const port = 5000;
 
 global.id = undefined;
+const payhere_secret = "8gjJqWcQcyn4OZq5g6d9vP8gdw1TlGKKg4eSlFIVbbGb";
 
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -25,6 +26,7 @@ const ongoing = require('./routes/ongoing');
 const messaging = require('./routes/messaging')
 const dashboard = require('./routes/dashboard');
 const { merge } = require('./routes/user');
+const md5 = require('md5');
 
 
 app.use(cors());
@@ -74,6 +76,7 @@ app.get('/',(req,res) =>{
 
  app.post('/notify', (req, res) => {
     console.log('payment:', req.body);
+    let today = new Date();
     const data = {
         userId: id,
         merchant_id: req.body.merchant_id,
@@ -86,9 +89,13 @@ app.get('/',(req,res) =>{
         method: req.body.method,
         card_holder_name: req.body.card_holder_name,
         card_no: req.body.card_no,
-        
+        card_expiry: req.body.card_expiry,
+        created: today
       };
-      
+
+    //const hash = md5(req.body.merchant_id+req.body.order_id+req.body.payhere_amount+req.body.payhere_currency+req.body.status_code+md5(payhere_secret).toUpperCase()).toUpperCase();
+     // console.log(hash);
+
     const start = async function(){
         const result = await db.collection('Payment').add(data);
         const ser = db.collection('Services').doc(id);
