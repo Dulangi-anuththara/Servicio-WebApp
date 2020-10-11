@@ -335,17 +335,6 @@ class Dashboard extends Component {
     this.state = {
       dropdownOpen: false,
       radioSelected: 2,
-<<<<<<< HEAD
-      data:{}
-    };
-    const url= `http://localhost:5000/bookings/${props.uid}`;
-    Axios.get(url).then(res => {
-
-       /* res.data.forEach(element => {
-          element.Date = element.Date.slice(0,16);
-          element.EndDate = element.EndDate.slice(0,16);
-        });*/
-=======
       data:{},
       completed:[],
       toggle:0,
@@ -353,18 +342,14 @@ class Dashboard extends Component {
 
     const url= `http://localhost:5000/dashboard/${props.uid}`;
     Axios.get(url).then(res => {
->>>>>>> Dulangi
         this.setState({
         data:res.data
       });
      
     })
-<<<<<<< HEAD
-=======
     .then(()=>{
       console.log(this.state.data);
     })
->>>>>>> Dulangi
   }
 
 componentDidMount(){
@@ -411,11 +396,7 @@ componentDidMount(){
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-<<<<<<< HEAD
-                <div className="text-value">9.823</div>
-=======
                 <div className="text-value">{this.state.data.completed}</div>
->>>>>>> Dulangi
                 <div>Total Completed</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
@@ -430,13 +411,8 @@ componentDidMount(){
                 <ButtonGroup className="float-right">
                  
                 </ButtonGroup>
-<<<<<<< HEAD
-                <div className="text-value">9.823</div>
-                <div>Today's Pending</div>
-=======
     <div className="text-value">{this.state.data.today}</div>
                 <div>Today</div>
->>>>>>> Dulangi
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
                 <Line data={cardChartData1} options={cardChartOpts1} height={70} />
@@ -449,11 +425,7 @@ componentDidMount(){
               <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
                 </ButtonGroup>
-<<<<<<< HEAD
-                <div className="text-value">9.823</div>
-=======
                 <div className="text-value">{this.state.data.inProgress}</div>
->>>>>>> Dulangi
                 <div>In Progress</div>
               </CardBody>
               <div className="chart-wrapper" style={{ height: '70px' }}>
@@ -469,11 +441,7 @@ componentDidMount(){
                   <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
                   </ButtonDropdown>
                 </ButtonGroup>
-<<<<<<< HEAD
-                <div className="text-value">9.823</div>
-=======
                 <div className="text-value">{this.state.data.customers}</div>
->>>>>>> Dulangi
                 <div>Customers</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
@@ -482,8 +450,6 @@ componentDidMount(){
             </Card>
           </Col>
         </Row>
-<<<<<<< HEAD
-=======
         <Row>
 <Col>
   <Card>
@@ -527,7 +493,6 @@ componentDidMount(){
 </Col>
 
 </Row>
->>>>>>> Dulangi
       </div>
     );
   }
