@@ -38,21 +38,37 @@ class Calendar extends Component {
             text: "Delete",
             icon:"icon-close icons",
             onClick: args => {
-              var e = args.source;
-              this.calendar.events.remove(e);
+
+              DayPilot.Modal.confirm("Are you sure you want to delete this?").then((result)=>{
+                if(result.result){
+                  var e = args.source;
+                  console.log(args.source.data.id)
+                  this.calendar.events.remove(e);
+                  const url =`http://localhost:5000/event/delete/${props.uid}/${args.source.data.id}`
+                  Axios.post(url).then((response)=>{
+                    console.log(response);        
+                  })
+                }
+              })
             }
           },
           {
             text: "Update",
             icon:"icon-pencil icons",
             onClick: args =>{
-              console.log(args.source.data)
+              console.log(args.source.data.text)
               let dp = this.calendar;
+              let e = args.source
               DayPilot.Modal.prompt("Update event text:", args.source.data.text).then(function(modal) {
                 if (!modal.result) { return; }
-                args.e.data.text = modal.result;
-                dp.events.update(args.e);
-              });
+                e.data.text = modal.result;
+                dp.events.update(e);
+                const url =`http://localhost:5000/event/update/${props.uid}/${args.source.data.id}`
+                Axios.post(url,{text:modal.result})
+               .then((response)=>{
+                  console.log(response.data);    
+              })
+            });
 
             }
           }
@@ -60,27 +76,39 @@ class Calendar extends Component {
     }),
       onTimeRangeSelected: args => {
         var form = [
-          {name: "Name", id: "name"}
+          {name: "Name", id: "name"},
+          {name:"Service Type", id:"service"}
         ];
         
         let dp = this.calendar;
-       Modal.form(form).then(function(modal) {
-          var data ={
-            start:args.start,
-            end:args.end,
-            id:DayPilot.guid(),
-            text:modal.result.name
-          }
-          dp.clearSelection();
-          if (!modal.result.name) { return; }
-          dp.events.add(new DayPilot.Event(data));
+        let today = new Date(args.start.value)
+        let todayTime = new Date();
+        
+        if(today<todayTime){
+          console.log("Date has passed");
+          DayPilot.Modal.alert("Please note that you cannot make reservations for old dates.");
+        }
+        else{
+          Modal.form(form).then(function(modal) {
+            var data ={
+              start:args.start,
+              end:args.end,
+              id:DayPilot.guid(),
+              text:modal.result.name+ " " +modal.result.service,
+              backColor:'#ffc107'
+            }
+            dp.clearSelection();
+            if (!modal.result.name) { return; }
+            dp.events.add(new DayPilot.Event(data));
+  
+            const url =`http://localhost:5000/event/addMan/${props.uid}`
+            Axios.post(url,data).then((response)=>{
+              console.log(response.data);
+  
+            })
+          });
+        }
 
-          const url =`http://localhost:5000/event/addMan/${props.uid}`
-          Axios.post(url,data).then((response)=>{
-            console.log(response.data);
-
-          })
-        });
       },
       eventDeleteHandling: "Update",
 

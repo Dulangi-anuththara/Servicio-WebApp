@@ -27,7 +27,8 @@ class DefaultHeader extends Component {
       data:['dd'],
       notifications:'',
       open : false,
-      booking :{}
+      booking :{},
+      Image:""
     }
     this.handleClose = this.handleClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,17 +36,20 @@ class DefaultHeader extends Component {
     //handle notifications
     const url= `http://localhost:5000/bookings/${props.uid}`;
     Axios.get(url).then(res => {
-
-       /* res.data.forEach(element => {
-          element.Date = element.Date.slice(0,16);
-          element.EndDate = element.EndDate.slice(0,16);
-        });*/
         this.setState({
         data:res.data
       });
      
     })
   
+    const path = `http://localhost:5000/dashboard/image/${props.uid}`;
+    Axios.get(path)
+    .then(response=>{
+      console.log(response.data)
+      this.setState({
+        Image:response.data
+      })
+    }) 
 
   }
 
@@ -158,36 +162,29 @@ class DefaultHeader extends Component {
               
             </DropdownMenu>
           </UncontrolledDropdown>
-          
+        {/*  
           <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-list"></i></NavLink>
           </NavItem>
           <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-location-pin"></i></NavLink>
-          </NavItem>
+        </NavItem>*/}
           <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav>
-              <img src={'../../assets/img/avatars/8.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+              <img src={this.state.Image} className="img-avatar" alt="admin@bootstrapmaster.com" />
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-bell-o"></i> Requests<Badge color="info">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
               <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
-              <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
-              <DropdownItem><i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge></DropdownItem>
-              <DropdownItem onClick={e => this.props.checkAvailability(e)}><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
+              <DropdownItem onClick={e => this.props.goToRequests(e)}><i className="fa fa-bell-o"></i> Requests<Badge color="info">42</Badge></DropdownItem>
+              <DropdownItem onClick={e => this.props.goToProfile(e)}><i className="fa fa-user"></i> Profile</DropdownItem>
+              <DropdownItem onClick={e => this.props.goUpdate(e)}><i className="fa fa-wrench"></i> Settings</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
               <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
-        <AppAsideToggler className="d-md-down-none" />
-        {/*<AppAsideToggler className="d-lg-none" mobile />*/}
+       {/* <AppAsideToggler className="d-md-down-none" />
+        <AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );
   }
