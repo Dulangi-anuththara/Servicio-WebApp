@@ -31,7 +31,7 @@ export default {
       icon: 'icon-pencil',
     },
     {
-      name: 'Analytics',
+      name: 'Reports',
       url: '/reports',
       icon: 'icon-pencil',
     },
@@ -42,7 +42,7 @@ export default {
     },
     {
       name: 'Transactions',
-      url: '/theme/typography',
+      url: '/theme/transactions',
       icon: 'icon-pencil',
     },
   /*   {
