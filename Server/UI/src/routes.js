@@ -51,7 +51,7 @@ const ongoing = React.lazy(() => import('./views/ongoing/ongoing'));
 const Done = React.lazy(() => import('./views/Done'));
 const Message = React.lazy(() => import('./views/Message/Message'));
 const Customer = React.lazy(() => import('./views/Customer/Customer'));
-const Complete = React.lazy(() => import('./views/Complete/Complete'));
+const Complete = React.lazy(() => import('./views/Complete'));
 
 
 

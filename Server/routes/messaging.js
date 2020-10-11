@@ -63,12 +63,17 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
     }
     db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).collection('msg').add(data)
     .then(response=>{
-        db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).update({read:true})
+        console.log(ServiceId)
+        console.log(CustId)
+        var readStatus ={
+            read:true
+        }
+        db.collection('Messaging').doc(CustId).collection('Services').doc(ServiceId).set(readStatus)
         .then(()=>{
-            console.log(response)
+           // console.log(response)
             res.send("Task Completed")
         })
-        
+        //res.send("Task Completed")
     })
 
 

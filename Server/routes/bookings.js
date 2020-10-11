@@ -57,14 +57,16 @@ booking.post('/edit/:key',(req,res) =>{
     var id = req.body.bookingId;
     var CustId = req.body.CustId;
     var status = req.body.status
-    console.log(id);
+    console.log(req.body);
     res.send("Received Id")
 
   db.collection('Services').doc(key).collection("Bookings").doc(id).update({
-    BookingStatus:status
+    BookingStatus:status,
+    EndDate:req.body.EndDate
   }).then(function() {
     db.collection('Customers').doc(CustId).collection('Bookings').doc(id).update({
-      BookingStatus:status
+      BookingStatus:status,
+      EndDate:req.body.EndDate
     })
 }).then(()=>{
   console.log('Process Successfully Completed')

@@ -128,7 +128,7 @@ class Requests extends Component {
   handleDate(e){
     var time = e.target.value;
     console.log(time);
-   const bookings = { ...this.state.bookings, EndDate: time }
+   const bookings = { ...this.state.bookings, EndDate: time}
     this.setState(() => ({ bookings }),() => console.log(this.state.bookings));
   }
 
@@ -179,11 +179,12 @@ class Requests extends Component {
 
     const url =`http://localhost:5000/event/add/${this.props.uid}`
           Axios.post(url,data).then((response)=>{
-            console.log(this.state.bookings.CustId)
+            console.log(this.state.bookings.EndDate)
             const info={
               bookingId:this.state.bookings.id,
               CustId:this.state.bookings.CustId,
-              status:"Accepted"
+              status:"Accepted",
+              EndDate:this.state.bookings.EndDate
             }
             const path = `http://localhost:5000/bookings/edit/${this.props.uid}`
             Axios.post(path,info).then((response) =>{
@@ -277,10 +278,12 @@ class Requests extends Component {
     const url=`http://localhost:5000/msg/add/${this.state.bookings.CustId}/${this.props.uid}`
     Axios.post(url,message)
     .then((response)=>{
+
       const info={
         bookingId:this.state.bookings.id,
         CustId:this.state.bookings.CustId,
-        status:"Declined"
+        status:"Declined",
+        EndDate:this.state.bookings.EndDate
       }
       console.log(response.data)
       const path = `http://localhost:5000/bookings/edit/${this.props.uid}`
