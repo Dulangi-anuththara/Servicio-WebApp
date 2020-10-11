@@ -104,6 +104,18 @@ class Subscription extends Component {
               </CardBody>
             </Card>
             <Card>
+                <CardHeader>
+                <i className="fa fa-align-justify"></i>Terms & conditions
+              </CardHeader>
+                <ul >
+                    <p></p>
+                    <li>Pay Annual subscription of Rs 2000/- within 3 months once you get approved to stay connected with the system.</li>
+                    <li>Subscription is non-refundable.</li>
+                    <li>Cancel the subscription for next year please contact us via email.</li>
+                    <li>By doing the payment you are agreeing to above Terms & conditions.</li>
+                </ul>
+            </Card>
+            <Card>
             <form align="center" action="https://sandbox.payhere.lk/pay/o448d4916" method="get"><input align="center" name="submit" type="image" alt="payment" src="https://www.payhere.lk/downloads/images/pay_with_payhere.png" width="200px" value="Buy Now"/></form>
             </Card>
                 
