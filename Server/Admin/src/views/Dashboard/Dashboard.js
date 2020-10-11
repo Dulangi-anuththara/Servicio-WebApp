@@ -410,7 +410,7 @@ class Dashboard extends Component {
 
     var db = firebase.firestore();
 
-    db.collection(`Services`)
+    db.collection(`Users`)
       .get()
       .then((Documents) => {
         const data = Documents.docs.map((d) => {
@@ -486,8 +486,8 @@ class Dashboard extends Component {
   );
 
   getTotalUsers = () => {
-    if (this.state.users && this.state.customers)
-      return this.state.users.length + this.state.customers.length;
+    if (this.state.services && this.state.customers)
+      return this.state.services.length + this.state.customers.length;
   };
 
   getServiceCenters = () => {
@@ -504,6 +504,33 @@ class Dashboard extends Component {
       return _garages.length;
     }
   };
+
+  getPendingGarages = () => {
+    if (this.state.users) {
+      let _pendingGarages = [];
+      let _garages = _.filter(this.state.users, { user_type: "garage" });
+      _garages.map((garage) => {
+        if (!garage.isVerified) {
+          _pendingGarages.push(garage);
+        }
+      });
+      return _pendingGarages.length;
+    }
+  };
+
+  getPendingServices = () => {
+    if (this.state.users) {
+      let _pendingServices = [];
+      let _services = _.filter(this.state.users, { user_type: "service" });
+      _services.map((service) => {
+        if (!service.isVerified) {
+          _pendingServices.push(service);
+        }
+      });
+      return _pendingServices.length;
+    }
+  };
+
   getResolvedComplains = () => {
     if (this.state.complains) {
       let _resolved = _.filter(this.state.complains, { is_resolved: true });
@@ -526,8 +553,8 @@ class Dashboard extends Component {
   };
 
   getSystemUsers = () => {
-    if (this.state.users) {
-      return this.state.users.length;
+    if (this.state.services) {
+      return this.state.services.length;
     }
   };
 
@@ -685,12 +712,12 @@ class Dashboard extends Component {
               height={100}
               data={[
                 {
-                  x: "Garages\n" + this.getGarageCenters(),
-                  y: this.getGarageCenters(),
+                  x: "Garages\n" + this.getPendingGarages(),
+                  y: this.getPendingGarages(),
                 },
                 {
-                  x: "Services\n" + this.getServiceCenters(),
-                  y: this.getServiceCenters(),
+                  x: "Services\n" + this.getPendingServices(),
+                  y: this.getPendingServices(),
                 },
               ]}
               style={{ labels: { fontSize: 7 } }}

@@ -401,7 +401,7 @@ class Register extends Component {
                   </div>
 
                   <div>
-                    <Button color="light" onClick={this.handleClickOpen}>
+                    <Button color="light" className="btn login_btn" onClick={this.handleClickOpen}>
                       Upload your BR <i className="fa fa-camera fa-lg"></i>
                       &nbsp;
                     </Button>
@@ -442,7 +442,7 @@ class Register extends Component {
                   <div className="d-flex justify-content-center mt-3 login_container">
                     <Button
                       onClick={() => this.getUserLocation()}
-                      className="btn btn-primary"
+                      className="btn login_btn"
                     >
                       Add service location
                     </Button>
