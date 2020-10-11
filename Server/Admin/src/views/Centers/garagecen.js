@@ -401,11 +401,11 @@ class garage extends Component {
   };
 
   // Edit User
-  editUser = (Email, Description, Service_Name, user, paymentStatus) => {
+  editUser = (Email, Description, Service_Name, user) => {
     const db = firebase.firestore();
     db.collection("Services")
       .doc(user.docId)
-      .set({ ...user, Email, Description, Service_Name, paymentStatus });
+      .set({ ...user, Email, Description, Service_Name });
 
     this.cloeseEditUserModal();
     window.setTimeout(() => {
@@ -419,10 +419,10 @@ class garage extends Component {
       Description,
       Service_Name,
       user,
-      paymentStatus,
+     
     } = this.state;
 
-    this.editUser(Email, Description, Service_Name, user, paymentStatus);
+    this.editUser(Email, Description, Service_Name, user);
   };
 
   render() {

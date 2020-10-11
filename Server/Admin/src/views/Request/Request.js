@@ -260,7 +260,7 @@ class garage extends Component {
                     style={{ height: 30, padding: 2, width: 70 }}
                     onClick={this.submitVerified}
                   >
-                    Submit
+                    Approve Account
                   </button>
                 )}
               </div>

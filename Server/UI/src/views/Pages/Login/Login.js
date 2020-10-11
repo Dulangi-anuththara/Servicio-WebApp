@@ -192,9 +192,9 @@ class Login extends Component {
                     <div className="d-flex justify-content-center links text-white">
                       Don't have an account? <Link to="/register">Create an account</Link>
                     </div>
-                    <div className="d-flex justify-content-center links text-white">
+                    {/* <div className="d-flex justify-content-center links text-white">
                      <Link to="/admin-login">Login as an admin</Link>
-                    </div>
+                    </div> */}
                     <div className="d-flex justify-content-center links text-white">
                   <p
                     onClick={this.openModal}
