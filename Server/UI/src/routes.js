@@ -58,7 +58,7 @@ const Complete = React.lazy(() => import('./views/Complete'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/dashboard', exact: true, name: 'Dashboard' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
@@ -108,7 +108,7 @@ const routes = [
   { path: '/CalendarFive', name: 'Calendar Five', component: CalendarFive },
   { path: '/CalendarSix', name: 'Calendar Six', component: CalendarSix },
   { path: '/Requests', name:'New Requests', component:Requests},
-  { path: '/Payment', name:'New Requests', component:Subscription},
+  { path: '/Payment', name:'Payments', component:Subscription},
   { path: '/Today', name:'Today', component:Today},
   { path: '/InProgress', name:'In Progress', component:InProgress},
   { path: '/ongoing/:id', name:'On Going', component:ongoing},

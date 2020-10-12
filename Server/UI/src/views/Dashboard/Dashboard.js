@@ -416,9 +416,7 @@ componentDidMount(){
                 <div className="text-value">{this.state.data.completed}</div>
                 <div>Total Completed</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData2} options={cardChartOpts2} height={70} />
-              </div>
+
             </Card>
           </Col>
 
@@ -431,9 +429,6 @@ componentDidMount(){
     <div className="text-value">{this.state.data.today}</div>
                 <div>Today</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
-              </div>
             </Card>
           </Col>
 
@@ -445,9 +440,6 @@ componentDidMount(){
                 <div className="text-value">{this.state.data.inProgress}</div>
                 <div>In Progress</div>
               </CardBody>
-              <div className="chart-wrapper" style={{ height: '70px' }}>
-                <Line data={cardChartData3} options={cardChartOpts3} height={70} />
-              </div>
             </Card>
           </Col>
 
@@ -461,9 +453,6 @@ componentDidMount(){
                 <div className="text-value">{this.state.data.customers}</div>
                 <div>Customers</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Bar data={cardChartData4} options={cardChartOpts4} height={70} />
-              </div>
             </Card>
           </Col>
         </Row>
@@ -481,7 +470,7 @@ componentDidMount(){
           <th>Customer</th>
           <th>Date</th>
           <th>Service</th>
-          <th>Status</th>
+          <th>Rate</th>
         </tr>
         </thead>
         <tbody>
@@ -489,7 +478,7 @@ componentDidMount(){
                     <tr>
                     <td>{item.vehicle}</td>
                     <td><Link to={`/customer/${item.custId}`}>{item.CustName}</Link></td>
-                    <td>{item.date}</td>
+                    <td>{item.date.slice(0,10)} at {item.date.slice(11)} </td>
                     <td>{item.service}</td>
                     <td>
                       {item.rating >3 &&
