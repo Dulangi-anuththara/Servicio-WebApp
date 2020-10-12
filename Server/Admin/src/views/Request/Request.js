@@ -51,6 +51,7 @@ class garage extends Component {
       users: null,
       db: null,
       _selectedUser: {},
+      disabled:true,
     };
   }
 
@@ -218,6 +219,7 @@ class garage extends Component {
   setVerified = () => {
     this.setState({
       isVerified: !this.state.isVerified,
+      disabled: !this.state.disabled,
     });
   };
 
@@ -259,6 +261,7 @@ class garage extends Component {
                     className="btn btn-primary"
                     style={{ height: 30, padding: 2, width: 70 }}
                     onClick={this.submitVerified}
+                    disabled={this.state.disabled}
                   >
                     Approve Account
                   </button>

@@ -147,9 +147,15 @@ class Customer extends Component {
 
     // Delete User
     const deleteUser = (id) => {
-      const db = firebase.firestore();
-      db.collection("Customers").doc(id).delete();
-      window.setTimeout(redirect, 2000);
+      if (window.confirm("Are you sure you want to delete this record?")) {
+        // Save it!
+        const db = firebase.firestore();
+        db.collection("Customers").doc(id).delete();
+        window.setTimeout(redirect, 2000);
+      } else {
+        // Do nothing!
+        console.log("Thing was not deleted.");
+      }
     };
 
     const redirect = () => {
