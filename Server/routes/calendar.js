@@ -32,7 +32,7 @@ Events.post('/add/:key',(req,res) => {
     let data ={
         id:req.body.id,
         start:req.body.bookings.Date,
-        end:req.body.bookings.EndDate+":00",
+        end:req.body.bookings.EndDate +":00",
         text:req.body.bookings.ServiceType + ' - ' + req.body.bookings.CustName + '/' + req.body.bookings.Vehicle,
         backColor:"#009DDC",
         tags : {
