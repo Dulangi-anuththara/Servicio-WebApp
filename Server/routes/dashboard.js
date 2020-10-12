@@ -66,9 +66,8 @@ dash.get('/image/:id',(req,res)=>{
 dash.post('/location/:id',(req,res)=>{
     var id = req.params.id
     var data = {
-        geohash:req.body.geohash
+            geohash:req.body.geohash,
     }
-    console.log(req.body.geohash)
     db.collection('Services').doc(id).update(data)
     .then((response)=>{
         res.send("Updated")

@@ -2,6 +2,7 @@ import React, { Component, lazy, Suspense } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
 import Geohash from 'latlon-geohash';
+import firebase from "firebase";
 import Axios from 'axios' ;
 import {
   Badge,
@@ -352,6 +353,7 @@ class Dashboard extends Component {
 
 componentDidMount(){
   var GeoHash=""
+  var location=[]
   const url= `http://localhost:5000/dashboard/completed/${this.props.uid}`;
     Axios.get(url).then(res => {
         this.setState({
@@ -364,12 +366,13 @@ componentDidMount(){
     Axios.get(path)
     .then(response =>{
       var location = response.data.Location
+      console.log(location._latitude)
       GeoHash = Geohash.encode(location._latitude,location._longitude, 6);
     
     })
     .then(()=>{
       var data ={
-        geohash:GeoHash
+        geohash:GeoHash,       
       }
       const PATH = `http://localhost:5000/dashboard/location/${this.props.uid}`
       Axios.post(PATH,data)

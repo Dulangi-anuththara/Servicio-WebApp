@@ -19,6 +19,7 @@
     "@date-io/date-fns": "^2.6.2",
     "@daypilot/modal": "^3.1.2",
     "@emotion/core": "^10.0.35",
+    "@firebase/firestore": "^1.17.3",
     "@google-cloud/storage": "^5.1.1",
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",

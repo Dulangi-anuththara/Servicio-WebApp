@@ -106,7 +106,7 @@ class UserForm extends Component {
   validatePhone(e){
     
     var count=this.state.Telephone.toString().length;
-    if(count == 10){
+    if(count == 9){
       console.log("Handle Submit")
       return true;
     }
