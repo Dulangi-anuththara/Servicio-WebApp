@@ -11,6 +11,8 @@ const app = express();
 
 const port = 5000;
 
+global.id = undefined;
+
 const server = http.createServer(app);
 const io = socketIO(server);
 
@@ -50,7 +52,7 @@ app.get('/',(req,res) =>{
 
  io.on("connection",(socket) =>{
 
-     const id = socket.handshake.query.key;
+     id = socket.handshake.query.key;
      console.log(socket.handshake.query.key);
      console.log("New Client connected");
      let doc = db.collection('Services').doc(id).collection('Bookings').where('BookingStatus','in',['Pending','Not Available'])
@@ -66,7 +68,44 @@ app.get('/',(req,res) =>{
 
  })
 
+ app.post('/notify', (req, res) => {
+    console.log('payment:', req.body);
+    let today = new Date();
+    const data = {
+        userId: id,
+        merchant_id: req.body.merchant_id,
+        payment_id: req.body.payment_id,
+        payhere_amount: req.body.payhere_amount,
+        payhere_currency: req.body.payhere_currency,
+        status_code: req.body.status_code,
+        md5sig: req.body.md5sig,
+        status_message: req.body.status_message,
+        method: req.body.method,
+        card_holder_name: req.body.card_holder_name,
+        card_no: req.body.card_no,
+        card_expiry: req.body.card_expiry,
+        created: today
+      };
 
+    //const hash = md5(req.body.merchant_id+req.body.order_id+req.body.payhere_amount+req.body.payhere_currency+req.body.status_code+md5(payhere_secret).toUpperCase()).toUpperCase();
+     // console.log(hash);
+
+    const start = async function(){
+        const result = await db.collection('Payment').add(data);
+        const ser = db.collection('Services').doc(id);
+        const res = await ser.update({
+            paymentStatus: req.body.status_code
+        });
+        console.log(result);
+        console.log(res);
+    }
+
+    start();
+    
+      
+    res.sendStatus(200);
+
+});
 
 
 server.listen(port,()=>{

@@ -23,7 +23,7 @@ const GarageReg = (props) => (
     <td>
       <button onClick={() => props.openImage()}>View BR</button>
     </td>
-    <td>{props.isVerified ? "true" : "false"}</td>
+    <td>{props.isVerified ?  <span className="badge badge-success"> Verified</span> : <span class="badge badge-danger">Not Verified</span>}</td>
   </tr>
 );
 
@@ -51,6 +51,7 @@ class garage extends Component {
       users: null,
       db: null,
       _selectedUser: {},
+      disabled:true,
     };
   }
 
@@ -218,6 +219,7 @@ class garage extends Component {
   setVerified = () => {
     this.setState({
       isVerified: !this.state.isVerified,
+      disabled: !this.state.disabled,
     });
   };
 
@@ -259,8 +261,9 @@ class garage extends Component {
                     className="btn btn-primary"
                     style={{ height: 30, padding: 2, width: 70 }}
                     onClick={this.submitVerified}
+                    disabled={this.state.disabled}
                   >
-                    Submit
+                    Approve Account
                   </button>
                 )}
               </div>
@@ -287,7 +290,7 @@ class garage extends Component {
                 <tbody>{this.Users()}</tbody>
               </Table>
 
-              <Pagination>
+              {/* <Pagination>
                 <PaginationItem disabled>
                   <PaginationLink previous tag="button">
                     Prev
@@ -310,7 +313,7 @@ class garage extends Component {
                     Next
                   </PaginationLink>
                 </PaginationItem>
-              </Pagination>
+              </Pagination> */}
             </CardBody>
           </Card>
         </div>
