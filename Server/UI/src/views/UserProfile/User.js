@@ -134,7 +134,7 @@ class User extends Component {
 
                 <tr>
                   
-                  <div style={{height:300,borderRadius:'6px'}}>          
+                  <div style={{height:350,borderRadius:'6px'}}>          
                   <Image src={this.state.Image} style={{alignItems:'center',height:300,width:600,marginLeft:300}}></Image>        
                 <Button color="light" className="align-items-center" onClick={this.handleClickOpen} size='lg' style={{marginTop:30,marginLeft:980}}>
                   <i className="fa fa-camera fa-lg"></i>&nbsp;Edit Cover Photo
@@ -219,7 +219,7 @@ class User extends Component {
                         <MyLocation></MyLocation>
                       </ListItemIcon>
                       <ListItemText primary="Address" />
-                      <ListItemText primary={this.state.Address +"," + this.state.AddressTwo + " " + this.state.City} />
+                      <ListItemText primary={this.state.Address +", " + this.state.AddressTwo + ", " + this.state.City} />
                     </ListItem>
                     <Divider />
                     <ListItem button>

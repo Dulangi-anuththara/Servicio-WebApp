@@ -154,27 +154,27 @@ ongoing.post('/completion/:ServiceId/:bookingId',(req,res)=>{
         .then(()=>{
             db.collection('Customers').doc(id).collection('Completed').doc(bookingId).set(data)
             .then(()=>{
-                // db.collection('Reviews').doc(bookingId).update({customerRating:rating})
-                // .then(()=>{
-                //     db.collection('Reviews').where('CustId','==',id).get()
-                //     .then(querySnapshot =>{
-                //         num = querySnapshot.size
-                //         count =0
-                //         querySnapshot.forEach(doc =>{
-                //             count=count+doc.data().customerRating
-                //         })
+                db.collection('Reviews').doc(bookingId).update({customerRating:rating})
+                .then(()=>{
+                    db.collection('Reviews').where('CustId','==',id).get()
+                    .then(querySnapshot =>{
+                        num = querySnapshot.size
+                        count =0
+                        querySnapshot.forEach(doc =>{
+                            count=count+doc.data().customerRating
+                        })
                         
-                //     })
-                //     .then(()=>{
-                //         var rate = count/num;
-                //         db.collection('Customers').doc(id).update({Rating:rate})
-                //         .then(response=>{
-                //             res.send(response);
-                //         })
-                //     })
-                // })
+                    })
+                    .then(()=>{
+                        var rate = count/num;
+                        db.collection('Customers').doc(id).update({Rating:rate})
+                        .then(response=>{
+                            res.send(response);
+                        })
+                    })
+                })
                 
-                res.send("Customer Rated");
+                
             })
         })
     })

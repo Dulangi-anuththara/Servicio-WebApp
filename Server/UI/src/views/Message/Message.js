@@ -82,6 +82,8 @@ class Message extends Component{
         if(this.state.open){
           this.setState({
             open:false
+          },()=>{
+            window.location.reload(false);
           })
         }
       }
