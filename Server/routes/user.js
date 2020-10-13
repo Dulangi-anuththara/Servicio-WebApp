@@ -40,7 +40,7 @@ user.post('/profile/edit/:id',(req,res) => {
             City:req.body.City,
             Email:req.body.Email,
             Telephone:parseInt(req.body.Telephone),
-            Image:req.body.Image,
+           // Image:req.body.Image,
             Service_Types:req.body.Service_Types
         };
 

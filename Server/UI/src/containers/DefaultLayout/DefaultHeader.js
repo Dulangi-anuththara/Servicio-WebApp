@@ -141,14 +141,15 @@ class DefaultHeader extends Component {
             <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
           </NavItem>
           <NavItem className="px-3">
-            <Link to="/users" className="nav-link">Users</Link>
+            <Link to="/users" className="nav-link">Customers</Link>
           </NavItem>
-          <NavItem className="px-3">
-            <NavLink to="#" className="nav-link">Settings</NavLink>
-          </NavItem>
+
         </Nav>
         <Nav className="ml-auto" navbar>
-        <UncontrolledDropdown nav direction="down">
+        <NavItem className="px-3">
+        <NavLink to="/Requests" className="nav-link" ><i className="icon-bell"></i><Badge pill color="danger">{this.state.notifications}</Badge></NavLink>
+          </NavItem>
+    {/*     <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav>
             <i className="icon-bell"></i><Badge pill color="danger">{this.state.notifications}</Badge>
             </DropdownToggle>
@@ -162,7 +163,7 @@ class DefaultHeader extends Component {
               
             </DropdownMenu>
           </UncontrolledDropdown>
-        {/*  
+         
           <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-list"></i></NavLink>
           </NavItem>

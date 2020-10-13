@@ -1,6 +1,8 @@
 import React, { Component, lazy, Suspense } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
+import Geohash from 'latlon-geohash';
+import firebase from "firebase";
 import Axios from 'axios' ;
 import {
   Badge,
@@ -347,12 +349,11 @@ class Dashboard extends Component {
       });
      
     })
-    .then(()=>{
-      console.log(this.state.data);
-    })
   }
 
 componentDidMount(){
+  var GeoHash=""
+  var location=[]
   const url= `http://localhost:5000/dashboard/completed/${this.props.uid}`;
     Axios.get(url).then(res => {
         this.setState({
@@ -360,8 +361,24 @@ componentDidMount(){
       });
      
     })
+
+    const path = `http://localhost:5000/user/profile/${this.props.uid}`
+    Axios.get(path)
+    .then(response =>{
+      var location = response.data.Location
+      console.log(location._latitude)
+      GeoHash = Geohash.encode(location._latitude,location._longitude, 6);
+    
+    })
     .then(()=>{
-      console.log(this.state.completed);
+      var data ={
+        geohash:GeoHash,       
+      }
+      const PATH = `http://localhost:5000/dashboard/location/${this.props.uid}`
+      Axios.post(PATH,data)
+      .then((response)=>{
+        console.log("Location Updated")
+      })
     })
 }
 
@@ -399,9 +416,7 @@ componentDidMount(){
                 <div className="text-value">{this.state.data.completed}</div>
                 <div>Total Completed</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData2} options={cardChartOpts2} height={70} />
-              </div>
+
             </Card>
           </Col>
 
@@ -414,9 +429,6 @@ componentDidMount(){
     <div className="text-value">{this.state.data.today}</div>
                 <div>Today</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
-              </div>
             </Card>
           </Col>
 
@@ -428,9 +440,6 @@ componentDidMount(){
                 <div className="text-value">{this.state.data.inProgress}</div>
                 <div>In Progress</div>
               </CardBody>
-              <div className="chart-wrapper" style={{ height: '70px' }}>
-                <Line data={cardChartData3} options={cardChartOpts3} height={70} />
-              </div>
             </Card>
           </Col>
 
@@ -444,9 +453,6 @@ componentDidMount(){
                 <div className="text-value">{this.state.data.customers}</div>
                 <div>Customers</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Bar data={cardChartData4} options={cardChartOpts4} height={70} />
-              </div>
             </Card>
           </Col>
         </Row>
@@ -464,7 +470,7 @@ componentDidMount(){
           <th>Customer</th>
           <th>Date</th>
           <th>Service</th>
-          <th>Status</th>
+          <th>Rate</th>
         </tr>
         </thead>
         <tbody>
@@ -472,7 +478,7 @@ componentDidMount(){
                     <tr>
                     <td>{item.vehicle}</td>
                     <td><Link to={`/customer/${item.custId}`}>{item.CustName}</Link></td>
-                    <td>{item.date}</td>
+                    <td>{item.date.slice(0,10)} at {item.date.slice(11)} </td>
                     <td>{item.service}</td>
                     <td>
                       {item.rating >3 &&

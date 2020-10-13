@@ -37,9 +37,11 @@ messaging.get('/:CustId/:ServiceId',(req,res)=>{
          })
      })
      .then(()=>{
-        db.collection('Services').doc(ServiceId).collection('Customers').doc(CustId).update({
-            count:0
-        })
+         console.log(CustId)
+         var val ={
+             count:0
+         }
+        db.collection('Services').doc(ServiceId).collection('Customers').doc(CustId).update(val)
         .then(()=>{
             res.send(data);
         })

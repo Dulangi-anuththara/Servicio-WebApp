@@ -42,7 +42,7 @@ class DefaultLayout extends Component {
       this.props.history.push('/');
     });
   }
-  checkRequest(e){
+  checkRequest(){
     this.props.history.push('/Requests')
   }
 
@@ -58,7 +58,7 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={e => this.checkRequest(e)} uid={this.props.uid} goToProfile={e => this.viewProfile(e)}
+            <DefaultHeader onLogout={e=>this.signOut(e)} goToRequests={() => this.checkRequest()} uid={this.props.uid} goToProfile={e => this.viewProfile(e)}
             goUpdate={e=> this.updateProfile(e)}/>
           </Suspense>
         </AppHeader>

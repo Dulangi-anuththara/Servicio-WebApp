@@ -23,6 +23,7 @@ const customers = require('./routes/customers');
 const ongoing = require('./routes/ongoing');
 const messaging = require('./routes/messaging')
 const dashboard = require('./routes/dashboard');
+const completed = require('./routes/completed');
 
 
 app.use(cors());
@@ -42,6 +43,7 @@ app.use('/customers',customers);
 app.use('/ongoing',ongoing);
 app.use('/msg',messaging);
 app.use('/dashboard',dashboard);
+app.use('/completed',completed);
 
 
 app.get('/',(req,res) =>{

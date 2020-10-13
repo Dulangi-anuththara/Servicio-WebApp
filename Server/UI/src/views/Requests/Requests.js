@@ -364,7 +364,7 @@ class Requests extends Component {
                       <Card key={index} className="mb-0">
                       <CardHeader id="headingTwo">
                         <Button block color="#2f353a" className="text-left m-0 p-0" onClick={() => this.toggleAccordion(index)} aria-expanded={this.state.accordion[1]} aria-controls="collapseTwo">
-                        <h5 className="m-0 p-0"><i className="icon-plus"></i> {item.ServiceType} on {item.Date}</h5>
+                        <h5 className="m-0 p-0"><i className="icon-plus"></i>  {item.ServiceType} on {item.Date.slice(0,10)} at {item.Date.slice(11)}</h5>
                           
                         </Button>
                       </CardHeader>
@@ -374,7 +374,7 @@ class Requests extends Component {
                         <Table responsive>
                   <tbody>
                   <tr>
-                  <td><Link to="/profile">{item.CustName}</Link> needs a {item.ServiceType} for a {item.VehicleType} on <Link to="/CalendarThree">{item.Date}</Link><br></br>Status : {item.BookingStatus}</td>
+                  <td><Link to="/profile">{item.CustName}</Link> needs a {item.ServiceType} for a {item.VehicleType} on <Link to="/CalendarThree">{item.Date.slice(0,10)}</Link> at {item.Date.slice(11)}<br></br>Status : {item.BookingStatus}</td>
                   <td style={{width:100}}>
                         <Button  block size="lg" style={{width:200,backgroundColor:'#ffc107',borderWidth:0}} onClick={this.onChange.bind(this)}>Change Time</Button></td>
                   <td style={{width:100}}>
