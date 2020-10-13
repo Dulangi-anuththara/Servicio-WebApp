@@ -203,7 +203,7 @@ class Complete extends Component {
 
             {this.state.month.map(item =>(
                 <div>                         
-                <ListGroupItem key={item.id}><i className="fa fa-align-justify"></i>   {item.CustName} picked up {item.VehicleDetails.regNo} (Not yet rated)</ListGroupItem>
+                <ListGroupItem key={item.id}><i className="fa fa-align-justify"></i>   {item.CustName} picked up {item.VehicleDetails.regNo}</ListGroupItem>
                 </div>
             ))}
             </ListGroup> </div>
