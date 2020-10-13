@@ -48,6 +48,7 @@ class Subscription extends Component {
             return(
                 <tr key={index}>
                     <td>{payment.payment_id}</td>
+                    <td>{payment.card_holder_name}</td>
                     <td>{payment.payhere_amount}</td>
                     <td>{payment.payhere_currency}</td>
                     <td>{_date.toDateString()}</td>
@@ -69,6 +70,7 @@ class Subscription extends Component {
                   <thead>
                     <tr>
                       <th>Payment_ID</th>
+                      <th>Card Holder</th>
                       <th>Amount</th>
                       <th>Currency</th>
                       <th>Date</th>
