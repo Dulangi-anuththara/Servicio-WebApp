@@ -33,4 +33,29 @@ customer.get('/:id',(req,res)=>{
   })
 })
 
+
+customer.get('/all/:id',(req,res)=>{
+
+  var id = req.params.id
+  var customers = []
+  var data = []
+
+  db.collection('Services').doc(id).collection('Customers').get()
+  .then(querySnapshot =>{
+      querySnapshot.forEach(doc=>{
+        customers.push(doc.id)
+      })
+  })
+  .then(()=>{
+    db.collection('Customers').where('user_id','in',customers).get()
+    .then(querySnapshot =>{
+      querySnapshot.forEach(doc=>{
+        data.push(doc.data())
+      })
+    })
+    .then(()=>{
+      res.send(data)
+    })
+  })
+})
 module.exports = customer;

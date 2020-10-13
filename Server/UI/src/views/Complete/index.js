@@ -218,7 +218,7 @@ class Complete extends Component {
                     </Col>
                     <Col md="11">
                       <FormGroup check inline>
-                        <Input className="form-check-input" type="radio" id="radio1" name="Year" value={2020} onChange={this.onChangeYear}/>
+                        <Input className="form-check-input" type="radio" id="radio1" name="Year" value={2020} onChange={this.onChangeYear} defaultChecked/>
                         <Label className="form-check-label" check htmlFor="inline-radio1">2020</Label>
                       </FormGroup>
                       <FormGroup check inline>
