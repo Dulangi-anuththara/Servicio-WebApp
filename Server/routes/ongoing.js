@@ -159,9 +159,8 @@ ongoing.post('/completion/:ServiceId/:bookingId',(req,res)=>{
                     db.collection('Reviews').where('CustId','==',id).get()
                     .then(querySnapshot =>{
                         num = querySnapshot.size
-                        count =0
                         querySnapshot.forEach(doc =>{
-                            count=count+doc.data().customerRating
+                            count=count+(doc.data().customerRating)
                         })
                         
                     })
